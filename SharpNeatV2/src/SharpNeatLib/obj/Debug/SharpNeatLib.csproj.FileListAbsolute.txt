@@ -1,0 +1,9 @@
+C:\Users\Jonathan\Documents\Visual Studio 2012\Projects\SharpNeatV2\src\SharpNeatLib\bin\Debug\SharpNeatLib.XML
+C:\Users\Jonathan\Documents\Visual Studio 2012\Projects\SharpNeatV2\src\SharpNeatLib\bin\Debug\SharpNeatLib.dll
+C:\Users\Jonathan\Documents\Visual Studio 2012\Projects\SharpNeatV2\src\SharpNeatLib\bin\Debug\SharpNeatLib.pdb
+C:\Users\Jonathan\Documents\Visual Studio 2012\Projects\SharpNeatV2\src\SharpNeatLib\bin\Debug\log4net.dll
+C:\Users\Jonathan\Documents\Visual Studio 2012\Projects\SharpNeatV2\src\SharpNeatLib\bin\Debug\log4net.xml
+C:\Users\Jonathan\Documents\Visual Studio 2012\Projects\SharpNeatV2\src\SharpNeatLib\obj\Debug\SharpNeat.Properties.Resources.resources
+C:\Users\Jonathan\Documents\Visual Studio 2012\Projects\SharpNeatV2\src\SharpNeatLib\obj\Debug\SharpNeatLib.csproj.GenerateResource.Cache
+C:\Users\Jonathan\Documents\Visual Studio 2012\Projects\SharpNeatV2\src\SharpNeatLib\obj\Debug\SharpNeatLib.dll
+C:\Users\Jonathan\Documents\Visual Studio 2012\Projects\SharpNeatV2\src\SharpNeatLib\obj\Debug\SharpNeatLib.pdb
