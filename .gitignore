@@ -1,4 +1,4 @@
-#Thrift specific
+﻿#Thrift specific
 thrift/gen*
 
 #NeatSim specific
@@ -27,8 +27,6 @@ SharpNeatV2/src/SharpNeatDomainsExtra/obj/*
 SharpNeatV2/src/SharpNeatGUI/obj/*
 SharpNeatV2/src/SharpNeatLib/obj/*
 SharpNeatV2/src/SharpNeatViewLib/obj/*
-
-
 
 
 #Java generic
