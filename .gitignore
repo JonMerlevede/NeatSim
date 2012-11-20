@@ -6,16 +6,30 @@ Neatsim/target
 
 #SharpNeat specific
 SharpNeatV2/bin/*
+
+SharpNeatV2/src/NeatSim/bin/*
+
 SharpNeatV2/src/NeatSim/bin/*
 SharpNeatV2/src/SharpNeatConsole/bin/*
 SharpNeatV2/src/SharpNeatDomains/bin/*
 SharpNeatV2/src/SharpNeatDomainsExtra/bin/*
 SharpNeatV2/src/SharpNeatGUI/bin/Debug/*
 SharpNeatV2/src/SharpNeatGUI/bin/Release/*
-SharpNeatV2/src/SharpNeatLib/bin/*
-SharpNeatV2/src/SharpNeatViewLib/bin/*
 !SharpNeatV2/src/SharpNeatGUI/bin/Debug/SharpNeatDomains.experiments.xml
 !SharpNeatV2/src/SharpNeatGUI/bin/Release/SharpNeatDomains.experiments.xml
+SharpNeatV2/src/SharpNeatLib/bin/*
+SharpNeatV2/src/SharpNeatViewLib/bin/*
+
+SharpNeatV2/src/NeatSim/obj/*
+SharpNeatV2/src/SharpNeatConsole/obj/*
+SharpNeatV2/src/SharpNeatDomains/obj/*
+SharpNeatV2/src/SharpNeatDomainsExtra/obj/*
+SharpNeatV2/src/SharpNeatGUI/obj/*
+SharpNeatV2/src/SharpNeatLib/obj/*
+SharpNeatV2/src/SharpNeatViewLib/obj/*
+
+
+
 
 #Java generic
 *.class
@@ -35,3 +49,4 @@ Ankh.NoLoad
 *.lock
 *.DS_Store
 *.out
+*.svn
