@@ -7,7 +7,7 @@ Neatsim/target
 #SharpNeat specific
 SharpNeatV2/bin/*
 
-
+SharpNeatV2/src/Box2dTestHarness/bin/*
 SharpNeatV2/src/NeatSim/bin/*
 SharpNeatV2/src/SharpNeatConsole/bin/*
 SharpNeatV2/src/SharpNeatDomains/bin/*
@@ -19,7 +19,7 @@ SharpNeatV2/src/SharpNeatGUI/bin/Release/*
 SharpNeatV2/src/SharpNeatLib/bin/*
 SharpNeatV2/src/SharpNeatViewLib/bin/*
 
-
+SharpNeatV2/src/Box2dTestHarness/obj/*
 SharpNeatV2/src/NeatSim/obj/*
 SharpNeatV2/src/SharpNeatConsole/obj/*
 SharpNeatV2/src/SharpNeatDomains/obj/*
