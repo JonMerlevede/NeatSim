@@ -1,27 +1,48 @@
 package neatsim.experiments;
-import org.apache.thrift.TException;
 
-import neatsim.comm.thrift.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+
+import neatsim.comm.thrift.CFastCyclicNetwork;
+import neatsim.comm.thrift.CFitnessInfo;
+import neatsim.comm.thrift.CPopulationFitness;
+import neatsim.comm.thrift.CPopulationInfo;
 import neatsim.core.BlackBox;
 import neatsim.core.FastCyclicNetwork;
 import neatsim.core.FitnessInfo;
 
-public class XorServiceImpl implements CFitnessCalculatorService.Iface {
-	
+public class XorEvaluator {
 	public static final double STOP_FITNESS = 10.0;
-	
-//	private int numberOfTimes = 1;
-	@Override
-	public CFitnessInfo calculateFitness(CFastCyclicNetwork ann)
-			throws TException {
-//		System.out.println("Function called " + numberOfTimes++ + " times."); 
-		FastCyclicNetwork fcn = new FastCyclicNetwork(ann);
-		CFitnessInfo fi = evaluate(fcn);
-//		System.out.println("Fitness: " + fi.fitness);
-		return fi;
+
+	public XorEvaluator() {
+		// Empty
 	}
 	
-	private CFitnessInfo evaluate(BlackBox box) {
+	public CPopulationFitness evaluatePopulation(CPopulationInfo pi) {
+		int evaluationCount = 0;
+		int n = pi.getPhenomes().size();
+		List<CFitnessInfo> fitnessInfos = new ArrayList<CFitnessInfo>(n);
+		for (int i = 0; i < pi.getPhenomes().size(); i++) {
+			evaluationCount++;
+			CFitnessInfo fi = evaluatePhenotype(pi.getPhenomes().get(i));
+			fitnessInfos.add(i, fi);
+			if (fi.stopConditionSatisfied)
+				break;
+		}
+		CPopulationFitness pf = new CPopulationFitness();
+		pf.setFitnessInfos(fitnessInfos);
+		pf.setEvaluationCount(evaluationCount);
+		return pf;
+	}
+	
+	public CFitnessInfo evaluatePhenotype(CFastCyclicNetwork ann) {
+		FastCyclicNetwork fcn = new FastCyclicNetwork(ann);
+		return evaluatePhenotype(fcn);
+	}
+	
+	public CFitnessInfo evaluatePhenotype(BlackBox box) {
 		double fitness = 0;
 		double pass = 1.0;
 		double output;

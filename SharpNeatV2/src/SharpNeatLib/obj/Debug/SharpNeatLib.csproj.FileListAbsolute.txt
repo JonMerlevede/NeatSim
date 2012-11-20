@@ -7,3 +7,4 @@ C:\Users\Jonathan\Documents\Visual Studio 2012\Projects\SharpNeatV2\src\SharpNea
 C:\Users\Jonathan\Documents\Visual Studio 2012\Projects\SharpNeatV2\src\SharpNeatLib\obj\Debug\SharpNeatLib.csproj.GenerateResource.Cache
 C:\Users\Jonathan\Documents\Visual Studio 2012\Projects\SharpNeatV2\src\SharpNeatLib\obj\Debug\SharpNeatLib.dll
 C:\Users\Jonathan\Documents\Visual Studio 2012\Projects\SharpNeatV2\src\SharpNeatLib\obj\Debug\SharpNeatLib.pdb
+C:\Users\Jonathan\Documents\Visual Studio 2012\Projects\SharpNeatV2\src\SharpNeatLib\obj\Debug\SharpNeatLib.csprojResolveAssemblyReference.cache

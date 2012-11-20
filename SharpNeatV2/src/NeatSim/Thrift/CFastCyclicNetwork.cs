@@ -214,28 +214,28 @@ namespace NeatSim.Thrift
               TProtocolUtil.Skip(iprot, field.Type);
             }
             break;
-          case 31:
+          case 40:
             if (field.Type == TType.I32) {
               NeuronCount = iprot.ReadI32();
             } else { 
               TProtocolUtil.Skip(iprot, field.Type);
             }
             break;
-          case 40:
+          case 50:
             if (field.Type == TType.I32) {
               InputNeuronCount = iprot.ReadI32();
             } else { 
               TProtocolUtil.Skip(iprot, field.Type);
             }
             break;
-          case 50:
+          case 60:
             if (field.Type == TType.I32) {
               OutputNeuronCount = iprot.ReadI32();
             } else { 
               TProtocolUtil.Skip(iprot, field.Type);
             }
             break;
-          case 60:
+          case 70:
             if (field.Type == TType.I32) {
               TimestepsPerActivation = iprot.ReadI32();
             } else { 
@@ -310,7 +310,7 @@ namespace NeatSim.Thrift
       if (__isset.neuronCount) {
         field.Name = "neuronCount";
         field.Type = TType.I32;
-        field.ID = 31;
+        field.ID = 40;
         oprot.WriteFieldBegin(field);
         oprot.WriteI32(NeuronCount);
         oprot.WriteFieldEnd();
@@ -318,7 +318,7 @@ namespace NeatSim.Thrift
       if (__isset.inputNeuronCount) {
         field.Name = "inputNeuronCount";
         field.Type = TType.I32;
-        field.ID = 40;
+        field.ID = 50;
         oprot.WriteFieldBegin(field);
         oprot.WriteI32(InputNeuronCount);
         oprot.WriteFieldEnd();
@@ -326,7 +326,7 @@ namespace NeatSim.Thrift
       if (__isset.outputNeuronCount) {
         field.Name = "outputNeuronCount";
         field.Type = TType.I32;
-        field.ID = 50;
+        field.ID = 60;
         oprot.WriteFieldBegin(field);
         oprot.WriteI32(OutputNeuronCount);
         oprot.WriteFieldEnd();
@@ -334,7 +334,7 @@ namespace NeatSim.Thrift
       if (__isset.timestepsPerActivation) {
         field.Name = "timestepsPerActivation";
         field.Type = TType.I32;
-        field.ID = 60;
+        field.ID = 70;
         oprot.WriteFieldBegin(field);
         oprot.WriteI32(TimestepsPerActivation);
         oprot.WriteFieldEnd();

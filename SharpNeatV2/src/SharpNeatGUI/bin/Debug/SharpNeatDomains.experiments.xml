@@ -1,9 +1,25 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Experiments>
 
-<Experiment name="NeatSim - XOR Remote">
+	<Experiment name="NeatSim - XOR Batch Remote">
     <AssemblyPath>NeatSim.dll</AssemblyPath>
-    <ClassName>NeatSim.RemoteXorExperiment</ClassName>
+    <ClassName>NeatSim.Experiments.Xor.RemoteBatchXorExperiment</ClassName>
+    <Config>
+      <PopulationSize>150</PopulationSize>
+      <SpecieCount>10</SpecieCount>
+      <Activation>
+        <Scheme>CyclicFixedIters</Scheme>
+        <Iters>3</Iters>
+      </Activation>
+      <ComplexityRegulationStrategy>Absolute</ComplexityRegulationStrategy>
+      <ComplexityThreshold>10</ComplexityThreshold>
+      <Description>XOR to run remotely in Java.</Description>
+    </Config>
+  </Experiment>
+	
+	<Experiment name="NeatSim - XOR Remote">
+    <AssemblyPath>NeatSim.dll</AssemblyPath>
+    <ClassName>NeatSim.Experiments.Xor.RemoteXorExperiment</ClassName>
     <Config>
       <PopulationSize>150</PopulationSize>
       <SpecieCount>10</SpecieCount>
@@ -19,7 +35,7 @@
   
   <Experiment name="NeatSim - XOR Local">
     <AssemblyPath>NeatSim.dll</AssemblyPath>
-    <ClassName>NeatSim.LocalXorExperiment</ClassName>
+    <ClassName>NeatSim.Experiments.Xor.LocalXorExperiment</ClassName>
     <Config>
       <PopulationSize>150</PopulationSize>
       <SpecieCount>10</SpecieCount>

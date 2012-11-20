@@ -16,11 +16,12 @@
  * You should have received a copy of the GNU General Public License
  * along with SharpNEAT.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 using System.Diagnostics;
 using SharpNeat.Core;
 using SharpNeat.Phenomes;
 
-namespace NeatSim
+namespace NeatSim.Experiments.Xor
 {
     /// <summary>
     /// A black box evaluator for the XOR logic gate problem domain. 

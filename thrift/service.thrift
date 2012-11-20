@@ -1,5 +1,5 @@
 namespace csharp NeatSim.Thrift
-namespace java neatsim.thrift
+namespace java neatsim.comm.thrift
 
 struct CConnection {
 	10: required i32 fromNeuronId
@@ -11,10 +11,10 @@ struct CFastCyclicNetwork {
 	10: required list<CConnection> connections
 	20: required list<string> activationFunctions
 	30: required list<list<double>> neuronAuxArgs
-	31: required i32 neuronCount;
-	40: required i32 inputNeuronCount
-	50: required i32 outputNeuronCount
-	60: required i32 timestepsPerActivation
+	40: required i32 neuronCount;
+	50: required i32 inputNeuronCount
+	60: required i32 outputNeuronCount
+	70: required i32 timestepsPerActivation
 }
 
 struct CAuxFitnessInfo {
@@ -28,6 +28,20 @@ struct CFitnessInfo {
 	30: required bool stopConditionSatisfied = false;
 }
 
-service CFitnessCalculatorService {
-	CFitnessInfo calculateFitness(1:CFastCyclicNetwork ann)
+struct CPopulationInfo {
+	10: required list<CFastCyclicNetwork> phenomes
+}
+
+struct CPopulationFitness {
+	10: list<CFitnessInfo> fitnessInfos
+	20: i32 evaluationCount
+}
+
+service CFitnessEvaluatorService {
+	CPopulationFitness calculateXorPopulationFitness (
+		1:CPopulationInfo populationInfo
+	)
+	CFitnessInfo calculateXorPhenotypeFitness (
+		1:CFastCyclicNetwork	ann
+	)
 }

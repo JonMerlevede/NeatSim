@@ -1,9 +1,5 @@
-﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Xml;
 using SharpNeat.Core;
 using SharpNeat.Decoders;
@@ -14,10 +10,9 @@ using SharpNeat.EvolutionAlgorithms;
 using SharpNeat.EvolutionAlgorithms.ComplexityRegulation;
 using SharpNeat.Genomes.Neat;
 using SharpNeat.Phenomes;
-using SharpNeat.Phenomes.NeuralNets;
 using SharpNeat.SpeciationStrategies;
 
-namespace NeatSim
+namespace NeatSim.Experiments.Xor.DeadCode
 {
     class LocalXorExperiment : IGuiNeatExperiment
     {

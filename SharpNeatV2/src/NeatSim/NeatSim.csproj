@@ -39,16 +39,27 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ProtocolManager.cs" />
-    <Compile Include="RemoteXorExperiment.cs" />
-    <Compile Include="RemoteXorEvaluator.cs" />
+    <Compile Include="Core\BatchGenomeListEvaluator.cs" />
+    <Compile Include="Core\AbstractNeatExperiment.cs" />
+    <Compile Include="Core\FastCyclicNetworkAdapter.cs" />
+    <Compile Include="Core\IBatchPhenomeEvaluator.cs" />
+    <Compile Include="Core\FastCyclicNeatGenomeDecoder.cs" />
+    <Compile Include="Core\ProtocolManager.cs" />
+    <Compile Include="Experiments\Xor\LocalXorExperiment.cs" />
+    <Compile Include="Experiments\Xor\LocalXorEvaluator.cs" />
+    <Compile Include="Experiments\Xor\DeadCode\LocalXorExperiment.cs" />
+    <Compile Include="Experiments\Xor\RemoteBatchXorEvaluator.cs" />
+    <Compile Include="Experiments\Xor\RemoteBatchXorExperiment.cs" />
+    <Compile Include="Experiments\Xor\RemoteXorEvaluator.cs" />
+    <Compile Include="Experiments\Xor\RemoteXorExperiment.cs" />
+    <Compile Include="Experiments\Xor\DeadCode\RemoteXorExperiment.cs" />
     <Compile Include="Thrift\CAuxFitnessInfo.cs" />
     <Compile Include="Thrift\CConnection.cs" />
     <Compile Include="Thrift\CFastCyclicNetwork.cs" />
-    <Compile Include="Thrift\CFitnessCalculatorService.cs" />
+    <Compile Include="Thrift\CFitnessEvaluatorService.cs" />
     <Compile Include="Thrift\CFitnessInfo.cs" />
-    <Compile Include="LocalXorEvaluator.cs" />
-    <Compile Include="LocalXorExperiment.cs" />
+    <Compile Include="Thrift\CPopulationFitness.cs" />
+    <Compile Include="Thrift\CPopulationInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SharpNeatDomains\SharpNeatDomains.csproj">
@@ -68,6 +79,7 @@
       <HintPath>..\..\ThirdPartyAssemblies\Thrift.dll</HintPath>
     </Reference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

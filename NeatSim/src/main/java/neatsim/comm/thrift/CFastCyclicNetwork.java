@@ -36,10 +36,10 @@ public class CFastCyclicNetwork implements org.apache.thrift.TBase<CFastCyclicNe
   private static final org.apache.thrift.protocol.TField CONNECTIONS_FIELD_DESC = new org.apache.thrift.protocol.TField("connections", org.apache.thrift.protocol.TType.LIST, (short)10);
   private static final org.apache.thrift.protocol.TField ACTIVATION_FUNCTIONS_FIELD_DESC = new org.apache.thrift.protocol.TField("activationFunctions", org.apache.thrift.protocol.TType.LIST, (short)20);
   private static final org.apache.thrift.protocol.TField NEURON_AUX_ARGS_FIELD_DESC = new org.apache.thrift.protocol.TField("neuronAuxArgs", org.apache.thrift.protocol.TType.LIST, (short)30);
-  private static final org.apache.thrift.protocol.TField NEURON_COUNT_FIELD_DESC = new org.apache.thrift.protocol.TField("neuronCount", org.apache.thrift.protocol.TType.I32, (short)31);
-  private static final org.apache.thrift.protocol.TField INPUT_NEURON_COUNT_FIELD_DESC = new org.apache.thrift.protocol.TField("inputNeuronCount", org.apache.thrift.protocol.TType.I32, (short)40);
-  private static final org.apache.thrift.protocol.TField OUTPUT_NEURON_COUNT_FIELD_DESC = new org.apache.thrift.protocol.TField("outputNeuronCount", org.apache.thrift.protocol.TType.I32, (short)50);
-  private static final org.apache.thrift.protocol.TField TIMESTEPS_PER_ACTIVATION_FIELD_DESC = new org.apache.thrift.protocol.TField("timestepsPerActivation", org.apache.thrift.protocol.TType.I32, (short)60);
+  private static final org.apache.thrift.protocol.TField NEURON_COUNT_FIELD_DESC = new org.apache.thrift.protocol.TField("neuronCount", org.apache.thrift.protocol.TType.I32, (short)40);
+  private static final org.apache.thrift.protocol.TField INPUT_NEURON_COUNT_FIELD_DESC = new org.apache.thrift.protocol.TField("inputNeuronCount", org.apache.thrift.protocol.TType.I32, (short)50);
+  private static final org.apache.thrift.protocol.TField OUTPUT_NEURON_COUNT_FIELD_DESC = new org.apache.thrift.protocol.TField("outputNeuronCount", org.apache.thrift.protocol.TType.I32, (short)60);
+  private static final org.apache.thrift.protocol.TField TIMESTEPS_PER_ACTIVATION_FIELD_DESC = new org.apache.thrift.protocol.TField("timestepsPerActivation", org.apache.thrift.protocol.TType.I32, (short)70);
 
   private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
   static {
@@ -60,10 +60,10 @@ public class CFastCyclicNetwork implements org.apache.thrift.TBase<CFastCyclicNe
     CONNECTIONS((short)10, "connections"),
     ACTIVATION_FUNCTIONS((short)20, "activationFunctions"),
     NEURON_AUX_ARGS((short)30, "neuronAuxArgs"),
-    NEURON_COUNT((short)31, "neuronCount"),
-    INPUT_NEURON_COUNT((short)40, "inputNeuronCount"),
-    OUTPUT_NEURON_COUNT((short)50, "outputNeuronCount"),
-    TIMESTEPS_PER_ACTIVATION((short)60, "timestepsPerActivation");
+    NEURON_COUNT((short)40, "neuronCount"),
+    INPUT_NEURON_COUNT((short)50, "inputNeuronCount"),
+    OUTPUT_NEURON_COUNT((short)60, "outputNeuronCount"),
+    TIMESTEPS_PER_ACTIVATION((short)70, "timestepsPerActivation");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -84,13 +84,13 @@ public class CFastCyclicNetwork implements org.apache.thrift.TBase<CFastCyclicNe
           return ACTIVATION_FUNCTIONS;
         case 30: // NEURON_AUX_ARGS
           return NEURON_AUX_ARGS;
-        case 31: // NEURON_COUNT
+        case 40: // NEURON_COUNT
           return NEURON_COUNT;
-        case 40: // INPUT_NEURON_COUNT
+        case 50: // INPUT_NEURON_COUNT
           return INPUT_NEURON_COUNT;
-        case 50: // OUTPUT_NEURON_COUNT
+        case 60: // OUTPUT_NEURON_COUNT
           return OUTPUT_NEURON_COUNT;
-        case 60: // TIMESTEPS_PER_ACTIVATION
+        case 70: // TIMESTEPS_PER_ACTIVATION
           return TIMESTEPS_PER_ACTIVATION;
         default:
           return null;
@@ -909,7 +909,7 @@ public class CFastCyclicNetwork implements org.apache.thrift.TBase<CFastCyclicNe
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
             }
             break;
-          case 31: // NEURON_COUNT
+          case 40: // NEURON_COUNT
             if (schemeField.type == org.apache.thrift.protocol.TType.I32) {
               struct.neuronCount = iprot.readI32();
               struct.setNeuronCountIsSet(true);
@@ -917,7 +917,7 @@ public class CFastCyclicNetwork implements org.apache.thrift.TBase<CFastCyclicNe
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
             }
             break;
-          case 40: // INPUT_NEURON_COUNT
+          case 50: // INPUT_NEURON_COUNT
             if (schemeField.type == org.apache.thrift.protocol.TType.I32) {
               struct.inputNeuronCount = iprot.readI32();
               struct.setInputNeuronCountIsSet(true);
@@ -925,7 +925,7 @@ public class CFastCyclicNetwork implements org.apache.thrift.TBase<CFastCyclicNe
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
             }
             break;
-          case 50: // OUTPUT_NEURON_COUNT
+          case 60: // OUTPUT_NEURON_COUNT
             if (schemeField.type == org.apache.thrift.protocol.TType.I32) {
               struct.outputNeuronCount = iprot.readI32();
               struct.setOutputNeuronCountIsSet(true);
@@ -933,7 +933,7 @@ public class CFastCyclicNetwork implements org.apache.thrift.TBase<CFastCyclicNe
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
             }
             break;
-          case 60: // TIMESTEPS_PER_ACTIVATION
+          case 70: // TIMESTEPS_PER_ACTIVATION
             if (schemeField.type == org.apache.thrift.protocol.TType.I32) {
               struct.timestepsPerActivation = iprot.readI32();
               struct.setTimestepsPerActivationIsSet(true);

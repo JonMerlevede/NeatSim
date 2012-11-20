@@ -1,23 +1,24 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Xml;
+using NeatSim.Core;
 using SharpNeat.Core;
 using SharpNeat.Decoders;
-using SharpNeat.Decoders.Neat;
 using SharpNeat.DistanceMetrics;
 using SharpNeat.Domains;
 using SharpNeat.EvolutionAlgorithms;
 using SharpNeat.EvolutionAlgorithms.ComplexityRegulation;
 using SharpNeat.Genomes.Neat;
 using SharpNeat.Phenomes;
+using SharpNeat.Phenomes.NeuralNets;
 using SharpNeat.SpeciationStrategies;
 
-namespace NeatSim
+namespace NeatSim.Experiments.Xor.DeadCode
 {
-    class RemoteXorExperiment : IGuiNeatExperiment
+    class RemoteBatchXorExperiment : IGuiNeatExperiment
     {
 
-        public RemoteXorExperiment()
+        public RemoteBatchXorExperiment()
         {
             Debug.WriteLine("Created new RemoteXorExperiment");
         }
@@ -46,10 +47,11 @@ namespace NeatSim
         public NeatGenomeParameters NeatGenomeParameters { get; private set; }
 
         private NetworkActivationScheme _activationScheme;
+        private FastCyclicNeatGenomeDecoder _decoder;
 
         public IGenomeDecoder<NeatGenome, IBlackBox> CreateGenomeDecoder()
         {
-            return new NeatGenomeDecoder(_activationScheme);
+            return _decoder;
         }
 
         public IGenomeFactory<NeatGenome> CreateGenomeFactory()
@@ -90,14 +92,15 @@ namespace NeatSim
                     complexityRegulationStrategy);
 
             // Create IBlackBox evaluator.
-            var evaluator = new RemoteXorEvaluator();
+            // var evaluator = new RemoteXorEvaluator();
+            var evaluator = new RemoteBatchXorEvaluator();
             //LocalXorEvaluator evaluator = new LocalXorEvaluator();
 
             // Create genome decoder.
-            IGenomeDecoder<NeatGenome, IBlackBox> genomeDecoder = CreateGenomeDecoder();
+            IGenomeDecoder<NeatGenome, FastCyclicNetwork> genomeDecoder = _decoder;
 
             // Create a genome list evaluator. This packages up the genome decoder with the genome evaluator.
-            IGenomeListEvaluator<NeatGenome> innerEvaluator = new SerialGenomeListEvaluator<NeatGenome, IBlackBox>(genomeDecoder, evaluator);
+            IGenomeListEvaluator<NeatGenome> innerEvaluator = new BatchGenomeListEvaluator<NeatGenome, FastCyclicNetwork>(genomeDecoder, evaluator);
 
             // Wrap the list evaluator in a 'selective' evaulator that will only evaluate new genomes. That is, we skip re-evaluating any genomes
             // that were in the population in previous generations (elite genomes). This is determined by examining each genome's evaluation info object.
@@ -134,6 +137,7 @@ namespace NeatSim
             NeatGenomeParameters = new NeatGenomeParameters();
             // Create fast cyclic activation scheme with 3 evaluations for convergence
             _activationScheme = NetworkActivationScheme.CreateCyclicFixedTimestepsScheme(3,true);
+            _decoder = new FastCyclicNeatGenomeDecoder(_activationScheme);
         }
 
         public AbstractGenomeView CreateGenomeView()

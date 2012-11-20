@@ -23,7 +23,7 @@ namespace SharpNeat.Core
     /// </summary>
     /// <typeparam name="TGenome">The genome type to be decoded.</typeparam>
     /// <typeparam name="TPhenome">The phenome type that is decoded to.</typeparam>
-    public interface IGenomeDecoder<TGenome,TPhenome>
+    public interface IGenomeDecoder<in TGenome, out TPhenome>
     {
         /// <summary>
         /// Decodes a genome into a phenome. Note that not all genomes have to decode successfully. That is, we 

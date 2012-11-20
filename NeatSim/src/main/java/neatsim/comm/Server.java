@@ -1,7 +1,7 @@
 package neatsim.comm;
 
-import neatsim.comm.thrift.CFitnessCalculatorService;
-import neatsim.experiments.XorServiceImpl;
+import neatsim.comm.thrift.CFitnessEvaluatorService;
+import neatsim.experiments.FitnessEvaluatorServiceImplementation;
 
 import org.apache.thrift.server.TServer;
 import org.apache.thrift.server.TSimpleServer;
@@ -14,9 +14,9 @@ public class Server {
 		try {
 //			TNonblockingServerTransport serverTransport = new TNonblockingServerSocket(7911);
 			TServerTransport serverTransport = new TServerSocket(7911);
-			XorServiceImpl impl = new XorServiceImpl();
-			CFitnessCalculatorService.Processor<CFitnessCalculatorService.Iface> processor
-				= new CFitnessCalculatorService.Processor<CFitnessCalculatorService.Iface>(impl);
+			FitnessEvaluatorServiceImplementation impl = new FitnessEvaluatorServiceImplementation();
+			CFitnessEvaluatorService.Processor<CFitnessEvaluatorService.Iface> processor
+				= new CFitnessEvaluatorService.Processor<CFitnessEvaluatorService.Iface>(impl);
 //			TNonblockingServer.Args args = new TNonblockingServer.Args(serverTransport);
 //			TServer server = new TNonblockingServer(args.processor(processor));
 			TServer.Args args = new TSimpleServer.Args(serverTransport);
