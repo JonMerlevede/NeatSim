@@ -1,9 +1,10 @@
-package neatsim.experiments;
+package neatsim.comm;
 import neatsim.comm.thrift.CFastCyclicNetwork;
 import neatsim.comm.thrift.CFitnessEvaluatorService;
 import neatsim.comm.thrift.CFitnessInfo;
 import neatsim.comm.thrift.CPopulationFitness;
 import neatsim.comm.thrift.CPopulationInfo;
+import neatsim.experiments.xor.XorEvaluator;
 
 import org.apache.thrift.TException;
 

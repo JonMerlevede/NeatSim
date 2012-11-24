@@ -1,7 +1,6 @@
 package neatsim.comm;
 
 import neatsim.comm.thrift.CFitnessEvaluatorService;
-import neatsim.experiments.FitnessEvaluatorServiceImplementation;
 
 import org.apache.thrift.server.TServer;
 import org.apache.thrift.server.TSimpleServer;

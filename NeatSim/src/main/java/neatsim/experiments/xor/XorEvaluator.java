@@ -1,8 +1,6 @@
-package neatsim.experiments;
+package neatsim.experiments.xor;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 import neatsim.comm.thrift.CFastCyclicNetwork;
