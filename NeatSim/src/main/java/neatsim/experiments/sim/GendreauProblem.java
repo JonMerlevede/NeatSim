@@ -12,6 +12,7 @@ import rinde.sim.problem.common.DefaultVehicle;
 import rinde.sim.problem.common.DynamicPDPTWProblem;
 import rinde.sim.problem.common.DynamicPDPTWProblem.SimulationInfo;
 import rinde.sim.problem.common.DynamicPDPTWProblem.StopCondition;
+import rinde.sim.problem.gendreau06.Gendreau06ObjectiveFunction;
 import rinde.sim.problem.gendreau06.Gendreau06Parser;
 import rinde.sim.problem.gendreau06.Gendreau06Scenario;
 
@@ -29,70 +30,31 @@ public class GendreauProblem {
 		System.out.println(scenario.getPossibleEventTypes().toString());
 		
 		long randomSeed = 823745;
-		DynamicPDPTWProblem problem = new DynamicPDPTWProblem(scenario, randomSeed);
+		final DynamicPDPTWProblem problem = new DynamicPDPTWProblem(scenario, randomSeed);
 		problem.enableUI();
 		problem.addCreator(AddVehicleEvent.class, new MyVehicleEventCreator());
 		problem.addStopCondition(new StopCondition() {
 			@Override
 			public boolean isSatisfiedBy(SimulationInfo context) {
-				return false;
+				return (context.stats.totalDeliveries > 0) && (context.stats.totalParcels == context.stats.totalDeliveries);
 			}
 		});
 		return problem;
 	}
 	
 	public void start() {
+		System.out.println("Starting simulation");
 		problem.simulate();
-	}
-	
-	private class MyAwesomeVehicle extends DefaultVehicle {
-//		private final AddVehicleEvent event;
-		protected Parcel curr;
-	
-		
-		public MyAwesomeVehicle(AddVehicleEvent event) {
-			super(event.vehicleDTO);
-			//this.event = event;
-		}
-		
-		@Override
-		protected void tickImpl(TimeLapse time) {
-			final Collection<Parcel> parcels = pdpModel.getAvailableParcels();
-
-			if (pdpModel.getContents(this).isEmpty()) {
-				if (!parcels.isEmpty() && curr == null) {
-					double dist = Double.POSITIVE_INFINITY;
-					for (final Parcel p : parcels) {
-						final double d = Point.distance(roadModel.getPosition(this), roadModel.getPosition(p));
-						if (d < dist) {
-							dist = d;
-							curr = p;
-						}
-					}
-				}
-
-				if (curr != null && roadModel.containsObject(curr)) {
-					roadModel.moveTo(this, curr, time);
-
-					if (roadModel.equalPosition(this, curr)) {
-						pdpModel.pickup(this, curr, time);
-					}
-				} else {
-					curr = null;
-				}
-			} else {
-				roadModel.moveTo(this, curr.getDestination(), time);
-				if (roadModel.getPosition(this).equals(curr.getDestination())) {
-					pdpModel.deliver(this, curr, time);
-				}
-			}
-		}
+		System.out.println("Statistics: " + problem.getStatistics());
+		Gendreau06ObjectiveFunction obj = new Gendreau06ObjectiveFunction();
+		System.out.println("Total cost: " + obj.computeCost(problem.getStatistics()));
 	}
 	
 	private class MyVehicleEventCreator implements DynamicPDPTWProblem.Creator<AddVehicleEvent> {
 		@Override
 		public boolean create(Simulator sim, AddVehicleEvent event) {
-			return sim.register(new MyAwesomeVehicle(event));
+//			return sim.register(new VeryStupidVehicle(event));	// TC ~ 10^8
+			return sim.register(new StupidVehicle(event));		// TC ~ 10^7 
 		}
 	}
 }
