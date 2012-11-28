@@ -1,14 +1,10 @@
 package neatsim.experiments.sim;
 
 import java.io.IOException;
-import java.util.Collection;
 
+import neatsim.experiments.sim.vehicles.AverageVehicle;
 import rinde.sim.core.Simulator;
-import rinde.sim.core.TimeLapse;
-import rinde.sim.core.graph.Point;
-import rinde.sim.core.model.pdp.Parcel;
 import rinde.sim.problem.common.AddVehicleEvent;
-import rinde.sim.problem.common.DefaultVehicle;
 import rinde.sim.problem.common.DynamicPDPTWProblem;
 import rinde.sim.problem.common.DynamicPDPTWProblem.SimulationInfo;
 import rinde.sim.problem.common.DynamicPDPTWProblem.StopCondition;
@@ -30,12 +26,14 @@ public class GendreauProblem {
 		System.out.println(scenario.getPossibleEventTypes().toString());
 		
 		long randomSeed = 823745;
-		final DynamicPDPTWProblem problem = new DynamicPDPTWProblem(scenario, randomSeed);
-		problem.enableUI();
+		final CoordinationModel coordinationModel = new CoordinationModel();
+		final DynamicPDPTWProblem problem = new DynamicPDPTWProblem(scenario, randomSeed, coordinationModel);
+//		problem.enableUI();
 		problem.addCreator(AddVehicleEvent.class, new MyVehicleEventCreator());
 		problem.addStopCondition(new StopCondition() {
 			@Override
 			public boolean isSatisfiedBy(SimulationInfo context) {
+				//return (problem.getStatistics().totalDeliveries > 0 && problem.getStatistics().totalParcels == problem.getStatistics().totalDeliveries);
 				return (context.stats.totalDeliveries > 0) && (context.stats.totalParcels == context.stats.totalDeliveries);
 			}
 		});
@@ -53,8 +51,9 @@ public class GendreauProblem {
 	private class MyVehicleEventCreator implements DynamicPDPTWProblem.Creator<AddVehicleEvent> {
 		@Override
 		public boolean create(Simulator sim, AddVehicleEvent event) {
-//			return sim.register(new VeryStupidVehicle(event));	// TC ~ 10^8
-			return sim.register(new StupidVehicle(event));		// TC ~ 10^7 
+//			return sim.register(new VeryStupidVehicle(event));	// simulationTime=18880000
+//			return sim.register(new StupidVehicle(event));		// simulationTime=14654000
+			return sim.register(new AverageVehicle(event));		// simulationTime=14466000
 		}
 	}
 }

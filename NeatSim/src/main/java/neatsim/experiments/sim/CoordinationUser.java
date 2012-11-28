@@ -1,5 +1,7 @@
 package neatsim.experiments.sim;
 
-public interface CoordinationUser {
+import rinde.sim.core.model.road.RoadUser;
+
+public interface CoordinationUser extends RoadUser {
 	void initCoordinationUser(CoordinationModel coordinationModel);
 }

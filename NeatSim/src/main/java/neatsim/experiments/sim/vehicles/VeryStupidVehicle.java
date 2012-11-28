@@ -1,4 +1,4 @@
-package neatsim.experiments.sim;
+package neatsim.experiments.sim.vehicles;
 
 import java.util.Collection;
 

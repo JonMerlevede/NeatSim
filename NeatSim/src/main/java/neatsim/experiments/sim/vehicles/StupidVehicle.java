@@ -1,4 +1,4 @@
-package neatsim.experiments.sim;
+package neatsim.experiments.sim.vehicles;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -6,12 +6,10 @@ import java.util.Iterator;
 
 import rinde.sim.core.TimeLapse;
 import rinde.sim.core.graph.Point;
-import rinde.sim.core.model.pdp.PDPModel.PDPModelEvent;
-import rinde.sim.core.model.pdp.PDPModel.PDPModelEventType;
 import rinde.sim.core.model.pdp.PDPModel;
+import rinde.sim.core.model.pdp.PDPModel.PDPModelEventType;
 import rinde.sim.core.model.pdp.Parcel;
 import rinde.sim.core.model.road.RoadModel;
-import rinde.sim.core.model.road.AbstractRoadModel.RoadEventType;
 import rinde.sim.event.Event;
 import rinde.sim.event.Listener;
 import rinde.sim.problem.common.AddVehicleEvent;
