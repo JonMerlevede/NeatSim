@@ -9,32 +9,32 @@ import rinde.sim.problem.common.DynamicPDPTWProblem;
 import rinde.sim.problem.common.DynamicPDPTWProblem.SimulationInfo;
 import rinde.sim.problem.common.DynamicPDPTWProblem.StopCondition;
 import rinde.sim.problem.gendreau06.Gendreau06ObjectiveFunction;
-import rinde.sim.problem.gendreau06.Gendreau06Parser;
 import rinde.sim.problem.gendreau06.Gendreau06Scenario;
 
 public class GendreauProblem {
-	public static final String SCENARIO_NAME = "data/req_rapide_1_240_24";
-	public static final int NUMBER_OF_VEHICLES = 5;	
 	private final DynamicPDPTWProblem problem;
+	private final Gendreau06ObjectiveFunction objFunction;
 	
-	public GendreauProblem() throws IOException {
-		problem = createProblem();
+	public GendreauProblem(Gendreau06Scenario scenario) throws IOException {
+		problem = createProblem(scenario);
+		objFunction = new Gendreau06ObjectiveFunction();
 	}
 	
-	private final DynamicPDPTWProblem createProblem() throws IOException {
-		Gendreau06Scenario scenario = Gendreau06Parser.parse(SCENARIO_NAME, NUMBER_OF_VEHICLES);
-		System.out.println(scenario.getPossibleEventTypes().toString());
+	
+	private final DynamicPDPTWProblem createProblem(Gendreau06Scenario scenario) throws IOException {
 		
 		long randomSeed = 823745;
 		final CoordinationModel coordinationModel = new CoordinationModel();
 		final DynamicPDPTWProblem problem = new DynamicPDPTWProblem(scenario, randomSeed, coordinationModel);
-//		problem.enableUI();
+		problem.enableUI();
 		problem.addCreator(AddVehicleEvent.class, new MyVehicleEventCreator());
 		problem.addStopCondition(new StopCondition() {
 			@Override
 			public boolean isSatisfiedBy(SimulationInfo context) {
-				//return (problem.getStatistics().totalDeliveries > 0 && problem.getStatistics().totalParcels == problem.getStatistics().totalDeliveries);
-				return (context.stats.totalDeliveries > 0) && (context.stats.totalParcels == context.stats.totalDeliveries);
+//				return (context.stats.totalDeliveries > 0)
+//						&& (context.stats.totalParcels == context.stats.totalDeliveries
+//						&& context.stats.simFinish);
+				return objFunction.isValidResult(context.stats);
 			}
 		});
 		return problem;
@@ -44,8 +44,7 @@ public class GendreauProblem {
 		System.out.println("Starting simulation");
 		problem.simulate();
 		System.out.println("Statistics: " + problem.getStatistics());
-		Gendreau06ObjectiveFunction obj = new Gendreau06ObjectiveFunction();
-		System.out.println("Total cost: " + obj.computeCost(problem.getStatistics()));
+		System.out.println("Total cost: " + objFunction.computeCost(problem.getStatistics()));
 	}
 	
 	private class MyVehicleEventCreator implements DynamicPDPTWProblem.Creator<AddVehicleEvent> {

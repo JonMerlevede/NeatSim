@@ -4,35 +4,39 @@ import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.zip.Checksum;
+import java.util.Set;
 
-import org.apache.commons.logging.impl.AvalonLogger;
+import junit.framework.Assert;
 
-import neatsim.experiments.sim.CoordinationModel;
-import neatsim.experiments.sim.CoordinationUser;
 import rinde.sim.core.TimeLapse;
 import rinde.sim.core.graph.Point;
-import rinde.sim.core.model.pdp.PDPModel;
-import rinde.sim.core.model.pdp.PDPModel.PDPModelEventType;
 import rinde.sim.core.model.pdp.PDPModel.ParcelState;
+import rinde.sim.core.model.pdp.Depot;
 import rinde.sim.core.model.pdp.Parcel;
-import rinde.sim.core.model.road.RoadModel;
-import rinde.sim.event.Event;
-import rinde.sim.event.Listener;
+import rinde.sim.core.model.pdp.Vehicle;
 import rinde.sim.problem.common.DefaultVehicle;
 import rinde.sim.problem.common.VehicleDTO;
 
-import com.google.common.base.Preconditions;
 import com.google.common.collect.Iterables;
 
-public abstract class GendreauVehicle extends DefaultVehicle implements CoordinationUser {
-
-	protected CoordinationModel coordinationModel;
+/**
+ * A gendreau vehicle provides a base for easy implementation of vehicles
+ * satisfying the Gendreau problem requirements.
+ * 
+ * Users of this class have to implement the {@link #action(TimeLapse)} method.
+ * This method describes the behaviour of the Gendreau
+ * vehicle. Instead of being time-based like {@link Vehicle#tick(TimeLapse)},
+ * it is event-based so that it should be impossible to divert from a target
+ * once committed to it. 
+ * 
+ * Implementations of this class should use pickUp() and dropOff() to respectively 
+ * pick up and drop off packages.
+ * 
+ * @author Jonathan
+ *
+ */
+public abstract class GendreauVehicle extends DefaultVehicle {
 	protected boolean loading = false;
 	protected Point targetPoint;
 	protected Parcel targetParcel;
@@ -40,31 +44,16 @@ public abstract class GendreauVehicle extends DefaultVehicle implements Coordina
 	private boolean pickingUp = false;
 	private boolean droppingOff = false;
 	
-	private final Collection<Parcel> availablePickUpParcels;
-	private final Collection<Parcel> availableDropOffParcels;
-	private final Map<Parcel, Point> pois;
+//	private final Collection<Parcel> availablePickUpParcels;
+//	private final Collection<Parcel> availableDropOffParcels;
 	
 	
 	public GendreauVehicle(VehicleDTO pDto) {
 		super(pDto);
 		checkNotNull(pDto);
-		availablePickUpParcels = new ArrayList<>();
-		availableDropOffParcels = new ArrayList<>();
-		pois = new HashMap<>();
-	}
-
-	@Override
-	public void initRoadPDP(RoadModel pRoadModel, PDPModel pPdpModel) {
-		checkNotNull(pRoadModel);
-		checkNotNull(pPdpModel);
-		super.initRoadPDP(pRoadModel, pPdpModel);
-		// ...
-	}
-	
-	@Override
-	public void initCoordinationUser(CoordinationModel coordinationModel) {
-		checkNotNull(coordinationModel);
-		this.coordinationModel = coordinationModel;
+//		availablePickUpParcels = new ArrayList<>();
+//		availableDropOffParcels = new ArrayList<>();
+//		pois = new HashMap<>();
 	}
 	
 	@Override
@@ -77,7 +66,6 @@ public abstract class GendreauVehicle extends DefaultVehicle implements Coordina
 		if (pickingUp || droppingOff) {
 			pickingUp = false;
 			droppingOff = false;
-			coordinationModel.removeTarget(targetParcel);
 			targetParcel = null;
 			targetPoint = null;
 		}
@@ -89,7 +77,7 @@ public abstract class GendreauVehicle extends DefaultVehicle implements Coordina
 				return;
 			}
 		}
-		updatePois(time);
+//		updatePois(time);
 		action(time);
 	}
 	
@@ -97,7 +85,7 @@ public abstract class GendreauVehicle extends DefaultVehicle implements Coordina
 		return parcel != null
 				&& time != null
 				&& pdpModel.containerContains(this, parcel)
-				&& pois.containsKey(parcel)
+				&& pdpModel.getParcelState(parcel) == ParcelState.IN_CARGO
 				&& pdpModel.getTimeWindowPolicy().canDeliver(
 						parcel.getDeliveryTimeWindow(),
 						time.getTime(),
@@ -107,7 +95,7 @@ public abstract class GendreauVehicle extends DefaultVehicle implements Coordina
 	protected boolean canPickup(Parcel parcel, TimeLapse time) {
 		return parcel != null
 				&& time != null
-				&& pois.containsKey(parcel)
+				&& pdpModel.getParcelState(parcel) == ParcelState.AVAILABLE
 				&& roadModel.containsObject(parcel)
 				&& pdpModel.getTimeWindowPolicy().canPickup(
 						parcel.getPickupTimeWindow(),
@@ -129,7 +117,7 @@ public abstract class GendreauVehicle extends DefaultVehicle implements Coordina
 		checkArgument(canPickup(parcel, time), "Pre: canPickup(parcel,time) == true");
 		pickingUp = true;
 		targetParcel = parcel;
-		targetPoint = getPoisMap().get(parcel);
+		targetPoint = getParcelPoi(parcel);
 		pdpModel.pickup(this, parcel, time);
 	}
 	
@@ -142,7 +130,7 @@ public abstract class GendreauVehicle extends DefaultVehicle implements Coordina
 		checkArgument(canDropOff(parcel, time), "Pre: canDeliver(parcel,time) == true");
 		droppingOff = true;
 		targetParcel = parcel;
-		targetPoint = getPoisMap().get(parcel);
+		targetPoint = getParcelPoi(parcel);
 		pdpModel.deliver(this, parcel, time);
 	}
 	
@@ -152,65 +140,72 @@ public abstract class GendreauVehicle extends DefaultVehicle implements Coordina
 	 * @param time
 	 */
 	public void moveTo(Parcel parcel, TimeLapse time) {
-		checkArgument(getPoisMap().containsKey(parcel), "Pre: getPoinsMap().containsKey(parcel)");
-		Point point = getPoisMap().get(parcel);
+		Point point = getParcelPoi(parcel);
 		checkArgument(canMoveTo(point, time), "Pre: canMoveTo(point,time) == true");
 		checkState(targetParcel == null, "Pre: can't change targets after committing.");
-		checkState(targetPoint == null, "Pre: can't change committing.");
+		checkState(targetPoint == null, "Pre: can't change targets after committing.");
 		checkState(!loading, "Pre: can't move while loading.");
 		targetPoint = point;
 		targetParcel = parcel;
-		coordinationModel.addTarget(parcel);
 		roadModel.moveTo(this, point, time);
 	}
 	
-	private void updatePois(TimeLapse time) {
-		checkNotNull(time);
-		pois.clear();
-		availablePickUpParcels.clear();
-		availableDropOffParcels.clear();
-		// Update pickup parcels
-		final Collection<Parcel> parcels = pdpModel.getAvailableParcels();
-		for (Parcel parcel : parcels) {
-			if (roadModel.containsObject(parcel))
-				addPickUpParcel(parcel);
-		}
-		// Update dropoff parcels
-		for (Parcel parcel : pdpModel.getContents(this))
-			addDropOffParcel(parcel);
+	public void moveTo(Depot depot, TimeLapse time) {
+		Point point = roadModel.getPosition(depot);
+		roadModel.moveTo(this, point, time);
 	}
-	
-	private void addPickUpParcel(Parcel parcel) {
-		checkNotNull(parcel);
-		checkNotNull(roadModel.getPosition(parcel));
-		availablePickUpParcels.add(parcel);
-		pois.put(parcel, roadModel.getPosition(parcel));
-	}
-	
-	private void addDropOffParcel(Parcel parcel) {
-		checkNotNull(parcel);
-		checkNotNull(parcel.getDestination());
-		availableDropOffParcels.add(parcel);
-		pois.put(parcel, parcel.getDestination());
-	}
-	
-
 	
 	public abstract void action(TimeLapse time);
 
 	public Collection<Parcel> getAvailablePickUpParcels() {
-		return Collections.unmodifiableCollection(availablePickUpParcels);
+		return pdpModel.getAvailableParcels();
+		//return Collections.unmodifiableCollection(availablePickUpParcels);
 	}
 
 	public Collection<Parcel> getAvailableDropOffParcels() {
-		return Collections.unmodifiableCollection(availableDropOffParcels);
+		return pdpModel.getContents(this);
+//		return Collections.unmodifiableCollection(availableDropOffParcels);
 	}
 	
-	public Collection<Parcel> getAvailableParcels() {
-		return Collections.unmodifiableCollection(pois.keySet());
+	public Iterable<Parcel> getAvailableParcels() {
+		return Iterables.concat(getAvailablePickUpParcels(),getAvailableDropOffParcels());
+//		return Collections.unmodifiableCollection(pois.keySet());
+	}
+	
+	public int getAvailableParcelsSize() {
+		return getAvailablePickUpParcels().size() + getAvailableDropOffParcels().size();
 	}
 
-	public Map<Parcel, Point> getPoisMap() {
-		return Collections.unmodifiableMap(pois);
+	public Depot getClosestDepot() {
+		Set<Depot> depots = roadModel.getObjectsOfType(Depot.class);
+		Point myPosition = roadModel.getPosition(this);
+		Depot closestDepot = null;
+		double distance = Double.MAX_VALUE;
+		for (Depot depot : depots) {
+			double d = Point.distance(myPosition, roadModel.getPosition(depot));
+			if (d < distance)
+				distance = d; closestDepot = depot;
+		}
+		assert closestDepot != null;
+		return closestDepot;
 	}
+	
+	public Point getParcelPoi(Parcel parcel) {
+		switch (pdpModel.getParcelState(parcel)) {
+		case ANNOUNCED:
+		case AVAILABLE:
+		case PICKING_UP:
+			return roadModel.getPosition(parcel);
+		case IN_CARGO:
+		case DELIVERING:
+			return parcel.getDestination();
+		case DELIVERED:
+			return null;
+		}
+		throw new IllegalArgumentException("Uncovered case. This is only here because of compiler stupidity.");
+	}
+	
+//	public Map<Parcel, Point> getPoisMap() {
+//		return Collections.unmodifiableMap(pois);
+//	}
 }
