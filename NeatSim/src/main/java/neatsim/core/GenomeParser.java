@@ -4,7 +4,7 @@ import java.io.InputStream;
 
 // TODO finish and document
 public class GenomeParser {
-	public FastCyclicNetwork parse(InputStream is) {
+	public FastCyclicNeuralNetwork parse(InputStream is) {
 //		Document doc = null;
 //		try {
 //			doc = DocumentBuilderFactory.newInstance() // DocumentBuilderFactory

@@ -20,13 +20,14 @@ import neatsim.comm.thrift.CFitnessInfo;
 import neatsim.comm.thrift.CPopulationFitness;
 import neatsim.comm.thrift.CPopulationInfo;
 import neatsim.core.BlackBox;
-import neatsim.core.FastCyclicNetwork;
+import neatsim.core.FastCyclicNeuralNetwork;
 import neatsim.core.FitnessInfo;
 import rinde.sim.problem.common.StatsTracker.StatisticsDTO;
 import rinde.sim.problem.gendreau06.Gendreau06ObjectiveFunction;
 import rinde.sim.problem.gendreau06.Gendreau06Parser;
 import rinde.sim.problem.gendreau06.Gendreau06Scenario;
 
+// TODO document thoroughly
 public class SimEvaluator {
 	public static final double STOP_FITNESS = 3000;
 	public static final String SCENARIO_NAME = "data/req_rapide_1_240_24";
@@ -180,7 +181,7 @@ public class SimEvaluator {
 	}
 	
 	public CFitnessInfo evaluatePhenotype(CFastCyclicNetwork ann, BufferedReader bfr) {
-		FastCyclicNetwork fcn = new FastCyclicNetwork(ann);
+		FastCyclicNeuralNetwork fcn = new FastCyclicNeuralNetwork(ann);
 		return evaluatePhenotype(fcn, bfr);
 	}
 	

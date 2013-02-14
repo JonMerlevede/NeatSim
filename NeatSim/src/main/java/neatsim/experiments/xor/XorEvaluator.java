@@ -8,7 +8,7 @@ import neatsim.comm.thrift.CFitnessInfo;
 import neatsim.comm.thrift.CPopulationFitness;
 import neatsim.comm.thrift.CPopulationInfo;
 import neatsim.core.BlackBox;
-import neatsim.core.FastCyclicNetwork;
+import neatsim.core.FastCyclicNeuralNetwork;
 import neatsim.core.FitnessInfo;
 
 /**
@@ -74,7 +74,7 @@ public class XorEvaluator {
 	public CFitnessInfo evaluatePhenotype(CFastCyclicNetwork ann) {
 		assert ann != null;
 		
-		FastCyclicNetwork fcn = new FastCyclicNetwork(ann);
+		FastCyclicNeuralNetwork fcn = new FastCyclicNeuralNetwork(ann);
 		return evaluatePhenotype(fcn);
 	}
 	

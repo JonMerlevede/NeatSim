@@ -49,8 +49,8 @@ public interface BlackBox {
 	/**
 	 * Activates the black box.
 	 * 
-	 * This 'connects' the (possibly changed) input values through the black box,
-	 * possibly changing its outputs. Also see the class description.
+	 * This propagates the (possibly changed) input values through the black box,
+	 * usually changing its outputs. Also see the class description.
 	 */
 	void activate();
 	
