@@ -3,6 +3,7 @@ thrift/gen*
 
 #NeatSim specific
 Neatsim/target
+Neatsim/doc
 
 #SharpNeat specific
 SharpNeatV2/bin/*
