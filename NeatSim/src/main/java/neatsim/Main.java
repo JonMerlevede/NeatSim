@@ -2,6 +2,12 @@ package neatsim;
 
 import neatsim.comm.Server;
 
+/**
+ * Main class that {@link Server#start() starts} a {@link Server server} serving
+ * the Thrift FitnessEvaluatorService.
+ * 
+ * @author Jonathan Merlevede
+ */
 public class Main {
 
 	/**

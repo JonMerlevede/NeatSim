@@ -17,6 +17,11 @@
       </plugin>
     </plugins>
   </build>
+	<properties>
+		<swt.version>3.8</swt.version>
+		<!-- by default there are no arguments passed to tests -->
+		<test.arg></test.arg>
+	</properties>
   <dependencies>
     <dependency>
 	  	<groupId>org.apache.thrift</groupId>
@@ -38,7 +43,17 @@
 		<artifactId>guava-testlib</artifactId>
 		<version>12.0-rc2</version>
 	</dependency>
-            
+	<dependency>
+    	<groupId>com.github.rinde</groupId>
+    	<artifactId>rinsim-core</artifactId>
+    	<version>2.1.0</version>
+	</dependency>
+	<dependency>
+    	<groupId>com.github.rinde</groupId>
+    	<artifactId>rinsim-problem</artifactId>
+    	<version>2.1.0</version>
+	</dependency>
+	
             
   	<!--
   	<dependency>

@@ -1,0 +1,8 @@
+neatsim
+neatsim.comm
+neatsim.comm.thrift
+neatsim.core
+neatsim.experiments.sim
+neatsim.experiments.sim.vehicles
+neatsim.experiments.sim.vehicles.junk
+neatsim.experiments.xor

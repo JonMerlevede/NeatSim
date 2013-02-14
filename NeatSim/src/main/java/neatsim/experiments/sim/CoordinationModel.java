@@ -14,7 +14,6 @@ import rinde.sim.core.model.ModelProvider;
 import rinde.sim.core.model.ModelReceiver;
 import rinde.sim.core.model.pdp.Parcel;
 import rinde.sim.core.model.road.RoadModel;
-import rinde.sim.util.spec.ISpecification;
 
 public class CoordinationModel implements Model<CoordinationUser>, ModelReceiver, TickListener{
 	private RoadModel roadModel;
