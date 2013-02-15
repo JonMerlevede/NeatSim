@@ -1,5 +1,5 @@
 namespace csharp NeatSim.Thrift
-namespace java neatsim.comm.thrift
+namespace java neatsim.thrift
 
 struct CConnection {
 	10: required i32 fromNeuronId
