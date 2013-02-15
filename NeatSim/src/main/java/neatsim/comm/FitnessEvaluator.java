@@ -51,6 +51,7 @@ public class FitnessEvaluator implements CFitnessEvaluatorService.Iface {
 	@Override
 	public CPopulationFitness calculateSimPopulationFitness(
 			CPopulationInfo populationInfo) throws TException {
-		return simEvaluator.parallelEvaluatePopulation(populationInfo);
+		return simEvaluator.evaluatePopulation(populationInfo);
+//		return simEvaluator.parallelEvaluatePopulation(populationInfo);
 	}
 }

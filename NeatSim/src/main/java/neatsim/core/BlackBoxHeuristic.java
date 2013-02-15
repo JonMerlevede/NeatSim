@@ -33,20 +33,20 @@ public class BlackBoxHeuristic implements Heuristic<GendreauContext> {
 		// Initialise temporary list with all required heuristics
 		ArrayList<GPFunc<GendreauContext>> tmpList
 			= new ArrayList<GPFunc<GendreauContext>>();
-		tmpList.add(new Waiters());
-		tmpList.add(new CargoSize<GendreauContext>());
-		tmpList.add(new IsInCargo<GendreauContext>());
-		tmpList.add(new TimeUntilAvailable<GendreauContext>());
-		tmpList.add(new Ado<GendreauContext>());
-		tmpList.add(new Mido<GendreauContext>());
-		tmpList.add(new Mado<GendreauContext>());
-		tmpList.add(new Dist<GendreauContext>());
-		tmpList.add(new Urge<GendreauContext>());
-		tmpList.add(new Est<GendreauContext>());
-		tmpList.add(new Ttl<GendreauContext>());
-		tmpList.add(new Adc<GendreauContext>());
-		tmpList.add(new Midc<GendreauContext>());
-		tmpList.add(new Madc<GendreauContext>());
+		tmpList.add(new Waiters()); //1
+		tmpList.add(new CargoSize<GendreauContext>()); //2
+		tmpList.add(new IsInCargo<GendreauContext>()); //3
+		tmpList.add(new TimeUntilAvailable<GendreauContext>()); //4
+		tmpList.add(new Ado<GendreauContext>()); //5
+		tmpList.add(new Mido<GendreauContext>()); //6
+		tmpList.add(new Mado<GendreauContext>()); //7
+		tmpList.add(new Dist<GendreauContext>()); //8
+		tmpList.add(new Urge<GendreauContext>()); //9
+		tmpList.add(new Est<GendreauContext>()); //10
+		tmpList.add(new Ttl<GendreauContext>()); //11
+		tmpList.add(new Adc<GendreauContext>()); //12
+		tmpList.add(new Midc<GendreauContext>()); //13
+		tmpList.add(new Madc<GendreauContext>()); //14
 		// Create an immutable view for the list
 		DEFAULT_INPUT_LIST = Collections.unmodifiableList(tmpList);
 	}
@@ -145,9 +145,10 @@ public class BlackBoxHeuristic implements Heuristic<GendreauContext> {
 	 */
 	protected void setInputs(GendreauContext gc) {
 		for (int i = 0; i < inputList.size(); i++) {
-			// Note that we give '0' for the input value of the GPFuncs in the inputList.
-			// Although generally a GPFunc can have an array of inputs, 'input' GPFuncs
-			// should not need check use any inputs at all.
+			// Note that we give '0' for the input value of the GPFuncs in the
+			// inputList.
+			// Although generally a GPFunc can have an array of inputs, 'input'
+			// GPFuncs should not need check use any inputs at all.
 			box.setInput(i, inputList.get(i).execute(null, gc));
 		}
 	}

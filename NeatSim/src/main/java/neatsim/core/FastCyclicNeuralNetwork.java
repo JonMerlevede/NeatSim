@@ -95,6 +95,16 @@ public class FastCyclicNeuralNetwork implements BlackBox {
 	 */
 	private final int timestepsPerActivation;
 	
+	
+	public boolean validConnections(int numberOfNeurons, List<CConnection> cons) {
+		assert cons != null;
+		for (CConnection con : cons) {
+			if (con.fromNeuronId >= numberOfNeurons
+					|| con.toNeuronId >= numberOfNeurons)
+				return false;
+		}
+		return true;
+	}
 	/**
 	 * Creates a new FCNN (fast cyclic neural network) with the properties and
 	 * functionality specified by the given fast cyclic neural network in Thrift
@@ -108,13 +118,21 @@ public class FastCyclicNeuralNetwork implements BlackBox {
 	 * 	| cfcn != null
 	 * @post This FCNN has the same number of input neurons as the given FCNN in
 	 *       Thrift format.
-	 *       | cfcn.getInputNeuronCount() == getNumberOfInputs()
+	 * 	| cfcn.getInputNeuronCount() == getNumberOfInputs()
 	 * @post This FCNN has the same number of output neurons as the given FCNN in
 	 *       Thrift format.
-	 *       | cfcn.getOutputNeuronCount() == getNumberOfOutputs()
+	 *		| cfcn.getOutputNeuronCount() == getNumberOfOutputs()
 	 */
 	public FastCyclicNeuralNetwork(CFastCyclicNetwork cfcn) { 
 		assert cfcn != null;
+		int numberOfNeurons = cfcn.getNeuronCount();
+		assert numberOfNeurons >= 0;
+		assert cfcn.getInputNeuronCount() + cfcn.getOutputNeuronCount() <= cfcn.getNeuronCount();
+		assert validConnections(numberOfNeurons, cfcn.getConnections());
+		assert numberOfNeurons == cfcn.getActivationFunctions().size();
+		assert numberOfNeurons == cfcn.getNeuronAuxArgs().size();
+
+		
 		// The bias node is already present in the given cfcn network.
 		connectionArray = cfcn.getConnections();
 		neuronActivationFnArray = cfcn.getActivationFunctions();
@@ -123,7 +141,8 @@ public class FastCyclicNeuralNetwork implements BlackBox {
 		preActivationArray = new ArrayList<Double>(Collections.nCopies(cfcn.getNeuronCount(), 0.0));
 		postActivationArray = new ArrayList<Double>(Collections.nCopies(cfcn.getNeuronCount(), 0.0));
 		
-		inputNeuronCount = cfcn.getInputNeuronCount();		outputNeuronCount = cfcn.getOutputNeuronCount();
+		inputNeuronCount = cfcn.getInputNeuronCount();
+		outputNeuronCount = cfcn.getOutputNeuronCount();
 		timestepsPerActivation = cfcn.getTimestepsPerActivation();
 		postActivationArray.set(0, 1.0);
 	}

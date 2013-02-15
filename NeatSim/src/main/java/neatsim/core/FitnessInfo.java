@@ -6,12 +6,17 @@ import neatsim.comm.thrift.CAuxFitnessInfo;
 import neatsim.comm.thrift.CFitnessInfo;
 
 /**
- * Instances of this class carry information on fitness of a population, and can
- * be transported as such over the Thrift protocol.
+ * Instances of this class carry information on fitness of a population, AND can
+ * be transported over the Thrift protocol.
  * 
  * In comparison with the {@see CFitnessInfo} class, this class contains handy
- * constructor functions and static handles to fitness information objects
- * which should be re-used for efficiency.
+ * constructor functions and static handles to fitness information objects which
+ * should be re-used for efficiency.
+ * 
+ * Users are not meant to tread instances of this class as immutable classes.
+ * Because this class is an extension of {@see CFitnessInfo}, users have access
+ * to all of the properties stored inside, so it is unfortunately not possible
+ * to enforce this.
  * 
  * @author Jonathan Merlevede
  */

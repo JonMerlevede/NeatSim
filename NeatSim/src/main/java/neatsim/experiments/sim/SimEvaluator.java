@@ -68,6 +68,8 @@ public class SimEvaluator {
 	}
 	
 	public CPopulationFitness parallelEvaluatePopulation(CPopulationInfo pi) {
+		assert pi != null;
+		
 		final Counter evaluationCounter = new Counter();
 		final String scenarioString = getScenarioString();
 		
@@ -111,12 +113,16 @@ public class SimEvaluator {
 	}
 	
 	public void absoluteCosts(List<CFitnessInfo> infos) {
+		assert infos != null;
+		
 		for (CFitnessInfo i : infos) {
 			i.setFitness(5000 - i.getFitness());
 		}
 	}
 	
 	public void linearRanking(final List<CFitnessInfo> infos, double selectivePressure) {
+		assert infos != null;
+		assert selectivePressure > 0 && selectivePressure <= 2;
 		
 		final Integer[] ranksMinusOne = new Integer[infos.size()];
 		for (int i = 0; i < infos.size(); i ++) {
@@ -153,6 +159,8 @@ public class SimEvaluator {
 	}
 	
 	public CPopulationFitness evaluatePopulation(CPopulationInfo pi) {
+		assert pi != null;
+		
 		int evaluationCount = 0;
 		int n = pi.getPhenomes().size();
 //		BufferedReader fr = null;
@@ -181,11 +189,17 @@ public class SimEvaluator {
 	}
 	
 	public CFitnessInfo evaluatePhenotype(CFastCyclicNetwork ann, BufferedReader bfr) {
+		assert ann != null;
+		assert bfr != null;
+		
 		FastCyclicNeuralNetwork fcn = new FastCyclicNeuralNetwork(ann);
 		return evaluatePhenotype(fcn, bfr);
 	}
 	
 	public CFitnessInfo evaluatePhenotype(BlackBox box, BufferedReader bfr) {
+		assert box != null;
+		assert bfr != null;
+		
 		Gendreau06Scenario scenario = null;
 		StatisticsDTO sdto = null;
 		try {
@@ -193,7 +207,7 @@ public class SimEvaluator {
 			scenario = Gendreau06Parser.parse(bfr,FILE_NAME, NUMBER_OF_VEHICLES);
 			//scenario = Gendreau06Parser.parse(SCENARIO_NAME, NUMBER_OF_VEHICLES);
 			System.out.println(scenario.getPossibleEventTypes().toString());
-			sdto = (new GendreauHeuristicProblem(scenario, box)).simulate();
+			sdto = (GendreauHeuristicProblem.create(scenario, box)).simulate();
 		} catch (IOException e) {
 			e.printStackTrace();
 			throw new RuntimeException("IO exception");
