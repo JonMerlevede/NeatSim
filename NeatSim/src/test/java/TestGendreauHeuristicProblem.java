@@ -6,11 +6,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import neatsim.comm.thrift.CConnection;
-import neatsim.comm.thrift.CFastCyclicNetwork;
 import neatsim.core.BlackBoxHeuristic;
 import neatsim.core.FastCyclicNeuralNetwork;
-import neatsim.experiments.sim.GendreauHeuristicProblem;
+import neatsim.sim.GendreauHeuristicProblem;
+import neatsim.thrift.CConnection;
+import neatsim.thrift.CFastCyclicNetwork;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -50,6 +50,7 @@ public class TestGendreauHeuristicProblem {
 	public FastCyclicNeuralNetwork makeNeuralNetwork() {
 		int identifierOfDistanceNode = 8;
 		int numberOfInputs = 14;
+		int numberOfInputsIncludingBiasNode = numberOfInputs + 1;
 		int identifierOfOutputNode = numberOfInputs + 1;
 		
 		List<CConnection> connections = Arrays.asList(
@@ -58,18 +59,18 @@ public class TestGendreauHeuristicProblem {
 		
 		List<String> activationFunctions = new ArrayList<>();
 		String steepenedSigmoid = "SteepenedSigmoid";
-		for (int i = 0; i < numberOfInputs + 1; i++)
+		for (int i = 0; i < numberOfInputsIncludingBiasNode + 1; i++)
 			activationFunctions.add(steepenedSigmoid);
 		
 		List<List<Double>> auxiliaryArguments = new ArrayList<>();
-		for (int i = 0; i < numberOfInputs; i++)
+		for (int i = 0; i < numberOfInputsIncludingBiasNode + 1; i++)
 			auxiliaryArguments.add(new ArrayList<Double>());
 		
 		CFastCyclicNetwork cfcn = new CFastCyclicNetwork(
 				connections, // connections in the neural net
 				activationFunctions, // list of activation functions
 				auxiliaryArguments, // list of auxiliary arguments
-				numberOfInputs + 1, // total neuron count
+				numberOfInputsIncludingBiasNode + 1, // total neuron count; this includes the bias node
 				numberOfInputs, // number of inputs
 				1, // number of outputs
 				3 //timesteps per activation
@@ -83,7 +84,8 @@ public class TestGendreauHeuristicProblem {
 	 */
 	@Test
 	public void testSimulate() {
-		GendreauHeuristicProblem ghp = GendreauHeuristicProblem.create(scenario, fcnn);
+		GendreauHeuristicProblem ghp = GendreauHeuristicProblem.create(scenario, fcnn, false);
+		
 		ghp.simulate(); // TODO decide what to test for :P
 	}
 }

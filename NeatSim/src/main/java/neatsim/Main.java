@@ -1,6 +1,5 @@
 package neatsim;
 
-import neatsim.comm.Server;
 
 /**
  * Main class that {@link Server#start() starts} a {@link Server server} serving

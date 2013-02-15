@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import neatsim.comm.thrift.CConnection;
-import neatsim.comm.thrift.CFastCyclicNetwork;
+import neatsim.thrift.CConnection;
+import neatsim.thrift.CFastCyclicNetwork;
 
 /**
  * This class represents a cyclic neural network.
@@ -105,41 +105,64 @@ public class FastCyclicNeuralNetwork implements BlackBox {
 		}
 		return true;
 	}
+
 	/**
 	 * Creates a new FCNN (fast cyclic neural network) with the properties and
 	 * functionality specified by the given fast cyclic neural network in Thrift
 	 * format.
 	 * 
-	 * There are more similarities than can be seen from this
-	 * constructor's postconditions.
+	 * The bias node has id zero, and is not part of the input neuron count
+	 * specified by the given FCNN.
+	 * 
+	 * There are more similarities than can be seen from this constructor's
+	 * postconditions.
 	 * 
 	 * @param cfcn The FCNN in Thrift format.
 	 * @pre The given Thrift FCNN is effective.
-	 * 	| cfcn != null
+	 * 
+	 *      | cfcn != null
+	 * @pre In the given FCNN, the number of neurons in the network is at least
+	 *      zero.
+	 * 
+	 *      | cfcn.getNeuronCount() >= 0
+	 * @pre In the given FCNN, there are as least as many neurons as there are
+	 *      input and output neurons.
+	 * 
+	 *      | cfcn.getInputNeuronCount() + cfcn.getOutputNeuronCount( <=
+	 *      | cfcn.getNeuronCount()
 	 * @post This FCNN has the same number of input neurons as the given FCNN in
 	 *       Thrift format.
-	 * 	| cfcn.getInputNeuronCount() == getNumberOfInputs()
+	 * 
+	 *       | cfcn.getInputNeuronCount() == getNumberOfInputs()
+	 * @pre The connections specified by the given FCNN are valid.
+	 * 
+	 *      | validConnections(numberOfNeurons, cfcn.getConnections())
+	 * 
+
 	 * @post This FCNN has the same number of output neurons as the given FCNN in
 	 *       Thrift format.
-	 *		| cfcn.getOutputNeuronCount() == getNumberOfOutputs()
+	 * 
+	 *       | cfcn.getOutputNeuronCount() == getNumberOfOutputs()
 	 */
 	public FastCyclicNeuralNetwork(CFastCyclicNetwork cfcn) { 
 		assert cfcn != null;
 		int numberOfNeurons = cfcn.getNeuronCount();
 		assert numberOfNeurons >= 0;
 		assert cfcn.getInputNeuronCount() + cfcn.getOutputNeuronCount() <= cfcn.getNeuronCount();
-		assert validConnections(numberOfNeurons, cfcn.getConnections());
 		assert numberOfNeurons == cfcn.getActivationFunctions().size();
 		assert numberOfNeurons == cfcn.getNeuronAuxArgs().size();
+		assert validConnections(numberOfNeurons, cfcn.getConnections());
 
 		
-		// The bias node is already present in the given cfcn network.
+		// The bias node is already present in the given CFCN network.
 		connectionArray = cfcn.getConnections();
 		neuronActivationFnArray = cfcn.getActivationFunctions();
 		neuronAuxArgsArray = cfcn.getNeuronAuxArgs();
 		// Initialise arrays of the correct size with zero values.
-		preActivationArray = new ArrayList<Double>(Collections.nCopies(cfcn.getNeuronCount(), 0.0));
-		postActivationArray = new ArrayList<Double>(Collections.nCopies(cfcn.getNeuronCount(), 0.0));
+		preActivationArray = new ArrayList<Double>(
+				Collections.nCopies(cfcn.getNeuronCount(), 0.0));
+		postActivationArray = new ArrayList<Double>(
+				Collections.nCopies(cfcn.getNeuronCount(), 0.0));
 		
 		inputNeuronCount = cfcn.getInputNeuronCount();
 		outputNeuronCount = cfcn.getOutputNeuronCount();
@@ -189,7 +212,7 @@ public class FastCyclicNeuralNetwork implements BlackBox {
 	 */
 	@Override
 	public double getOutput(int no) {
-		assert 0 < no && no < getNumberOfOutputs();
+		assert 0 <= no && no < getNumberOfOutputs();
 		return postActivationArray.get(1+inputNeuronCount);
 	}
 	
@@ -216,6 +239,7 @@ public class FastCyclicNeuralNetwork implements BlackBox {
 	 */
 	@Override
 	public void activate() {
+		// Do the following 'timestepsPerActivation' number of times.
 		for (int i = 0; i < timestepsPerActivation; i++) {
 			// Loop connections
 			for (CConnection con : connectionArray) {

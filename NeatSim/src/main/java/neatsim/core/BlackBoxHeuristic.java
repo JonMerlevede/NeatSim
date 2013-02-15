@@ -23,6 +23,11 @@ import rinde.evo4mas.gendreau06.GendreauFunctions.Midc;
 import rinde.evo4mas.gendreau06.GendreauFunctions.TimeUntilAvailable;
 import rinde.evo4mas.gendreau06.MyopicFunctions.Waiters;
 
+/**
+ * TODO document
+ * @author Jonathan Merlevede
+ *
+ */
 public class BlackBoxHeuristic implements Heuristic<GendreauContext> {
 	/**
 	 * Default, immutable list of input heuristics.

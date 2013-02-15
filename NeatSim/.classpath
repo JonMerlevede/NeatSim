@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry excluding="neatsim/experiments/sim/vehicles/junk/|neatsim/experiments/sim/vehicles/old/|neatsim/experiments/sim/old/" kind="src" output="target/classes" path="src/main/java">
+	<classpathentry excluding="neatsim/experiments/sim/vehicles/junk/|neatsim/experiments/sim/vehicles/old/|neatsim/experiments/sim/old/|neatsim/sim/old/|neatsim/old/" kind="src" output="target/classes" path="src/main/java">
 		<attributes>
 			<attribute name="optional" value="true"/>
 			<attribute name="maven.pomderived" value="true"/>
