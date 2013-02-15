@@ -21,6 +21,16 @@ import org.apache.thrift.transport.TTransportException;
  */
 public class Server {
 	/**
+	 * Creates a new instance of this class and starts it.
+	 * 
+	 * @param args Arguments. These are ignored.
+	 */
+	public static void main(String[] args) {
+		Server server = new Server();
+		server.start();
+	}
+	
+	/**
 	 * Starts the server. This blocks the calling thread.
 	 * 
 	 * Returns only if an exception occurs.

@@ -77,5 +77,15 @@
   		<artifactId>problem</artifactId>
   		<version>2.0.1-SNAPSHOT</version>
   	</dependency> -->
+  	<dependency>
+  		<groupId>com.github.rinde</groupId>
+  		<artifactId>evo4mas</artifactId>
+  		<version>0.0.1-SNAPSHOT</version>
+  	</dependency>
+  	<dependency>
+  		<groupId>com.github.rinde</groupId>
+  		<artifactId>rinecj</artifactId>
+  		<version>0.0.1-SNAPSHOT</version>
+  	</dependency>
   </dependencies>
 </project>

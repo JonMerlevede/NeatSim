@@ -170,10 +170,14 @@ public class BlackBoxHeuristic implements Heuristic<GendreauContext> {
 	 */
 	@Override
 	public double compute(GendreauContext gc) {
+		counter++;
+		System.out.println("Started computing black box (nr " + counter + ")");
 		setInputs(gc);
 		box.activate();
+		System.out.println("Done computing (nr " + counter + ")");
 		return box.getOutput(0);
 	}
+	private int counter = 0;
 	
 	/**
 	 * Returns a reference to the black box enclosed by this black box heuristic.

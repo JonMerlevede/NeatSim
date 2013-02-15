@@ -2,15 +2,11 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 import neatsim.core.BlackBoxHeuristic;
 import neatsim.core.FastCyclicNeuralNetwork;
 import neatsim.sim.GendreauHeuristicProblem;
-import neatsim.thrift.CConnection;
-import neatsim.thrift.CFastCyclicNetwork;
+import neatsim.sim.neuralnets.NeuralNetworkFactory;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -48,35 +44,7 @@ public class TestGendreauHeuristicProblem {
 	 * @return The created fast cyclic neural network.
 	 */
 	public FastCyclicNeuralNetwork makeNeuralNetwork() {
-		int identifierOfDistanceNode = 8;
-		int numberOfInputs = 14;
-		int numberOfInputsIncludingBiasNode = numberOfInputs + 1;
-		int identifierOfOutputNode = numberOfInputs + 1;
-		
-		List<CConnection> connections = Arrays.asList(
-				new CConnection(identifierOfDistanceNode, identifierOfOutputNode, 1)
-				);
-		
-		List<String> activationFunctions = new ArrayList<>();
-		String steepenedSigmoid = "SteepenedSigmoid";
-		for (int i = 0; i < numberOfInputsIncludingBiasNode + 1; i++)
-			activationFunctions.add(steepenedSigmoid);
-		
-		List<List<Double>> auxiliaryArguments = new ArrayList<>();
-		for (int i = 0; i < numberOfInputsIncludingBiasNode + 1; i++)
-			auxiliaryArguments.add(new ArrayList<Double>());
-		
-		CFastCyclicNetwork cfcn = new CFastCyclicNetwork(
-				connections, // connections in the neural net
-				activationFunctions, // list of activation functions
-				auxiliaryArguments, // list of auxiliary arguments
-				numberOfInputsIncludingBiasNode + 1, // total neuron count; this includes the bias node
-				numberOfInputs, // number of inputs
-				1, // number of outputs
-				3 //timesteps per activation
-				);
-		
-		return new FastCyclicNeuralNetwork(cfcn);
+		return (new NeuralNetworkFactory()).createDist();
 	}
 	
 	/**
@@ -84,8 +52,9 @@ public class TestGendreauHeuristicProblem {
 	 */
 	@Test
 	public void testSimulate() {
-		GendreauHeuristicProblem ghp = GendreauHeuristicProblem.create(scenario, fcnn, false);
-		
-		ghp.simulate(); // TODO decide what to test for :P
+		BlackBoxHeuristic bbh = new BlackBoxHeuristic(fcnn);
+		GendreauHeuristicProblem ghp = GendreauHeuristicProblem.create(scenario, bbh, false);
+		ghp.simulate(); // TODO decide what to test for :P		}
+		System.out.println(ghp.getStatistics());
 	}
 }

@@ -16,6 +16,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 import neatsim.core.BlackBox;
+import neatsim.core.BlackBoxHeuristic;
 import neatsim.core.FastCyclicNeuralNetwork;
 import neatsim.core.FitnessInfo;
 import neatsim.sim.GendreauHeuristicProblem;
@@ -208,7 +209,8 @@ public class LocalSimulationEvaluator {
 			scenario = Gendreau06Parser.parse(bfr,FILE_NAME, NUMBER_OF_VEHICLES);
 			//scenario = Gendreau06Parser.parse(SCENARIO_NAME, NUMBER_OF_VEHICLES);
 			System.out.println(scenario.getPossibleEventTypes().toString());
-			sdto = (GendreauHeuristicProblem.create(scenario, box)).simulate();
+			BlackBoxHeuristic bbh = new BlackBoxHeuristic(box);
+			sdto = (GendreauHeuristicProblem.create(scenario, bbh)).simulate();
 		} catch (IOException e) {
 			e.printStackTrace();
 			throw new RuntimeException("IO exception");

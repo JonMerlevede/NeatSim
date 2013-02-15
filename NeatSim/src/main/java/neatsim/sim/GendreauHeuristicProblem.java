@@ -1,8 +1,8 @@
 package neatsim.sim;
 
-import neatsim.core.BlackBox;
-import neatsim.core.BlackBoxHeuristic;
+import rinde.ecj.Heuristic;
 import rinde.evo4mas.gendreau06.CoordinationModel;
+import rinde.evo4mas.gendreau06.GendreauContext;
 import rinde.evo4mas.gendreau06.MyopicTruck;
 import rinde.sim.core.Simulator;
 import rinde.sim.problem.common.AddVehicleEvent;
@@ -38,14 +38,14 @@ d	 */
 	 */
 	private static final boolean ENABLE_UI = false;
 	
-	public static GendreauHeuristicProblem create(Gendreau06Scenario scenario, BlackBox heuristic, boolean enableUI) {
+	public static GendreauHeuristicProblem create(Gendreau06Scenario scenario, Heuristic<GendreauContext> heuristic, boolean enableUI) {
 		assert scenario != null;
 		assert heuristic != null;
 		
 		return new GendreauHeuristicProblem(scenario, heuristic, enableUI);
 	}
 	
-	public static GendreauHeuristicProblem create(Gendreau06Scenario scenario, BlackBox heuristic) {
+	public static GendreauHeuristicProblem create(Gendreau06Scenario scenario, Heuristic<GendreauContext> heuristic) {
 		assert scenario != null;
 		assert heuristic != null;
 		
@@ -55,7 +55,7 @@ d	 */
 	 * The constructor is private to circumvent the requirement of the constructor
 	 * having to be the first call.
 	 */
-	private GendreauHeuristicProblem(Gendreau06Scenario scenario, BlackBox heuristic, boolean enableUI) {
+	private GendreauHeuristicProblem(Gendreau06Scenario scenario, Heuristic<GendreauContext> heuristic, boolean enableUI) {
 		// Create a new PDP problem with time windows using the specified scenario.
 		// The Gendreau scenario is used here as a generic DynamicPDPTWScenario.
 		super(scenario, RANDOM_SEED, new CoordinationModel());
@@ -82,10 +82,10 @@ d	 */
 	
 	private class MyVehicleEventCreator implements DynamicPDPTWProblem.Creator<AddVehicleEvent> {
 //		protected BlackBox heuristic;
-		protected BlackBoxHeuristic heuristic;
+		protected Heuristic<GendreauContext> heuristic;
 		
-		public MyVehicleEventCreator(BlackBox box) {
-			this.heuristic = new BlackBoxHeuristic(box);
+		public MyVehicleEventCreator(Heuristic<GendreauContext> heuristic) {
+			this.heuristic = heuristic;
 		}
 		
 		@Override
