@@ -34,15 +34,20 @@
 		<test.arg></test.arg>
 	</properties>
   <dependencies>
-    <dependency>
-	  	<groupId>org.apache.thrift</groupId>
-	  	<artifactId>libthrift</artifactId>
-	  	<version>0.9.0</version>
+	<dependency>
+	  <groupId>org.apache.thrift</groupId>
+	  <artifactId>libthrift</artifactId>
+	  <version>0.9.0</version>
+	</dependency>
+  	<dependency>
+	  	<groupId>org.slf4j</groupId>
+	  	<artifactId>slf4j-api</artifactId>
+	  	<version>1.6.5</version>
   	</dependency>
 <!--   	<dependency> -->
 <!-- 	  	<groupId>org.slf4j</groupId> -->
 <!-- 	  	<artifactId>slf4j-simple</artifactId> -->
-<!-- 	  	<version>1.5.8</version> -->
+<!-- 	  	<version>1.6.5</version> -->
 <!--   	</dependency> -->
 	<dependency>
 		<groupId>com.google.guava</groupId>
@@ -64,27 +69,14 @@
     	<artifactId>rinsim-problem</artifactId>
     	<version>2.1.0</version>
 	</dependency>
-	
-            
-  	<!--
-  	<dependency>
-  		<groupId>rinsim</groupId>
-  		<artifactId>core</artifactId>
-  		<version>2.0.1-SNAPSHOT</version>
-  	</dependency>
-  	<dependency>
-  		<groupId>rinsim</groupId>
-  		<artifactId>problem</artifactId>
-  		<version>2.0.1-SNAPSHOT</version>
-  	</dependency> -->
   	<dependency>
   		<groupId>com.github.rinde</groupId>
-  		<artifactId>evo4mas</artifactId>
+  		<artifactId>rinecj</artifactId>
   		<version>0.0.1-SNAPSHOT</version>
   	</dependency>
   	<dependency>
   		<groupId>com.github.rinde</groupId>
-  		<artifactId>rinecj</artifactId>
+  		<artifactId>evo4mas</artifactId>
   		<version>0.0.1-SNAPSHOT</version>
   	</dependency>
   </dependencies>
