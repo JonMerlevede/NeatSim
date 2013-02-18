@@ -19,7 +19,7 @@ namespace NeatSim.Core
 
         static ProtocolManager()
         {
-            PSocket = new TSocket("localhost", 7911);
+            PSocket = new TSocket("localhost", 7913);
             //_transport = new TFramedTransport(PSocket);
             PTransport = new TBufferedTransport(PSocket);
             PProtocol = new TBinaryProtocol(PTransport);

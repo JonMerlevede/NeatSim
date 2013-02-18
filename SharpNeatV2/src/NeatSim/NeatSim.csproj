@@ -45,6 +45,8 @@
     <Compile Include="Core\IBatchPhenomeEvaluator.cs" />
     <Compile Include="Core\FastCyclicNeatGenomeDecoder.cs" />
     <Compile Include="Core\ProtocolManager.cs" />
+    <Compile Include="Experiments\Sim\RemoteBatchSimEvaluator.cs" />
+    <Compile Include="Experiments\Sim\RemoteBatchSimExperiment.cs" />
     <Compile Include="Experiments\Xor\LocalXorExperiment.cs" />
     <Compile Include="Experiments\Xor\LocalXorEvaluator.cs" />
     <Compile Include="Experiments\Xor\DeadCode\LocalXorExperiment.cs" />

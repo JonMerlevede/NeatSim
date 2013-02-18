@@ -1,6 +1,23 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Experiments>
 
+	<Experiment name="NeatSim - Simulation">
+    <AssemblyPath>NeatSim.dll</AssemblyPath>
+    <ClassName>NeatSim.Experiments.Sim.RemoteBatchSimExperiment</ClassName>
+    <Config>
+      <PopulationSize>150</PopulationSize>
+      <SpecieCount>10</SpecieCount>
+      <Activation>
+        <Scheme>CyclicFixedIters</Scheme>
+        <Iters>3</Iters>
+      </Activation>
+      <ComplexityRegulationStrategy>Absolute</ComplexityRegulationStrategy>
+      <ComplexityThreshold>10</ComplexityThreshold>
+		<InputCount>14</InputCount>
+      <Description>Simulation to run remotely in Java.</Description>
+    </Config>
+  </Experiment>
+
 	<Experiment name="NeatSim - XOR Batch Remote">
     <AssemblyPath>NeatSim.dll</AssemblyPath>
     <ClassName>NeatSim.Experiments.Xor.RemoteBatchXorExperiment</ClassName>
@@ -47,6 +64,29 @@
       <ComplexityThreshold>10</ComplexityThreshold>
       <Description>XOR that runts locally using the same settings to compare with.</Description>
 
+    </Config>
+  </Experiment>
+  
+    <Experiment name="Adriaans Sin(x))">
+    <AssemblyPath>SharpNeatDomains.dll</AssemblyPath>
+    <ClassName>SharpNeat.Domains.FunctionRegression.FunctionRegressionExperiment</ClassName>
+    <Config>
+      <PopulationSize>150</PopulationSize>
+      <SpecieCount>10</SpecieCount>
+      <Activation>
+        <Scheme>CyclicFixedIters</Scheme>
+		  <Iters>3</Iters>
+      </Activation>
+      <ComplexityRegulationStrategy>Absolute</ComplexityRegulationStrategy>
+      <ComplexityThreshold>2000</ComplexityThreshold>
+      <Function>Sine</Function>      
+      <SampleResolution>21</SampleResolution>
+      <SampleMin>-3,14159</SampleMin>
+      <SampleMax>3,14159</SampleMax>
+      <Description>
+        Function Regression - Sin(x)
+Sin(x) evaluated over [-PI,+PI]     
+      </Description>
     </Config>
   </Experiment>
 
@@ -168,8 +208,8 @@ To distinguish between correct low scorers and incorrect low scorers an addition
       <ComplexityThreshold>20</ComplexityThreshold>
       <Function>Abs</Function>
       <SampleResolution>11</SampleResolution>
-      <SampleMin>-1.0</SampleMin>
-      <SampleMax>1.0</SampleMax>
+      <SampleMin>-1,0</SampleMin>
+      <SampleMax>1,0</SampleMax>
       <Description>
         Function Regression - Abs(x)
       </Description>
@@ -233,8 +273,8 @@ Sample resolution is 11, thus the sample values are 0.0, 0.1, 0.2, 0.3, 0.4, 0.5
       <ComplexityThreshold>20</ComplexityThreshold>
       <Function>Sine</Function>      
       <SampleResolution>21</SampleResolution>
-      <SampleMin>-3.14159</SampleMin>
-      <SampleMax>3.14159</SampleMax>
+      <SampleMin>-3,14159</SampleMin>
+      <SampleMax>3,14159</SampleMax>
       <Description>
         Function Regression - Sin(x)
 Sin(x) evaluated over [-PI,+PI]     
