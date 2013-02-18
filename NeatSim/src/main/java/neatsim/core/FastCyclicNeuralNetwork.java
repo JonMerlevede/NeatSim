@@ -51,21 +51,21 @@ public class FastCyclicNeuralNetwork implements BlackBox {
 	 * 
 	 * @see #inputNeuronCount
 	 */
-	private final List<Double> preActivationArray;
+	private final List<Double> neuronInputArray;
 	
 	/**
 	 * Array of activations after activation.
 	 * 
 	 * @see #inputNeuronCount
 	 */
-	private final List<Double> postActivationArray;
+	private final List<Double> neuronOutputArray;
 	
 	/**
 	 * The number of input neurons.
 	 * 
 	 * Neurons are not stored as neuron objects, but are instead identified by an
 	 * integer identifier. Their activation values are stored in two 'flat'
-	 * lists: {@link #preActivationArray} and {@link #postActivationArray}.
+	 * lists: {@link #neuronInputArray} and {@link #neuronOutputArray}.
 	 * 
 	 * Node identifiers are structured as follows.
 	 * <ol>
@@ -111,6 +111,9 @@ public class FastCyclicNeuralNetwork implements BlackBox {
 	 * functionality specified by the given fast cyclic neural network in Thrift
 	 * format.
 	 * 
+	 * After creation, changes to the provided CFCN are not reflected in the
+	 * created FCNN.
+	 * 
 	 * The bias node has id zero, and is not part of the input neuron count
 	 * specified by the given FCNN.
 	 * 
@@ -153,21 +156,39 @@ public class FastCyclicNeuralNetwork implements BlackBox {
 		assert numberOfNeurons == cfcn.getNeuronAuxArgs().size();
 		assert validConnections(numberOfNeurons, cfcn.getConnections());
 
+		// Note: the bias node is already present in the given CFCN network.
+
+		// Deep cloning of the given connection array
+		//connectionArray = cfcn.getConnections();
+		connectionArray =	new ArrayList<>(cfcn.getConnections().size());
+		for (CConnection c : cfcn.getConnections()) {
+			connectionArray.add(
+					new CConnection(
+							c.getFromNeuronId(),
+							c.getToNeuronId(),
+							c.getWeight()));
+		}
+
+		// Deep cloning of the given neuron activation function array.
+		//neuronActivationFnArray = cfcn.getActivationFunctions();
+		neuronActivationFnArray = new ArrayList<>(cfcn.getActivationFunctions());
 		
-		// The bias node is already present in the given CFCN network.
-		connectionArray = cfcn.getConnections();
-		neuronActivationFnArray = cfcn.getActivationFunctions();
-		neuronAuxArgsArray = cfcn.getNeuronAuxArgs();
+		// Deep cloning of the list of auxiliary function arguments.
+		//neuronAuxArgsArray = cfcn.getNeuronAuxArgs();
+		neuronAuxArgsArray = new ArrayList<>(cfcn.getNeuronAuxArgs().size());
+		for (List<Double> e : cfcn.getNeuronAuxArgs())
+			neuronAuxArgsArray.add(new ArrayList<Double>(e));
+		
 		// Initialise arrays of the correct size with zero values.
-		preActivationArray = new ArrayList<Double>(
+		neuronInputArray = new ArrayList<Double>(
 				Collections.nCopies(cfcn.getNeuronCount(), 0.0));
-		postActivationArray = new ArrayList<Double>(
+		neuronOutputArray = new ArrayList<Double>(
 				Collections.nCopies(cfcn.getNeuronCount(), 0.0));
 		
 		inputNeuronCount = cfcn.getInputNeuronCount();
 		outputNeuronCount = cfcn.getOutputNeuronCount();
 		timestepsPerActivation = cfcn.getTimestepsPerActivation();
-		postActivationArray.set(0, 1.0);
+		neuronOutputArray.set(0, 1.0);
 	}
 		
 	/**
@@ -180,7 +201,7 @@ public class FastCyclicNeuralNetwork implements BlackBox {
 	 */
 	public double getInput(int no) {
 		assert no > 0 && no < getNumberOfInputs();
-		return postActivationArray.get(1+no);
+		return neuronOutputArray.get(1+no);
 	}
 	
 	/**
@@ -199,7 +220,7 @@ public class FastCyclicNeuralNetwork implements BlackBox {
 	public void setInput(int no, double val) {
 		assert 0 <= no && no < getNumberOfInputs();
 		assert val != Double.NaN && !Double.isInfinite(val);
-		postActivationArray.set(1+no,val);
+		neuronOutputArray.set(1+no,val);
 	}
 	
 	/**
@@ -213,7 +234,7 @@ public class FastCyclicNeuralNetwork implements BlackBox {
 	@Override
 	public double getOutput(int no) {
 		assert 0 <= no && no < getNumberOfOutputs();
-		return postActivationArray.get(1+inputNeuronCount);
+		return neuronOutputArray.get(1+inputNeuronCount);
 	}
 	
 	/**
@@ -229,7 +250,7 @@ public class FastCyclicNeuralNetwork implements BlackBox {
 	protected void setOutput(int no, double val) {
 		assert no >= 0 && no < getNumberOfOutputs();
 		assert val != Double.NaN && !Double.isInfinite(val);
-		postActivationArray.set(1+inputNeuronCount, val);
+		neuronOutputArray.set(1+inputNeuronCount, val);
 	}
 	
 	/**
@@ -245,22 +266,30 @@ public class FastCyclicNeuralNetwork implements BlackBox {
 			for (CConnection con : connectionArray) {
 				int to = con.getToNeuronId();
 				int from = con.getFromNeuronId();
-				double fromVal = postActivationArray.get(from);
-				double toVal = postActivationArray.get(to);
+				double fromVal = neuronOutputArray.get(from);
+				double toVal = neuronInputArray.get(to);
 				toVal += fromVal * con.getWeight();
-				preActivationArray.set(to, toVal);
+				neuronInputArray.set(to, toVal);
 			}
 			// Loop neurons
-			for (int j = getInputAndBiasNeuronCount(); j < preActivationArray
-					.size(); j++) {
+			for (int j = getInputAndBiasNeuronCount(); j < getNeuronCount() ; j++) {
 				String functionName = neuronActivationFnArray.get(j);
 				double output = FL.evaluate(functionName,
-						preActivationArray.get(j), neuronAuxArgsArray.get(j));
-				postActivationArray.set(j, output);
-				preActivationArray.set(j, 0.0); // TODO I do not see why this is
-															// necessary. Try removing.
+						neuronInputArray.get(j), neuronAuxArgsArray.get(j));
+				neuronOutputArray.set(j, output);
+				// We need to reset the input to zero, because we add to it in the
+				// previous loop (because the input can be the sum of activation
+				// gathered over multiple connections; this is the easiest / fastest way).
+				neuronInputArray.set(j, 0.0);
 			}
 		}
+//		for (int i = getInputAndBiasNeuronCount(); i < getNeuronCount() ; i++) {
+//			neuronOutputArray.set(i, neuronOutputArray.get(i)/timestepsPerActivation);
+//		}
+	}
+	
+	protected int getNeuronCount() {
+		return neuronInputArray.size();
 	}
 	
 	/**
@@ -279,10 +308,10 @@ public class FastCyclicNeuralNetwork implements BlackBox {
 	 */
 	@Override
 	public void reset() {
-		for (int i = 0; i < preActivationArray.size(); i++) {
+		for (int i = 0; i < neuronInputArray.size(); i++) {
 			// TODO I do not see why this is necessary. Try removing.
-			preActivationArray.set(i, 0.0);
-			postActivationArray.set(i, 0.0);
+			neuronInputArray.set(i, 0.0);
+			neuronOutputArray.set(i, 0.0);
 		}
 		//preActivationArray.clear();
 		//postActivationArray.clear();

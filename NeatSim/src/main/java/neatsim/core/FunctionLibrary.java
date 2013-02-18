@@ -34,7 +34,7 @@ public class FunctionLibrary {
 	 *         and false otherwise.
 	 */
 	public boolean exists(String functionName) {
-		return functionName.equals("SteepenedSigmoid");
+		return functionName.equals("SteepenedSigmoid") || functionName.equals("Identity");
 	}
 	
 	/**
@@ -54,6 +54,8 @@ public class FunctionLibrary {
 		switch (functionName) {
 			case "SteepenedSigmoid":
 				return steepenedSigmoid(inputValue);
+			case "Identity":
+				return inputValue;
 			default:
 			// Note that source code (exists) should be kept up to date so that
 			// this default action is NEVER actually reached.

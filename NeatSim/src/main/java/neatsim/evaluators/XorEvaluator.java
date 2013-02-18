@@ -164,7 +164,7 @@ public class XorEvaluator {
 		
 		
 		fitness += pass * 10.0;
-		FitnessInfo fi = new FitnessInfo(fitness, fitness);
+		FitnessInfo fi = new FitnessInfo(fitness);
 		fi.setStopConditionSatisfied(fitness >= STOP_FITNESS);
 		return fi;
 	}

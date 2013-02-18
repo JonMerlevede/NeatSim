@@ -37,5 +37,7 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry combineaccessrules="false" kind="src" path="/Thesis-Evo4MAS"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/Thesis-RinECJ"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

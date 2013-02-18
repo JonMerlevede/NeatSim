@@ -30,6 +30,7 @@ public class FitnessEvaluator implements CFitnessEvaluatorService.Iface {
 	 * Creates a new fitness evaluator.
 	 */
 	public FitnessEvaluator() {
+		System.out.println("System evaluator intialised!");
 		xorEvaluator = new XorEvaluator();
 		simEvaluator = new LocalSimulationEvaluator();
 	}
@@ -43,13 +44,15 @@ public class FitnessEvaluator implements CFitnessEvaluatorService.Iface {
 	@Override
 	public CPopulationFitness calculateXorPopulationFitness(
 			CPopulationInfo populationInfo) throws TException {
+		System.out.println("calculateXorPopulationFitness called.");
 		return xorEvaluator.evaluatePopulation(populationInfo);
 	}
 	
 	@Override
 	public CPopulationFitness calculateSimPopulationFitness(
 			CPopulationInfo populationInfo) throws TException {
-		return simEvaluator.evaluatePopulation(populationInfo);
+		System.out.println("calculateSimPopulationFitness called.");
+		return simEvaluator.parallelEvaluatePopulation(populationInfo);
 //		return simEvaluator.parallelEvaluatePopulation(populationInfo);
 	}
 }

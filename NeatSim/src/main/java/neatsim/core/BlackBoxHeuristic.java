@@ -38,6 +38,7 @@ public class BlackBoxHeuristic implements Heuristic<GendreauContext> {
 		// Initialise temporary list with all required heuristics
 		ArrayList<GPFunc<GendreauContext>> tmpList
 			= new ArrayList<GPFunc<GendreauContext>>();
+		//bias node: 0
 		tmpList.add(new Waiters()); //1
 		tmpList.add(new CargoSize<GendreauContext>()); //2
 		tmpList.add(new IsInCargo<GendreauContext>()); //3
@@ -171,10 +172,8 @@ public class BlackBoxHeuristic implements Heuristic<GendreauContext> {
 	@Override
 	public double compute(GendreauContext gc) {
 		counter++;
-		System.out.println("Started computing black box (nr " + counter + ")");
 		setInputs(gc);
 		box.activate();
-		System.out.println("Done computing (nr " + counter + ")");
 		return box.getOutput(0);
 	}
 	private int counter = 0;

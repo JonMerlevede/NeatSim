@@ -106,8 +106,8 @@ public class LocalSimulationEvaluator {
 		} catch (InterruptedException e) {
 			throw new RuntimeException("Interrupted: " + e);
 		}
-	    //linearRanking(fitnessInfos, 1.6);
-	    absoluteCosts(fitnessInfos);
+	    linearRanking(fitnessInfos, 1.6);
+	    //absoluteCosts(fitnessInfos);
 	    CPopulationFitness pf = new CPopulationFitness();
 		pf.setFitnessInfos(fitnessInfos);
 		pf.setEvaluationCount(evaluationCounter.getCount());
@@ -116,9 +116,11 @@ public class LocalSimulationEvaluator {
 	
 	public void absoluteCosts(List<CFitnessInfo> infos) {
 		assert infos != null;
-		
+		double max = 0;
+		for (CFitnessInfo i : infos)
+			max = i.getFitness() > max ? i.getFitness() : max;	
 		for (CFitnessInfo i : infos) {
-			i.setFitness(5000 - i.getFitness());
+			i.setFitness(max - i.getFitness());
 		}
 	}
 	
@@ -165,12 +167,8 @@ public class LocalSimulationEvaluator {
 		
 		int evaluationCount = 0;
 		int n = pi.getPhenomes().size();
-//		BufferedReader fr = null;
-//		try {
-//			fr = new BufferedReader(new FileReader(SCENARIO_NAME));
-//		} catch (FileNotFoundException e) {}
-	    String scenarioString = getScenarioString();
-	    System.out.println("Scenario string: " + scenarioString);
+		String scenarioString = getScenarioString();
+	   System.out.println("Scenario string: " + scenarioString);
 	    
 		List<CFitnessInfo> fitnessInfos = new ArrayList<CFitnessInfo>(n);
 		for (int i = 0; i < pi.getPhenomes().size(); i++) {
@@ -218,7 +216,7 @@ public class LocalSimulationEvaluator {
 		double cost = OBJECTIVE_FUNCTION.computeCost(sdto);
 		//double fitness = 15000 - cost;
 		System.out.println("Cost: " + cost);
-		FitnessInfo fi = new FitnessInfo(cost, cost);
+		FitnessInfo fi = new FitnessInfo(cost);
 		fi.setStopConditionSatisfied(cost < 500);
 		return fi;
 	}

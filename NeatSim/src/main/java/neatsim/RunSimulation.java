@@ -1,5 +1,7 @@
 package neatsim;
 
+import static java.lang.System.out;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -9,6 +11,7 @@ import neatsim.core.BlackBoxHeuristic;
 import neatsim.core.FastCyclicNeuralNetwork;
 import neatsim.sim.GendreauHeuristicProblem;
 import neatsim.sim.neuralnets.NeuralNetworkFactory;
+import rinde.sim.problem.gendreau06.Gendreau06ObjectiveFunction;
 import rinde.sim.problem.gendreau06.Gendreau06Parser;
 import rinde.sim.problem.gendreau06.Gendreau06Scenario;
 
@@ -20,15 +23,21 @@ public class RunSimulation {
 	
 	public static void main(String[] args) throws IOException {
 		// Create the neural network we want to use as a heuristic.
-		FastCyclicNeuralNetwork fccn = (new NeuralNetworkFactory()).createDist();
+		//FastCyclicNeuralNetwork fccn = (new NeuralNetworkFactory()).createDist();
+		//FastCyclicNeuralNetwork fccn = (new NeuralNetworkFactory()).createDist2();
+		FastCyclicNeuralNetwork fccn = (new NeuralNetworkFactory()).createClosest();
 		// Wrap the neural network in a black box heuristic.
 		BlackBoxHeuristic bbh = new BlackBoxHeuristic(fccn);
 		// Create a Gendreau scenario
 		BufferedReader bfr = new BufferedReader(new FileReader(SCENARIO_NAME));
 		Gendreau06Scenario scenario = Gendreau06Parser.parse(bfr,FILE_NAME, NUMBER_OF_VEHICLES);
 		// Start up a local Gendreau heuristic problem that uses this scenario heuristic.
-		GendreauHeuristicProblem ghp = GendreauHeuristicProblem.create(scenario, bbh, true);
+		GendreauHeuristicProblem ghp = GendreauHeuristicProblem.create(scenario, bbh, false);
 		// Start simulation
+		out.println("Starting simulation");
 		ghp.simulate();
+		out.println("Simulation finished");
+		out.println("Simulation statistics: " + ghp.getStatistics());
+		out.println("Cost: " + (new Gendreau06ObjectiveFunction()).computeCost(ghp.getStatistics()));
 	}
 }

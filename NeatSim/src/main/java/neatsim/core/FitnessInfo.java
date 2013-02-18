@@ -49,8 +49,16 @@ public class FitnessInfo extends CFitnessInfo {
 	 *       | && getAuxFitness().get(0).name = "Alternative fitness"
 	 */
 	public FitnessInfo(double fitness, double alternativeFitness) {
+		assert Double.isInfinite(fitness) != true;
+		assert Double.isNaN(fitness) != true;
+		assert fitness >= 0;
+		
 		this.fitness = fitness;
 		this.auxFitness = new ArrayList<>();
 		this.auxFitness.add(new CAuxFitnessInfo("Alternative fitness", alternativeFitness));
+	}
+	
+	public FitnessInfo(double fitness) {
+		this(fitness, fitness);
 	}
 }
