@@ -29,6 +29,7 @@ struct CFitnessInfo {
 }
 
 struct CPopulationInfo {
+	5: required i32 generation
 	10: required list<CFastCyclicNetwork> phenomes
 }
 
@@ -38,6 +39,9 @@ struct CPopulationFitness {
 }
 
 service CFitnessEvaluatorService {
+	CPopulationFitness calculateSimPopulationFitness (
+		1:CPopulationInfo populationInfo
+	)
 	CPopulationFitness calculateXorPopulationFitness (
 		1:CPopulationInfo populationInfo
 	)
