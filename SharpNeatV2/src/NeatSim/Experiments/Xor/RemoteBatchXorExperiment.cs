@@ -30,7 +30,7 @@ namespace NeatSim.Experiments.Xor
         {
             // Create the evolution algorithm.
             var ea = DefaultNeatEvolutionAlgorithm;
-            var evaluator = new RemoteBatchXorEvaluator();
+            var evaluator = new RemoteBatchXorEvaluator(ea);
             IGenomeDecoder<NeatGenome, FastCyclicNetwork> genomeDecoder = _decoder;
             // Evaluates list of phenotypes
             IGenomeListEvaluator<NeatGenome> innerEvaluator =

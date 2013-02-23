@@ -5,15 +5,18 @@ using NeatSim.Core;
 using NeatSim.Thrift;
 using SharpNeat.Core;
 using SharpNeat.Phenomes.NeuralNets;
+using SharpNeat.EvolutionAlgorithms;
+using SharpNeat.Genomes.Neat;
 
 namespace NeatSim.Experiments.Sim
 {
     class RemoteBatchSimEvaluator : IBatchPhenomeEvaluator<FastCyclicNetwork>
     {
-        public RemoteBatchSimEvaluator()
+        private NeatEvolutionAlgorithm<NeatGenome> _ea;
+        public RemoteBatchSimEvaluator(NeatEvolutionAlgorithm<NeatGenome> ea)
         {
             Debug.WriteLine("Created new NeatsimPhenomeEvaluator");
-
+            this._ea = ea;
         }
 
         public ulong EvaluationCount { get; private set; }
@@ -24,7 +27,8 @@ namespace NeatSim.Experiments.Sim
         {
             var populationInfo = new CPopulationInfo
                                      {
-                                         Phenomes = FastCyclicNetworkAdapter.Convert(phenomes)
+                                         Phenomes = FastCyclicNetworkAdapter.Convert(phenomes),
+                                         Generation = (int)_ea.CurrentGeneration
                                      };
             ProtocolManager.Open();
             var fitnessInfo = ProtocolManager.Client.calculateSimPopulationFitness(populationInfo);

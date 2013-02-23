@@ -19,6 +19,11 @@ namespace NeatSim.Thrift
 {
   public partial class CFitnessEvaluatorService {
     public interface Iface {
+      CPopulationFitness calculateSimPopulationFitness(CPopulationInfo populationInfo);
+      #if SILVERLIGHT
+      IAsyncResult Begin_calculateSimPopulationFitness(AsyncCallback callback, object state, CPopulationInfo populationInfo);
+      CPopulationFitness End_calculateSimPopulationFitness(IAsyncResult asyncResult);
+      #endif
       CPopulationFitness calculateXorPopulationFitness(CPopulationInfo populationInfo);
       #if SILVERLIGHT
       IAsyncResult Begin_calculateXorPopulationFitness(AsyncCallback callback, object state, CPopulationInfo populationInfo);
@@ -28,11 +33,6 @@ namespace NeatSim.Thrift
       #if SILVERLIGHT
       IAsyncResult Begin_calculateXorPhenotypeFitness(AsyncCallback callback, object state, CFastCyclicNetwork ann);
       CFitnessInfo End_calculateXorPhenotypeFitness(IAsyncResult asyncResult);
-      #endif
-      CPopulationFitness calculateSimPopulationFitness(CPopulationInfo populationInfo);
-      #if SILVERLIGHT
-      IAsyncResult Begin_calculateSimPopulationFitness(AsyncCallback callback, object state, CPopulationInfo populationInfo);
-      CPopulationFitness End_calculateSimPopulationFitness(IAsyncResult asyncResult);
       #endif
     }
 
@@ -60,6 +60,68 @@ namespace NeatSim.Thrift
         get { return oprot_; }
       }
 
+
+      
+      #if SILVERLIGHT
+      public IAsyncResult Begin_calculateSimPopulationFitness(AsyncCallback callback, object state, CPopulationInfo populationInfo)
+      {
+        return send_calculateSimPopulationFitness(callback, state, populationInfo);
+      }
+
+      public CPopulationFitness End_calculateSimPopulationFitness(IAsyncResult asyncResult)
+      {
+        oprot_.Transport.EndFlush(asyncResult);
+        return recv_calculateSimPopulationFitness();
+      }
+
+      #endif
+
+      public CPopulationFitness calculateSimPopulationFitness(CPopulationInfo populationInfo)
+      {
+        #if !SILVERLIGHT
+        send_calculateSimPopulationFitness(populationInfo);
+        return recv_calculateSimPopulationFitness();
+
+        #else
+        var asyncResult = Begin_calculateSimPopulationFitness(null, null, populationInfo);
+        return End_calculateSimPopulationFitness(asyncResult);
+
+        #endif
+      }
+      #if SILVERLIGHT
+      public IAsyncResult send_calculateSimPopulationFitness(AsyncCallback callback, object state, CPopulationInfo populationInfo)
+      #else
+      public void send_calculateSimPopulationFitness(CPopulationInfo populationInfo)
+      #endif
+      {
+        oprot_.WriteMessageBegin(new TMessage("calculateSimPopulationFitness", TMessageType.Call, seqid_));
+        calculateSimPopulationFitness_args args = new calculateSimPopulationFitness_args();
+        args.PopulationInfo = populationInfo;
+        args.Write(oprot_);
+        oprot_.WriteMessageEnd();
+        #if SILVERLIGHT
+        return oprot_.Transport.BeginFlush(callback, state);
+        #else
+        oprot_.Transport.Flush();
+        #endif
+      }
+
+      public CPopulationFitness recv_calculateSimPopulationFitness()
+      {
+        TMessage msg = iprot_.ReadMessageBegin();
+        if (msg.Type == TMessageType.Exception) {
+          TApplicationException x = TApplicationException.Read(iprot_);
+          iprot_.ReadMessageEnd();
+          throw x;
+        }
+        calculateSimPopulationFitness_result result = new calculateSimPopulationFitness_result();
+        result.Read(iprot_);
+        iprot_.ReadMessageEnd();
+        if (result.__isset.success) {
+          return result.Success;
+        }
+        throw new TApplicationException(TApplicationException.ExceptionType.MissingResult, "calculateSimPopulationFitness failed: unknown result");
+      }
 
       
       #if SILVERLIGHT
@@ -185,76 +247,14 @@ namespace NeatSim.Thrift
         throw new TApplicationException(TApplicationException.ExceptionType.MissingResult, "calculateXorPhenotypeFitness failed: unknown result");
       }
 
-      
-      #if SILVERLIGHT
-      public IAsyncResult Begin_calculateSimPopulationFitness(AsyncCallback callback, object state, CPopulationInfo populationInfo)
-      {
-        return send_calculateSimPopulationFitness(callback, state, populationInfo);
-      }
-
-      public CPopulationFitness End_calculateSimPopulationFitness(IAsyncResult asyncResult)
-      {
-        oprot_.Transport.EndFlush(asyncResult);
-        return recv_calculateSimPopulationFitness();
-      }
-
-      #endif
-
-      public CPopulationFitness calculateSimPopulationFitness(CPopulationInfo populationInfo)
-      {
-        #if !SILVERLIGHT
-        send_calculateSimPopulationFitness(populationInfo);
-        return recv_calculateSimPopulationFitness();
-
-        #else
-        var asyncResult = Begin_calculateSimPopulationFitness(null, null, populationInfo);
-        return End_calculateSimPopulationFitness(asyncResult);
-
-        #endif
-      }
-      #if SILVERLIGHT
-      public IAsyncResult send_calculateSimPopulationFitness(AsyncCallback callback, object state, CPopulationInfo populationInfo)
-      #else
-      public void send_calculateSimPopulationFitness(CPopulationInfo populationInfo)
-      #endif
-      {
-        oprot_.WriteMessageBegin(new TMessage("calculateSimPopulationFitness", TMessageType.Call, seqid_));
-        calculateSimPopulationFitness_args args = new calculateSimPopulationFitness_args();
-        args.PopulationInfo = populationInfo;
-        args.Write(oprot_);
-        oprot_.WriteMessageEnd();
-        #if SILVERLIGHT
-        return oprot_.Transport.BeginFlush(callback, state);
-        #else
-        oprot_.Transport.Flush();
-        #endif
-      }
-
-      public CPopulationFitness recv_calculateSimPopulationFitness()
-      {
-        TMessage msg = iprot_.ReadMessageBegin();
-        if (msg.Type == TMessageType.Exception) {
-          TApplicationException x = TApplicationException.Read(iprot_);
-          iprot_.ReadMessageEnd();
-          throw x;
-        }
-        calculateSimPopulationFitness_result result = new calculateSimPopulationFitness_result();
-        result.Read(iprot_);
-        iprot_.ReadMessageEnd();
-        if (result.__isset.success) {
-          return result.Success;
-        }
-        throw new TApplicationException(TApplicationException.ExceptionType.MissingResult, "calculateSimPopulationFitness failed: unknown result");
-      }
-
     }
     public class Processor : TProcessor {
       public Processor(Iface iface)
       {
         iface_ = iface;
+        processMap_["calculateSimPopulationFitness"] = calculateSimPopulationFitness_Process;
         processMap_["calculateXorPopulationFitness"] = calculateXorPopulationFitness_Process;
         processMap_["calculateXorPhenotypeFitness"] = calculateXorPhenotypeFitness_Process;
-        processMap_["calculateSimPopulationFitness"] = calculateSimPopulationFitness_Process;
       }
 
       protected delegate void ProcessFunction(int seqid, TProtocol iprot, TProtocol oprot);
@@ -287,6 +287,19 @@ namespace NeatSim.Thrift
         return true;
       }
 
+      public void calculateSimPopulationFitness_Process(int seqid, TProtocol iprot, TProtocol oprot)
+      {
+        calculateSimPopulationFitness_args args = new calculateSimPopulationFitness_args();
+        args.Read(iprot);
+        iprot.ReadMessageEnd();
+        calculateSimPopulationFitness_result result = new calculateSimPopulationFitness_result();
+        result.Success = iface_.calculateSimPopulationFitness(args.PopulationInfo);
+        oprot.WriteMessageBegin(new TMessage("calculateSimPopulationFitness", TMessageType.Reply, seqid)); 
+        result.Write(oprot);
+        oprot.WriteMessageEnd();
+        oprot.Transport.Flush();
+      }
+
       public void calculateXorPopulationFitness_Process(int seqid, TProtocol iprot, TProtocol oprot)
       {
         calculateXorPopulationFitness_args args = new calculateXorPopulationFitness_args();
@@ -313,17 +326,183 @@ namespace NeatSim.Thrift
         oprot.Transport.Flush();
       }
 
-      public void calculateSimPopulationFitness_Process(int seqid, TProtocol iprot, TProtocol oprot)
+    }
+
+
+    #if !SILVERLIGHT
+    [Serializable]
+    #endif
+    public partial class calculateSimPopulationFitness_args : TBase
+    {
+      private CPopulationInfo _populationInfo;
+
+      public CPopulationInfo PopulationInfo
       {
-        calculateSimPopulationFitness_args args = new calculateSimPopulationFitness_args();
-        args.Read(iprot);
-        iprot.ReadMessageEnd();
-        calculateSimPopulationFitness_result result = new calculateSimPopulationFitness_result();
-        result.Success = iface_.calculateSimPopulationFitness(args.PopulationInfo);
-        oprot.WriteMessageBegin(new TMessage("calculateSimPopulationFitness", TMessageType.Reply, seqid)); 
-        result.Write(oprot);
-        oprot.WriteMessageEnd();
-        oprot.Transport.Flush();
+        get
+        {
+          return _populationInfo;
+        }
+        set
+        {
+          __isset.populationInfo = true;
+          this._populationInfo = value;
+        }
+      }
+
+
+      public Isset __isset;
+      #if !SILVERLIGHT
+      [Serializable]
+      #endif
+      public struct Isset {
+        public bool populationInfo;
+      }
+
+      public calculateSimPopulationFitness_args() {
+      }
+
+      public void Read (TProtocol iprot)
+      {
+        TField field;
+        iprot.ReadStructBegin();
+        while (true)
+        {
+          field = iprot.ReadFieldBegin();
+          if (field.Type == TType.Stop) { 
+            break;
+          }
+          switch (field.ID)
+          {
+            case 1:
+              if (field.Type == TType.Struct) {
+                PopulationInfo = new CPopulationInfo();
+                PopulationInfo.Read(iprot);
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            default: 
+              TProtocolUtil.Skip(iprot, field.Type);
+              break;
+          }
+          iprot.ReadFieldEnd();
+        }
+        iprot.ReadStructEnd();
+      }
+
+      public void Write(TProtocol oprot) {
+        TStruct struc = new TStruct("calculateSimPopulationFitness_args");
+        oprot.WriteStructBegin(struc);
+        TField field = new TField();
+        if (PopulationInfo != null && __isset.populationInfo) {
+          field.Name = "populationInfo";
+          field.Type = TType.Struct;
+          field.ID = 1;
+          oprot.WriteFieldBegin(field);
+          PopulationInfo.Write(oprot);
+          oprot.WriteFieldEnd();
+        }
+        oprot.WriteFieldStop();
+        oprot.WriteStructEnd();
+      }
+
+      public override string ToString() {
+        StringBuilder sb = new StringBuilder("calculateSimPopulationFitness_args(");
+        sb.Append("PopulationInfo: ");
+        sb.Append(PopulationInfo== null ? "<null>" : PopulationInfo.ToString());
+        sb.Append(")");
+        return sb.ToString();
+      }
+
+    }
+
+
+    #if !SILVERLIGHT
+    [Serializable]
+    #endif
+    public partial class calculateSimPopulationFitness_result : TBase
+    {
+      private CPopulationFitness _success;
+
+      public CPopulationFitness Success
+      {
+        get
+        {
+          return _success;
+        }
+        set
+        {
+          __isset.success = true;
+          this._success = value;
+        }
+      }
+
+
+      public Isset __isset;
+      #if !SILVERLIGHT
+      [Serializable]
+      #endif
+      public struct Isset {
+        public bool success;
+      }
+
+      public calculateSimPopulationFitness_result() {
+      }
+
+      public void Read (TProtocol iprot)
+      {
+        TField field;
+        iprot.ReadStructBegin();
+        while (true)
+        {
+          field = iprot.ReadFieldBegin();
+          if (field.Type == TType.Stop) { 
+            break;
+          }
+          switch (field.ID)
+          {
+            case 0:
+              if (field.Type == TType.Struct) {
+                Success = new CPopulationFitness();
+                Success.Read(iprot);
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            default: 
+              TProtocolUtil.Skip(iprot, field.Type);
+              break;
+          }
+          iprot.ReadFieldEnd();
+        }
+        iprot.ReadStructEnd();
+      }
+
+      public void Write(TProtocol oprot) {
+        TStruct struc = new TStruct("calculateSimPopulationFitness_result");
+        oprot.WriteStructBegin(struc);
+        TField field = new TField();
+
+        if (this.__isset.success) {
+          if (Success != null) {
+            field.Name = "Success";
+            field.Type = TType.Struct;
+            field.ID = 0;
+            oprot.WriteFieldBegin(field);
+            Success.Write(oprot);
+            oprot.WriteFieldEnd();
+          }
+        }
+        oprot.WriteFieldStop();
+        oprot.WriteStructEnd();
+      }
+
+      public override string ToString() {
+        StringBuilder sb = new StringBuilder("calculateSimPopulationFitness_result(");
+        sb.Append("Success: ");
+        sb.Append(Success== null ? "<null>" : Success.ToString());
+        sb.Append(")");
+        return sb.ToString();
       }
 
     }
@@ -678,185 +857,6 @@ namespace NeatSim.Thrift
 
       public override string ToString() {
         StringBuilder sb = new StringBuilder("calculateXorPhenotypeFitness_result(");
-        sb.Append("Success: ");
-        sb.Append(Success== null ? "<null>" : Success.ToString());
-        sb.Append(")");
-        return sb.ToString();
-      }
-
-    }
-
-
-    #if !SILVERLIGHT
-    [Serializable]
-    #endif
-    public partial class calculateSimPopulationFitness_args : TBase
-    {
-      private CPopulationInfo _populationInfo;
-
-      public CPopulationInfo PopulationInfo
-      {
-        get
-        {
-          return _populationInfo;
-        }
-        set
-        {
-          __isset.populationInfo = true;
-          this._populationInfo = value;
-        }
-      }
-
-
-      public Isset __isset;
-      #if !SILVERLIGHT
-      [Serializable]
-      #endif
-      public struct Isset {
-        public bool populationInfo;
-      }
-
-      public calculateSimPopulationFitness_args() {
-      }
-
-      public void Read (TProtocol iprot)
-      {
-        TField field;
-        iprot.ReadStructBegin();
-        while (true)
-        {
-          field = iprot.ReadFieldBegin();
-          if (field.Type == TType.Stop) { 
-            break;
-          }
-          switch (field.ID)
-          {
-            case 1:
-              if (field.Type == TType.Struct) {
-                PopulationInfo = new CPopulationInfo();
-                PopulationInfo.Read(iprot);
-              } else { 
-                TProtocolUtil.Skip(iprot, field.Type);
-              }
-              break;
-            default: 
-              TProtocolUtil.Skip(iprot, field.Type);
-              break;
-          }
-          iprot.ReadFieldEnd();
-        }
-        iprot.ReadStructEnd();
-      }
-
-      public void Write(TProtocol oprot) {
-        TStruct struc = new TStruct("calculateSimPopulationFitness_args");
-        oprot.WriteStructBegin(struc);
-        TField field = new TField();
-        if (PopulationInfo != null && __isset.populationInfo) {
-          field.Name = "populationInfo";
-          field.Type = TType.Struct;
-          field.ID = 1;
-          oprot.WriteFieldBegin(field);
-          PopulationInfo.Write(oprot);
-          oprot.WriteFieldEnd();
-        }
-        oprot.WriteFieldStop();
-        oprot.WriteStructEnd();
-      }
-
-      public override string ToString() {
-        StringBuilder sb = new StringBuilder("calculateSimPopulationFitness_args(");
-        sb.Append("PopulationInfo: ");
-        sb.Append(PopulationInfo== null ? "<null>" : PopulationInfo.ToString());
-        sb.Append(")");
-        return sb.ToString();
-      }
-
-    }
-
-
-    #if !SILVERLIGHT
-    [Serializable]
-    #endif
-    public partial class calculateSimPopulationFitness_result : TBase
-    {
-      private CPopulationFitness _success;
-
-      public CPopulationFitness Success
-      {
-        get
-        {
-          return _success;
-        }
-        set
-        {
-          __isset.success = true;
-          this._success = value;
-        }
-      }
-
-
-      public Isset __isset;
-      #if !SILVERLIGHT
-      [Serializable]
-      #endif
-      public struct Isset {
-        public bool success;
-      }
-
-      public calculateSimPopulationFitness_result() {
-      }
-
-      public void Read (TProtocol iprot)
-      {
-        TField field;
-        iprot.ReadStructBegin();
-        while (true)
-        {
-          field = iprot.ReadFieldBegin();
-          if (field.Type == TType.Stop) { 
-            break;
-          }
-          switch (field.ID)
-          {
-            case 0:
-              if (field.Type == TType.Struct) {
-                Success = new CPopulationFitness();
-                Success.Read(iprot);
-              } else { 
-                TProtocolUtil.Skip(iprot, field.Type);
-              }
-              break;
-            default: 
-              TProtocolUtil.Skip(iprot, field.Type);
-              break;
-          }
-          iprot.ReadFieldEnd();
-        }
-        iprot.ReadStructEnd();
-      }
-
-      public void Write(TProtocol oprot) {
-        TStruct struc = new TStruct("calculateSimPopulationFitness_result");
-        oprot.WriteStructBegin(struc);
-        TField field = new TField();
-
-        if (this.__isset.success) {
-          if (Success != null) {
-            field.Name = "Success";
-            field.Type = TType.Struct;
-            field.ID = 0;
-            oprot.WriteFieldBegin(field);
-            Success.Write(oprot);
-            oprot.WriteFieldEnd();
-          }
-        }
-        oprot.WriteFieldStop();
-        oprot.WriteStructEnd();
-      }
-
-      public override string ToString() {
-        StringBuilder sb = new StringBuilder("calculateSimPopulationFitness_result(");
         sb.Append("Success: ");
         sb.Append(Success== null ? "<null>" : Success.ToString());
         sb.Append(")");

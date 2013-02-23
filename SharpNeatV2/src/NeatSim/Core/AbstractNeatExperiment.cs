@@ -69,7 +69,8 @@ namespace NeatSim.Core
             _populationSize = XmlUtils.GetValueAsInt(xmlConfig, "PopulationSize");
             _specieCount = XmlUtils.GetValueAsInt(xmlConfig, "SpecieCount");
             _activationScheme = ExperimentUtils.CreateActivationScheme(xmlConfig, "Activation");
-            _complexityRegulationStr = XmlUtils.TryGetValueAsString(xmlConfig, "DefaultComplexityRegulationStrategy");
+            _complexityRegulationStr = XmlUtils.TryGetValueAsString(xmlConfig,
+                "DefaultComplexityRegulationStrategy");
             _complexityThreshold = XmlUtils.TryGetValueAsInt(xmlConfig, "ComplexityThreshold");
             _description = XmlUtils.TryGetValueAsString(xmlConfig, "Description");
             _parallelOptions = ExperimentUtils.ReadParallelOptions(xmlConfig);
@@ -79,7 +80,9 @@ namespace NeatSim.Core
             _neatGenomeParams = new NeatGenomeParameters();
             _neatGenomeParams.FeedforwardOnly = _activationScheme.AcyclicNetwork;
 
-            DefaultComplexityRegulationStrategy = ExperimentUtils.CreateComplexityRegulationStrategy(_complexityRegulationStr, _complexityThreshold);
+            DefaultComplexityRegulationStrategy = ExperimentUtils.CreateComplexityRegulationStrategy(
+                _complexityRegulationStr,
+                _complexityThreshold);
             DefaultSpeciationStrategy = new KMeansClusteringStrategy<NeatGenome>(new ManhattanDistanceMetric(1.0, 0.0, 10.0));
             DefaultNeatEvolutionAlgorithm = new NeatEvolutionAlgorithm<NeatGenome>(
                     NeatEvolutionAlgorithmParameters,

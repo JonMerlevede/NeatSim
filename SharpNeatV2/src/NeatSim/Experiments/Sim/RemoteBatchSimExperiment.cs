@@ -36,7 +36,7 @@ namespace NeatSim.Experiments.Sim
         {
             // Create the evolution algorithm.
             var ea = DefaultNeatEvolutionAlgorithm;
-            var evaluator = new RemoteBatchSimEvaluator();
+            var evaluator = new RemoteBatchSimEvaluator(ea);
             IGenomeDecoder<NeatGenome, FastCyclicNetwork> genomeDecoder = _decoder;
             // Evaluates list of phenotypes
             IGenomeListEvaluator<NeatGenome> innerEvaluator =

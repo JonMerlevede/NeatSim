@@ -5,15 +5,18 @@ using NeatSim.Core;
 using NeatSim.Thrift;
 using SharpNeat.Core;
 using SharpNeat.Phenomes.NeuralNets;
+using SharpNeat.EvolutionAlgorithms;
+using SharpNeat.Genomes.Neat;
 
 namespace NeatSim.Experiments.Xor
 {
     class RemoteBatchXorEvaluator : IBatchPhenomeEvaluator<FastCyclicNetwork>
     {
-        public RemoteBatchXorEvaluator()
+        private NeatEvolutionAlgorithm<NeatGenome> _ea;
+        public RemoteBatchXorEvaluator(NeatEvolutionAlgorithm<NeatGenome> ea)
         {
             Debug.WriteLine("Created new NeatsimPhenomeEvaluator");
-
+            this._ea = ea;
         }
 
         public ulong EvaluationCount { get; private set; }
@@ -22,8 +25,11 @@ namespace NeatSim.Experiments.Xor
 
         public List<FitnessInfo> Evaluate(List<FastCyclicNetwork> phenomes)
         {
-            var populationInfo = new CPopulationInfo();
-            populationInfo.Phenomes = FastCyclicNetworkAdapter.Convert(phenomes);
+            var populationInfo = new CPopulationInfo
+            {
+                Phenomes = FastCyclicNetworkAdapter.Convert(phenomes),
+                Generation = (int)_ea.CurrentGeneration
+            };
             ProtocolManager.Open();
             var fitnessInfo = ProtocolManager.Client.calculateXorPopulationFitness(populationInfo);
             EvaluationCount += (uint)fitnessInfo.EvaluationCount;

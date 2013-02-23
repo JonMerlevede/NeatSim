@@ -23,7 +23,21 @@ namespace NeatSim.Thrift
   #endif
   public partial class CPopulationInfo : TBase
   {
+    private int _generation;
     private List<CFastCyclicNetwork> _phenomes;
+
+    public int Generation
+    {
+      get
+      {
+        return _generation;
+      }
+      set
+      {
+        __isset.generation = true;
+        this._generation = value;
+      }
+    }
 
     public List<CFastCyclicNetwork> Phenomes
     {
@@ -44,6 +58,7 @@ namespace NeatSim.Thrift
     [Serializable]
     #endif
     public struct Isset {
+      public bool generation;
       public bool phenomes;
     }
 
@@ -62,6 +77,13 @@ namespace NeatSim.Thrift
         }
         switch (field.ID)
         {
+          case 5:
+            if (field.Type == TType.I32) {
+              Generation = iprot.ReadI32();
+            } else { 
+              TProtocolUtil.Skip(iprot, field.Type);
+            }
+            break;
           case 10:
             if (field.Type == TType.List) {
               {
@@ -93,6 +115,14 @@ namespace NeatSim.Thrift
       TStruct struc = new TStruct("CPopulationInfo");
       oprot.WriteStructBegin(struc);
       TField field = new TField();
+      if (__isset.generation) {
+        field.Name = "generation";
+        field.Type = TType.I32;
+        field.ID = 5;
+        oprot.WriteFieldBegin(field);
+        oprot.WriteI32(Generation);
+        oprot.WriteFieldEnd();
+      }
       if (Phenomes != null && __isset.phenomes) {
         field.Name = "phenomes";
         field.Type = TType.List;
@@ -114,7 +144,9 @@ namespace NeatSim.Thrift
 
     public override string ToString() {
       StringBuilder sb = new StringBuilder("CPopulationInfo(");
-      sb.Append("Phenomes: ");
+      sb.Append("Generation: ");
+      sb.Append(Generation);
+      sb.Append(",Phenomes: ");
       sb.Append(Phenomes);
       sb.Append(")");
       return sb.ToString();
