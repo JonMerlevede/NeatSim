@@ -35,7 +35,8 @@ public class LocalSimulationEvaluator {
 	public static final String SCENARIO_NAME = "data/req_rapide_1_240_24";
 	public static final int NUMBER_OF_VEHICLES = 10;
 	public static final String FILE_NAME = new File(SCENARIO_NAME).getName();
-	public static final Gendreau06ObjectiveFunction OBJECTIVE_FUNCTION = new Gendreau06ObjectiveFunction();
+	public static final Gendreau06ObjectiveFunction OBJECTIVE_FUNCTION =
+			new Gendreau06ObjectiveFunction();
 
 	public LocalSimulationEvaluator() {
 		// Empty

@@ -33,6 +33,7 @@ import org.slf4j.LoggerFactory;
 public class CPopulationInfo implements org.apache.thrift.TBase<CPopulationInfo, CPopulationInfo._Fields>, java.io.Serializable, Cloneable {
   private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("CPopulationInfo");
 
+  private static final org.apache.thrift.protocol.TField GENERATION_FIELD_DESC = new org.apache.thrift.protocol.TField("generation", org.apache.thrift.protocol.TType.I32, (short)5);
   private static final org.apache.thrift.protocol.TField PHENOMES_FIELD_DESC = new org.apache.thrift.protocol.TField("phenomes", org.apache.thrift.protocol.TType.LIST, (short)10);
 
   private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
@@ -41,10 +42,12 @@ public class CPopulationInfo implements org.apache.thrift.TBase<CPopulationInfo,
     schemes.put(TupleScheme.class, new CPopulationInfoTupleSchemeFactory());
   }
 
+  public int generation; // required
   public List<CFastCyclicNetwork> phenomes; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
+    GENERATION((short)5, "generation"),
     PHENOMES((short)10, "phenomes");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
@@ -60,6 +63,8 @@ public class CPopulationInfo implements org.apache.thrift.TBase<CPopulationInfo,
      */
     public static _Fields findByThriftId(int fieldId) {
       switch(fieldId) {
+        case 5: // GENERATION
+          return GENERATION;
         case 10: // PHENOMES
           return PHENOMES;
         default:
@@ -102,9 +107,13 @@ public class CPopulationInfo implements org.apache.thrift.TBase<CPopulationInfo,
   }
 
   // isset id assignments
+  private static final int __GENERATION_ISSET_ID = 0;
+  private byte __isset_bitfield = 0;
   public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
   static {
     Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
+    tmpMap.put(_Fields.GENERATION, new org.apache.thrift.meta_data.FieldMetaData("generation", org.apache.thrift.TFieldRequirementType.REQUIRED, 
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I32)));
     tmpMap.put(_Fields.PHENOMES, new org.apache.thrift.meta_data.FieldMetaData("phenomes", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.ListMetaData(org.apache.thrift.protocol.TType.LIST, 
             new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, CFastCyclicNetwork.class))));
@@ -116,9 +125,12 @@ public class CPopulationInfo implements org.apache.thrift.TBase<CPopulationInfo,
   }
 
   public CPopulationInfo(
+    int generation,
     List<CFastCyclicNetwork> phenomes)
   {
     this();
+    this.generation = generation;
+    setGenerationIsSet(true);
     this.phenomes = phenomes;
   }
 
@@ -126,6 +138,8 @@ public class CPopulationInfo implements org.apache.thrift.TBase<CPopulationInfo,
    * Performs a deep copy on <i>other</i>.
    */
   public CPopulationInfo(CPopulationInfo other) {
+    __isset_bitfield = other.__isset_bitfield;
+    this.generation = other.generation;
     if (other.isSetPhenomes()) {
       List<CFastCyclicNetwork> __this__phenomes = new ArrayList<CFastCyclicNetwork>();
       for (CFastCyclicNetwork other_element : other.phenomes) {
@@ -141,7 +155,32 @@ public class CPopulationInfo implements org.apache.thrift.TBase<CPopulationInfo,
 
   @Override
   public void clear() {
+    setGenerationIsSet(false);
+    this.generation = 0;
     this.phenomes = null;
+  }
+
+  public int getGeneration() {
+    return this.generation;
+  }
+
+  public CPopulationInfo setGeneration(int generation) {
+    this.generation = generation;
+    setGenerationIsSet(true);
+    return this;
+  }
+
+  public void unsetGeneration() {
+    __isset_bitfield = EncodingUtils.clearBit(__isset_bitfield, __GENERATION_ISSET_ID);
+  }
+
+  /** Returns true if field generation is set (has been assigned a value) and false otherwise */
+  public boolean isSetGeneration() {
+    return EncodingUtils.testBit(__isset_bitfield, __GENERATION_ISSET_ID);
+  }
+
+  public void setGenerationIsSet(boolean value) {
+    __isset_bitfield = EncodingUtils.setBit(__isset_bitfield, __GENERATION_ISSET_ID, value);
   }
 
   public int getPhenomesSize() {
@@ -185,6 +224,14 @@ public class CPopulationInfo implements org.apache.thrift.TBase<CPopulationInfo,
 
   public void setFieldValue(_Fields field, Object value) {
     switch (field) {
+    case GENERATION:
+      if (value == null) {
+        unsetGeneration();
+      } else {
+        setGeneration((Integer)value);
+      }
+      break;
+
     case PHENOMES:
       if (value == null) {
         unsetPhenomes();
@@ -198,6 +245,9 @@ public class CPopulationInfo implements org.apache.thrift.TBase<CPopulationInfo,
 
   public Object getFieldValue(_Fields field) {
     switch (field) {
+    case GENERATION:
+      return Integer.valueOf(getGeneration());
+
     case PHENOMES:
       return getPhenomes();
 
@@ -212,6 +262,8 @@ public class CPopulationInfo implements org.apache.thrift.TBase<CPopulationInfo,
     }
 
     switch (field) {
+    case GENERATION:
+      return isSetGeneration();
     case PHENOMES:
       return isSetPhenomes();
     }
@@ -230,6 +282,15 @@ public class CPopulationInfo implements org.apache.thrift.TBase<CPopulationInfo,
   public boolean equals(CPopulationInfo that) {
     if (that == null)
       return false;
+
+    boolean this_present_generation = true;
+    boolean that_present_generation = true;
+    if (this_present_generation || that_present_generation) {
+      if (!(this_present_generation && that_present_generation))
+        return false;
+      if (this.generation != that.generation)
+        return false;
+    }
 
     boolean this_present_phenomes = true && this.isSetPhenomes();
     boolean that_present_phenomes = true && that.isSetPhenomes();
@@ -256,6 +317,16 @@ public class CPopulationInfo implements org.apache.thrift.TBase<CPopulationInfo,
     int lastComparison = 0;
     CPopulationInfo typedOther = (CPopulationInfo)other;
 
+    lastComparison = Boolean.valueOf(isSetGeneration()).compareTo(typedOther.isSetGeneration());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetGeneration()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.generation, typedOther.generation);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
     lastComparison = Boolean.valueOf(isSetPhenomes()).compareTo(typedOther.isSetPhenomes());
     if (lastComparison != 0) {
       return lastComparison;
@@ -286,6 +357,10 @@ public class CPopulationInfo implements org.apache.thrift.TBase<CPopulationInfo,
     StringBuilder sb = new StringBuilder("CPopulationInfo(");
     boolean first = true;
 
+    sb.append("generation:");
+    sb.append(this.generation);
+    first = false;
+    if (!first) sb.append(", ");
     sb.append("phenomes:");
     if (this.phenomes == null) {
       sb.append("null");
@@ -299,6 +374,7 @@ public class CPopulationInfo implements org.apache.thrift.TBase<CPopulationInfo,
 
   public void validate() throws org.apache.thrift.TException {
     // check for required fields
+    // alas, we cannot check 'generation' because it's a primitive and you chose the non-beans generator.
     if (phenomes == null) {
       throw new org.apache.thrift.protocol.TProtocolException("Required field 'phenomes' was not present! Struct: " + toString());
     }
@@ -315,6 +391,8 @@ public class CPopulationInfo implements org.apache.thrift.TBase<CPopulationInfo,
 
   private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
     try {
+      // it doesn't seem like you should have to do this, but java serialization is wacky, and doesn't call the default constructor.
+      __isset_bitfield = 0;
       read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
     } catch (org.apache.thrift.TException te) {
       throw new java.io.IOException(te);
@@ -339,6 +417,14 @@ public class CPopulationInfo implements org.apache.thrift.TBase<CPopulationInfo,
           break;
         }
         switch (schemeField.id) {
+          case 5: // GENERATION
+            if (schemeField.type == org.apache.thrift.protocol.TType.I32) {
+              struct.generation = iprot.readI32();
+              struct.setGenerationIsSet(true);
+            } else { 
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+            }
+            break;
           case 10: // PHENOMES
             if (schemeField.type == org.apache.thrift.protocol.TType.LIST) {
               {
@@ -366,6 +452,9 @@ public class CPopulationInfo implements org.apache.thrift.TBase<CPopulationInfo,
       iprot.readStructEnd();
 
       // check for required fields of primitive type, which can't be checked in the validate method
+      if (!struct.isSetGeneration()) {
+        throw new org.apache.thrift.protocol.TProtocolException("Required field 'generation' was not found in serialized data! Struct: " + toString());
+      }
       struct.validate();
     }
 
@@ -373,6 +462,9 @@ public class CPopulationInfo implements org.apache.thrift.TBase<CPopulationInfo,
       struct.validate();
 
       oprot.writeStructBegin(STRUCT_DESC);
+      oprot.writeFieldBegin(GENERATION_FIELD_DESC);
+      oprot.writeI32(struct.generation);
+      oprot.writeFieldEnd();
       if (struct.phenomes != null) {
         oprot.writeFieldBegin(PHENOMES_FIELD_DESC);
         {
@@ -402,6 +494,7 @@ public class CPopulationInfo implements org.apache.thrift.TBase<CPopulationInfo,
     @Override
     public void write(org.apache.thrift.protocol.TProtocol prot, CPopulationInfo struct) throws org.apache.thrift.TException {
       TTupleProtocol oprot = (TTupleProtocol) prot;
+      oprot.writeI32(struct.generation);
       {
         oprot.writeI32(struct.phenomes.size());
         for (CFastCyclicNetwork _iter44 : struct.phenomes)
@@ -414,6 +507,8 @@ public class CPopulationInfo implements org.apache.thrift.TBase<CPopulationInfo,
     @Override
     public void read(org.apache.thrift.protocol.TProtocol prot, CPopulationInfo struct) throws org.apache.thrift.TException {
       TTupleProtocol iprot = (TTupleProtocol) prot;
+      struct.generation = iprot.readI32();
+      struct.setGenerationIsSet(true);
       {
         org.apache.thrift.protocol.TList _list45 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, iprot.readI32());
         struct.phenomes = new ArrayList<CFastCyclicNetwork>(_list45.size);
