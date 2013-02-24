@@ -218,7 +218,7 @@ public class FastCyclicNeuralNetwork implements BlackBox {
 	 * @return The value of queried input neuron.
 	 */
 	public double getInput(final int no) {
-		assert no > 0 && no < getNumberOfInputs();
+		assert no >= 0 && no < getNumberOfInputs();
 		return neuronOutputArray.get(1+no);
 	}
 

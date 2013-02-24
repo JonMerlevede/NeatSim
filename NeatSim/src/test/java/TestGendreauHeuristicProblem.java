@@ -22,39 +22,39 @@ public class TestGendreauHeuristicProblem {
 
 	FastCyclicNeuralNetwork fcnn;
 	Gendreau06Scenario scenario;
-	
-	
+
+
 	@Before
 	public void setUp() {
 		fcnn = makeNeuralNetwork();
 
 		try {
-			BufferedReader bfr = new BufferedReader(new FileReader(SCENARIO_NAME));
+			final BufferedReader bfr = new BufferedReader(new FileReader(SCENARIO_NAME));
 			scenario = Gendreau06Parser.parse(bfr,FILE_NAME, NUMBER_OF_VEHICLES);
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			e.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * Creates a hard-coded fast cyclic neural network that contains no hidden
 	 * nodes and connects only the distance node and the output node with a
 	 * connection that has weight one.
-	 * 
+	 *
 	 * @return The created fast cyclic neural network.
 	 */
 	public FastCyclicNeuralNetwork makeNeuralNetwork() {
 		return (new NeuralNetworkFactory()).createDist();
 	}
-	
+
 	/**
 	 * Test case for {@link GendreauHeuristicProblem#simulate()}.
 	 */
 	@Test
 	public void testSimulate() {
-		BlackBoxHeuristic bbh = new BlackBoxHeuristic(fcnn);
-		GendreauHeuristicProblem ghp = GendreauHeuristicProblem.create(scenario, bbh, false);
-		ghp.simulate(); // TODO decide what to test for :P		}
+		final BlackBoxHeuristic bbh = new BlackBoxHeuristic(fcnn);
+		final GendreauHeuristicProblem ghp = GendreauHeuristicProblem.create(scenario, bbh, false);
+		ghp.simulate(); // TODO decide what to test for ; currently we just see if there occurs an exception
 		System.out.println(ghp.getStatistics());
 	}
 }
