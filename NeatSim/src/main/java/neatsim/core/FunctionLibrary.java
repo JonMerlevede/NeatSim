@@ -4,8 +4,8 @@ import java.util.List;
 
 /**
  * The instance of this singleton class represents a function library.
- * 
- * 
+ *
+ *
  * @author Jonathan Merlevede
  *
  */
@@ -14,33 +14,33 @@ public class FunctionLibrary {
 	 * A handle to the unique instance of this class.
 	 */
 	public static final FunctionLibrary INSTANCE = new FunctionLibrary();
-	
+
 	/*
 	 * Private constructor: singleton class!
 	 */
 	private FunctionLibrary() {
-		
+
 	}
-	
-	private double steepenedSigmoid(double x) {
+
+	private double steepenedSigmoid(final double x) {
 		return 1.0/(1.0 + Math.exp(-4.9*x));
 	}
-	
+
 	/**
 	 * Returns whether the given function name exists in this function library.
-	 * 
+	 *
 	 * @param functionName The given function name.
 	 * @return True if the given function name exists in this function library
 	 *         and false otherwise.
 	 */
-	public boolean exists(String functionName) {
+	public boolean exists(final String functionName) {
 		return functionName.equals("SteepenedSigmoid") || functionName.equals("Identity");
 	}
-	
+
 	/**
 	 * Evaluates the function of the given name using the given input value and
 	 * the given auxiliary arguments.
-	 * 
+	 *
 	 * @param functionName The given function name.
 	 * @param inputValue The input value.
 	 * @param aux The auxiliary arguments.
@@ -49,7 +49,7 @@ public class FunctionLibrary {
 	 * @return The value returned by the function of the given name using the
 	 *         given input value and the given auxiliary arguments.
 	 */
-	public double evaluate(String functionName, double inputValue, List<Double> aux) {
+	public double evaluate(final String functionName, final double inputValue, final List<Double> aux) {
 		assert exists(functionName);
 		switch (functionName) {
 			case "SteepenedSigmoid":

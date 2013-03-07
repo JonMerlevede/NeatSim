@@ -36,6 +36,7 @@ using SharpNeat.EvolutionAlgorithms.ComplexityRegulation;
 using SharpNeat.Genomes.Neat;
 using SharpNeat.Network;
 using SharpNeat.Utility;
+using NeatSim.Processing;
 
 namespace SharpNeatGUI
 {
@@ -53,6 +54,9 @@ namespace SharpNeatGUI
         List<NeatGenome> _genomeList;
         NeatEvolutionAlgorithm<NeatGenome> _ea;
         StreamWriter _logFileWriter = null;
+        // BEGIN JONATHAN MERLEVEDE ADDED THIS
+        private NeatSimLogger _neatSimLogger = null;
+        // END JONATHAN MERLEVEDE ADDED THIS
         /// <summary>Number format for building filename when saving champ genomes.</summary>
         NumberFormatInfo _filenameNumberFormatter;
         /// <summary>XmlWriter settings for champ genome saving (format the XML to make it human readable).</summary>
@@ -267,9 +271,14 @@ namespace SharpNeatGUI
             // Create/open log file if the option is selected.
             if(chkFileWriteLog.Checked && null==_logFileWriter)
             {
-                string filename = txtFileLogBaseName.Text + '_' + DateTime.Now.ToString("yyyyMMdd") + ".log";
+                // BEGIN JONATHAN MERLEVEDE CHANGE
+                string filename = txtFileLogBaseName.Text + '_' + DateTime.Now.ToString("yyyyMMdd") + ".csv";
+                // END JONATHAN MERLEVEDE CHANGE
                 _logFileWriter = new StreamWriter(filename, true);
                 _logFileWriter.WriteLine("ClockTime,Gen,BestFitness,MeanFitness,MeanSpecieChampFitness,ChampComplexity,MeanComplexity,MaxComplexity,TotalEvaluationCount,EvaluationsPerSec,SearchMode");
+                // BEGIN JONATHAN MERLEVEDE ADDED THIS
+                _neatSimLogger = new NeatSimLogger(txtFileLogBaseName.Text + '_' + DateTime.Now.ToString("yyyyMMdd") + "NeatSim.csv");
+                // END JONATHAN MERLEVEDE ADDED THIS
             }
 
             // Start the algorithm & update GUI state.
@@ -1457,9 +1466,15 @@ namespace SharpNeatGUI
 
                     // Check if we should save the champ genome to a file.
                     NeatGenome champGenome = _ea.CurrentChampGenome;
-                    if(chkFileSaveGenomeOnImprovement.Checked && champGenome.EvaluationInfo.Fitness > _champGenomeFitness) 
+                    // BEGIN JONATHAN CHANGE
+                    // if(chkFileSaveGenomeOnImprovement.Checked && champGenome.EvaluationInfo.Fitness > _champGenomeFitness) 
+                    // {
+                    //    _champGenomeFitness = champGenome.EvaluationInfo.Fitness;
+                    if(chkFileSaveGenomeOnImprovement.Checked && champGenome.EvaluationInfo.AuxFitnessArr[0]._value > _champGenomeFitness) 
                     {
-                        _champGenomeFitness = champGenome.EvaluationInfo.Fitness;
+                        _champGenomeFitness = champGenome.EvaluationInfo.AuxFitnessArr[0]._value;
+                    // END JONATHAN CHANGE
+                        
                         string filename = string.Format(_filenameNumberFormatter, "{0}_{1:0.00}_{2:yyyyMMdd_HHmmss}.gnm.xml",
                                                         txtFileBaseName.Text, _champGenomeFitness, DateTime.Now);
 
@@ -1492,6 +1507,9 @@ namespace SharpNeatGUI
                                                         stats._evaluationsPerSec,
                                                         _ea.ComplexityRegulationMode));
                 _logFileWriter.Flush();
+                // BEGIN JONATHAN MERLEVEDE ADDED THIS
+                _neatSimLogger.Log(_ea);
+                // END JONATHAN MERLEVEDE ADDED THIS
             }
         }
 
@@ -1538,6 +1556,9 @@ namespace SharpNeatGUI
                 {
                     _logFileWriter.Close();
                     _logFileWriter = null;
+                    // BEGIN JONATHAN MERLEVEDE ADDITION
+                    _neatSimLogger.Close();
+                    // END JONATHAN MERLEVEDE ADDITION
                 }
             }
         }

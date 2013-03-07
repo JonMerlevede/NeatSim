@@ -55,6 +55,7 @@
     <Compile Include="Experiments\Xor\RemoteXorEvaluator.cs" />
     <Compile Include="Experiments\Xor\RemoteXorExperiment.cs" />
     <Compile Include="Experiments\Xor\DeadCode\RemoteXorExperiment.cs" />
+    <Compile Include="Processing\NeatSimLogger.cs" />
     <Compile Include="Thrift\CAuxFitnessInfo.cs" />
     <Compile Include="Thrift\CConnection.cs" />
     <Compile Include="Thrift\CFastCyclicNetwork.cs" />

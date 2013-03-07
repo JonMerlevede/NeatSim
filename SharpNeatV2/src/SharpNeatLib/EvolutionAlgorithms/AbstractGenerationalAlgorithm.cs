@@ -39,8 +39,9 @@ namespace SharpNeat.EvolutionAlgorithms
         private static readonly ILog __log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         #region Instance Fields
-
-        protected IGenomeListEvaluator<TGenome> _genomeListEvaluator;
+        // BEGIN JONATHAN MERLEVEDE CHANGE
+        public IGenomeListEvaluator<TGenome> _genomeListEvaluator;
+        // END JONATHAN MERLEVEDE CHANGE
         protected IGenomeFactory<TGenome> _genomeFactory;
         protected List<TGenome> _genomeList;
         protected int _populationSize;

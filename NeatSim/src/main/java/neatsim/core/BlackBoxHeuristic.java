@@ -1,8 +1,8 @@
 package neatsim.core;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
 
 import rinde.ecj.GPFunc;
@@ -28,7 +28,12 @@ import rinde.evo4mas.gendreau06.MyopicFunctions.Waiters;
  * @author Jonathan Merlevede
  *
  */
-public class BlackBoxHeuristic implements Heuristic<GendreauContext> {
+public class BlackBoxHeuristic implements Heuristic<GendreauContext>, Serializable {
+	/**
+	 *
+	 */
+	private static final long serialVersionUID = -5017666919658927521L;
+
 	/**
 	 * Default, immutable list of input heuristics.
 	 *
@@ -97,28 +102,9 @@ public class BlackBoxHeuristic implements Heuristic<GendreauContext> {
 	 * black box.
 	 *
 	 * @param box The black box to be enclosed into the black box heuristic.
+	 *
+	 * 	Changes to this black box have an effect on this black box heuristic.
 	 * @param inputList The given list of input heuristics.
-	 * @pre The given list of input heuristics is effective.
-	 *
-	 *      | inputList != null
-	 * @pre The given black box is effective.
-	 *
-	 *      | box != null
-	 * @pre The given black box has as much inputs as there are input heuristics
-	 *      in the given list of input heuristics.
-	 *
-	 *      | box.getNumberOfInputs() == inputList.size()
-	 * @pre The given black box has precisely one output.
-	 *
-	 *      | box.getNumberOfOutputs() == 1
-	 * @post The box enclosed by this black box heuristic is the same box as the
-	 *       given box.
-	 *
-	 *       | getBlackBox() == box
-	 * @note Changes to the original box are visible as changes to the black box
-	 *       enclosed by this black box heuristic. It is therefore not allowed to
-	 *       change a black box after it has been passed to this black box
-	 *       heuristic. This is prone to change.
 	 */
 	public BlackBoxHeuristic(final List<GPFunc<GendreauContext>> inputList, final BlackBox box) {
 		assert inputList != null;
@@ -126,12 +112,9 @@ public class BlackBoxHeuristic implements Heuristic<GendreauContext> {
 		assert box.getNumberOfInputs() == inputList.size();
 		assert box.getNumberOfOutputs() == 1;
 
-		// Deep copy of the given input list
-		final LinkedList<GPFunc<GendreauContext>> tmpList = new LinkedList<>();
-		for (final GPFunc<GendreauContext> gpf : inputList) {
-			tmpList.add(gpf);
-		}
-		// Set the input list to an unmodifiable view of the deep copy
+		// Shallow copy of the given input list
+		final ArrayList<GPFunc<GendreauContext>> tmpList = new ArrayList<>(inputList);
+		// Set the input list to an unmodifiable view of the shallow copy
 		this.inputList = Collections.unmodifiableList(tmpList);
 		// Set the black box enclosed by this black box heuristic to the given black box
 		this.box = box;
@@ -171,12 +154,16 @@ public class BlackBoxHeuristic implements Heuristic<GendreauContext> {
 	 */
 	@Override
 	public double compute(final GendreauContext gc) {
-		counter++;
 		setInputs(gc);
+		counter++;
 		box.activate();
 		return box.getOutput(0);
 	}
 	private int counter = 0;
+
+	public int getNumberOfActivations() {
+		return counter;
+	}
 
 	/**
 	 * Returns a reference to the black box enclosed by this black box heuristic.
