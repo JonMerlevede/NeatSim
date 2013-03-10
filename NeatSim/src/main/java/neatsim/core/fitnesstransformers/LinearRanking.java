@@ -1,37 +1,21 @@
-package neatsim.util;
+package neatsim.core.fitnesstransformers;
 
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
 
 import neatsim.server.thrift.CFitnessInfo;
+import neatsim.util.AssertionHelper;
 
-public class FitnessTransformer {
-	public FitnessTransformer() {
+public class LinearRanking implements FitnessTransformer {
+	protected final double selectivePressure;
 
+	public LinearRanking(final double selectivePressure) {
+		this.selectivePressure = selectivePressure;
 	}
 
-	public void inversion(final Collection<? extends CFitnessInfo> infos) {
-		for (final CFitnessInfo i : infos) {
-			if (i.getFitness() <= 0)
-				throw new IllegalArgumentException();
-			i.setFitness(1/i.getFitness());
-		}
-	}
-
-	public void costToAbsoluteFitness(final Collection<? extends CFitnessInfo> infos) {
-		assert infos != null;
-		double max = 0;
-		for (final CFitnessInfo i : infos) {
-			max = i.getFitness() > max ? i.getFitness() : max;
-		}
-		for (final CFitnessInfo i : infos) {
-			i.setFitness(max - i.getFitness());
-		}
-	}
-
-	public void linearRankingOfCosts(final List<? extends CFitnessInfo> infos, final double selectivePressure) {
+	@Override
+	public void transform(final List<? extends CFitnessInfo> infos) {
 		assert AssertionHelper.isEffectiveCollection(infos);
 		assert selectivePressure > 0 && selectivePressure <= 2;
 
@@ -71,4 +55,5 @@ public class FitnessTransformer {
 //					+ i);
 		}
 	}
+
 }

@@ -4,12 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import neatsim.core.BlackBox;
+import neatsim.core.FitnessInfo;
+import neatsim.core.NeuralNetwork;
 import neatsim.server.thrift.CFastCyclicNetwork;
 import neatsim.server.thrift.CFitnessInfo;
 import neatsim.server.thrift.CPopulationFitness;
 import neatsim.server.thrift.CPopulationInfo;
-import neatsim.server.thriftadapters.FastCyclicNeuralNetwork;
-import neatsim.server.thriftadapters.FitnessInfo;
 
 /**
  * Instances of this class are XOR evaluators. XOR evaluates are capable of
@@ -23,7 +23,7 @@ import neatsim.server.thriftadapters.FitnessInfo;
  *
  * @author Jonathan Merlevede
  */
-public class XorEvaluator {
+public class XorEvaluator implements PopulationEvaluator {
 	public static final double STOP_FITNESS = 10.0;
 
 	/**
@@ -44,6 +44,7 @@ public class XorEvaluator {
 	 * 	| pi != null
 	 * @return The population fitness information.
 	 */
+	@Override
 	public CPopulationFitness evaluatePopulation(final CPopulationInfo pi) {
 		assert pi != null;
 
@@ -74,7 +75,7 @@ public class XorEvaluator {
 	public CFitnessInfo evaluatePhenotype(final CFastCyclicNetwork ann) {
 		assert ann != null;
 
-		final FastCyclicNeuralNetwork fcn = new FastCyclicNeuralNetwork(ann);
+		final NeuralNetwork fcn = new NeuralNetwork(ann);
 		return evaluatePhenotype(fcn);
 	}
 

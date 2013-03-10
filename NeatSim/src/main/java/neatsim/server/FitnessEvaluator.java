@@ -1,8 +1,7 @@
 package neatsim.server;
-import java.util.List;
-
+import neatsim.core.evaluators.PopulationEvaluator;
 import neatsim.core.evaluators.GendreauEvaluator;
-import neatsim.core.evaluators.GendreauEvaluatorFactory;
+import neatsim.core.evaluators.GendreauScenario;
 import neatsim.core.evaluators.XorEvaluator;
 import neatsim.server.thrift.CFastCyclicNetwork;
 import neatsim.server.thrift.CFitnessEvaluatorService;
@@ -31,17 +30,16 @@ public class FitnessEvaluator implements CFitnessEvaluatorService.Iface {
 	/**
 	 * Reference to the object that provides the simulation evaluation operation.
 	 */
-	protected final GendreauEvaluator simEvaluator;
+	protected final PopulationEvaluator gendreauEvaluator;
 
 	/**
 	 * Creates a new fitness evaluator.
 	 */
 	public FitnessEvaluator() {
 		xorEvaluator = new XorEvaluator();
-		final GendreauEvaluatorFactory seh = new GendreauEvaluatorFactory();
-		simEvaluator = seh.create(
-				"data",
-				"_240_24",
+//		final GendreauEvaluatorFactory seh = GendreauEvaluatorFactory.newInstance();
+		gendreauEvaluator = new GendreauEvaluator(
+				GendreauScenario.load("data", "_240_24"),
 				SolutionType.MYOPIC,
 				GendreauEvaluator.ComputationStrategy.DISTRIBUTED);
 		System.out.println("System evaluator intialised!");
@@ -64,9 +62,9 @@ public class FitnessEvaluator implements CFitnessEvaluatorService.Iface {
 	public CPopulationFitness calculateSimPopulationFitness(
 			final CPopulationInfo populationInfo) throws TException {
 		System.out.println("calculateSimPopulationFitness called.");
-		final List<CFitnessInfo> fitnessInfos = simEvaluator
-				.evaluatePopulation(populationInfo);
-		return new CPopulationFitness(fitnessInfos, fitnessInfos.size());
+//		final List<CFitnessInfo> fitnessInfos = simEvaluator
+//				.evaluatePopulation(populationInfo);
+		return gendreauEvaluator.evaluatePopulation(populationInfo);
 		// return simEvaluator.parallelEvaluatePopulation(populationInfo);
 	}
 }

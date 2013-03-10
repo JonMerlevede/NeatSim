@@ -2,8 +2,8 @@ package neatsim.core;
 
 import java.util.ArrayList;
 
-import neatsim.thrift.CAuxFitnessInfo;
-import neatsim.thrift.CFitnessInfo;
+import neatsim.server.thrift.CAuxFitnessInfo;
+import neatsim.server.thrift.CFitnessInfo;
 
 /**
  * Instances of this class carry information on fitness of a population, AND can

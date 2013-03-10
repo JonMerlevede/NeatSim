@@ -10,19 +10,22 @@ import java.util.Map.Entry;
 
 import neatsim.core.BlackBox;
 import neatsim.core.BlackBoxHeuristic;
+import neatsim.core.FitnessInfo;
+import neatsim.core.NeuralNetwork;
 import neatsim.core.evaluators.simulators.DistributedJPPFSimulator;
 import neatsim.core.evaluators.simulators.GendreauSimulationTask;
 import neatsim.core.evaluators.simulators.LocalMultithreadedSimulator;
 import neatsim.core.evaluators.simulators.LocalSinglethreadedSimulator;
 import neatsim.core.evaluators.simulators.Simulator;
+import neatsim.core.fitnesstransformers.FitnessTransformer;
+import neatsim.core.fitnesstransformers.Invert;
+import neatsim.core.stopconditions.SimpleStopcondition;
 import neatsim.core.stopconditions.Stopcondition;
 import neatsim.server.thrift.CFastCyclicNetwork;
 import neatsim.server.thrift.CFitnessInfo;
+import neatsim.server.thrift.CPopulationFitness;
 import neatsim.server.thrift.CPopulationInfo;
-import neatsim.server.thriftadapters.FastCyclicNeuralNetwork;
-import neatsim.server.thriftadapters.FitnessInfo;
 import neatsim.util.AssertionHelper;
-import neatsim.util.FitnessTransformer;
 
 import org.javatuples.Pair;
 import org.jppf.client.JPPFClient;
@@ -76,45 +79,61 @@ import com.google.common.collect.Multimap;
  * @author Jonathan Merlevede
  *
  */
-public class GendreauEvaluator {
+public class GendreauEvaluator implements PopulationEvaluator {
 
 	public enum ComputationStrategy {
 		SINGLETHREADED,MULTITHREADED,DISTRIBUTED;
 	}
 
-	public static int RANKING_PARAMETER = 2;
-	public static double STOP_FITNESS = 100000;
+	public static final int DEFAULT_NUMBER_OF_SCENARIOS_PER_GENERATION = 3;
+	public static final int RANKING_PARAMETER = 2;
+	public static final double STOP_FITNESS = 100000;
 	private int numberOfScenariosPerGeneration;
 	private SolutionType solutionType;
 	private final JPPFClient jppfClient;
 	private final Stopcondition stopCondition;
-	private List<String> trainingScenarioNames;
-	private List<String> trainingScenarios;
+	private final FitnessTransformer fitnessTransformer;
+	private final List<GendreauScenario> gendreauScenarios;
 	private final Simulator evaluator;
+
+
+	public GendreauEvaluator(
+			final List<GendreauScenario> gendreauScenarios,
+			final SolutionType solutionType,
+			final ComputationStrategy computationStrategy) {
+		this(gendreauScenarios,
+				DEFAULT_NUMBER_OF_SCENARIOS_PER_GENERATION,
+				solutionType,
+				computationStrategy,
+				new SimpleStopcondition(),
+				new Invert());
+	}
 
 
 	// Provided lists should be O(1) for .get()
 	public GendreauEvaluator(
 			// We need the name of the scenario files to make Gendreau06Scenario instances
-			final List<String> trainingScenarioNames,
-			final List<String> trainingScenarios,
+			final List<GendreauScenario> gendreauScenarios,
 			final int numberOfScenariosPerGeneration,
 			final SolutionType solutionType,
 			final ComputationStrategy computationStrategy,
-			final Stopcondition stopCondition) {
+			final Stopcondition stopCondition,
+			final FitnessTransformer fitnessTransformer) {
 		// Assert basic validity of function arguments
 		assert stopCondition != null;
+		assert AssertionHelper.isEffectiveCollection(gendreauScenarios);
 		this.stopCondition = stopCondition;
 
 		if (solutionType != SolutionType.MYOPIC)
 			throw new UnsupportedOperationException("Currently, only myopic vehicles are supported");
 
 		setNumberOfScenariosPerGeneration(numberOfScenariosPerGeneration);
-		setTrainingScenarios(trainingScenarioNames, trainingScenarios);
+		this.gendreauScenarios = gendreauScenarios;
 		setSolutionType(solutionType);
 		final Pair<Simulator,JPPFClient> t = createSimulator(computationStrategy);
 		evaluator = t.getValue0();
 		jppfClient = t.getValue1();
+		this.fitnessTransformer = fitnessTransformer;
 	}
 
 	private void addTasks(
@@ -125,10 +144,10 @@ public class GendreauEvaluator {
 		// Get the scenarios to evaluate this heuristic for
 		for (final int i : getCurrentScenarioNumbers(generation)) {
 			try {
-				final String scenarioName = trainingScenarioNames.get(i);
+				final String scenarioName = gendreauScenarios.get(i).getNames();
 				dataProvider.setValue(
-						trainingScenarioNames.get(i),
-						trainingScenarios.get(i));
+						gendreauScenarios.get(i).getNames(),
+						gendreauScenarios.get(i).getScenarios());
 				// TODO make this nicer
 				final int numVehicles = scenarioName.contains("_450") ? 20 : 10;
 				final GendreauSimulationTask task = new GendreauSimulationTask(
@@ -179,15 +198,19 @@ public class GendreauEvaluator {
 		return null;
 	}
 
-	public List<CFitnessInfo> evaluatePopulation(final CPopulationInfo populationInfo) {
+	@Override
+	public CPopulationFitness evaluatePopulation(final CPopulationInfo populationInfo) {
 		assert populationInfo != null;
 
 		final LinkedList<BlackBox> anns = new LinkedList<>();
 		for (final CFastCyclicNetwork cfcn : populationInfo.getPhenomes()) {
-			anns.add(new FastCyclicNeuralNetwork(cfcn));
+			anns.add(new NeuralNetwork(cfcn));
 		}
 		final int generation = populationInfo.getGeneration();
 		return evaluatePopulation(anns,generation);
+		//final CPopulationFitness populationFitness = new CPopulationFitness();
+		//populationFitness.setFitnessInfos(evaluatePopulation(anns,generation));
+		//populationFitness.se
 	}
 
 	/*
@@ -201,7 +224,7 @@ public class GendreauEvaluator {
 	 *
 	 * 2. For determining the stop condition (not very important)
 	 */
-	public List<CFitnessInfo> evaluatePopulation(
+	public CPopulationFitness evaluatePopulation(
 			final List<? extends BlackBox> anns, final int generation) {
 		assert AssertionHelper.isEffectiveCollection(anns);
 		assert generation >= 0;
@@ -216,7 +239,10 @@ public class GendreauEvaluator {
 		final List<CFitnessInfo> results =
 				processResults(unprocessedResults, anns, generation);
 		assert results.size() == anns.size();
-		return results;
+		final CPopulationFitness populationFitness = new CPopulationFitness(
+				results,
+				tasks.size());
+		return populationFitness;
 	}
 
 	private int[] getCurrentScenarioNumbers(final int generation) {
@@ -228,7 +254,7 @@ public class GendreauEvaluator {
 	}
 
 	private int getNumberOfTrainingScenarios() {
-		return trainingScenarioNames.size();
+		return gendreauScenarios.size();
 	}
 
 	/*
@@ -281,8 +307,10 @@ public class GendreauEvaluator {
 			fitnessInfos.add(info);
 		}
 		// Perform ranking
-		final FitnessTransformer ranker = new FitnessTransformer();
-		ranker.linearRankingOfCosts(fitnessInfos, RANKING_PARAMETER);
+		//final FitnessTransformer transformer = new FitnessTransformer();
+		//transformer.linearRankingOfCosts(fitnessInfos, RANKING_PARAMETER);
+		//transformer.costToAbsoluteFitness(fitnessInfos);
+		fitnessTransformer.transform(fitnessInfos);
 		// Done!
 		return fitnessInfos;
 	}
@@ -298,17 +326,5 @@ public class GendreauEvaluator {
 	private void setSolutionType(final SolutionType solutionType) {
 		assert solutionType != null;
 		this.solutionType = solutionType;
-	}
-
-	// This could be made public (i.e. the evaluator will still work correctly after changing)
-	private void setTrainingScenarios(
-			final List<String> trainingScenarioNames,
-			final List<String> trainingScenarios) {
-		assert AssertionHelper.isEffectiveCollection(trainingScenarioNames);
-		assert AssertionHelper.isEffectiveCollection(trainingScenarios);
-		assert trainingScenarioNames.size() > 0;
-		assert trainingScenarioNames.size() == trainingScenarios.size();
-		this.trainingScenarioNames = trainingScenarioNames;
-		this.trainingScenarios = trainingScenarios;
 	}
 }
