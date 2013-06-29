@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import neatsim.core.NeuralNetwork;
+import neatsim.core.blackbox.neural.NeuralNetwork;
 import neatsim.server.thrift.CConnection;
 import neatsim.server.thrift.CFastCyclicNetwork;
 
@@ -26,7 +26,7 @@ public class NeuralNetworkFactory {
 	public static final int ID_MADC = 14;
 	public static final int NUMBER_OF_INPUTS = 14;
 	public static final int NUMBER_OF_INPUTS_INCLUDING_BIAS_NODE = NUMBER_OF_INPUTS + 1;
-	public static final int ID_OUTPUT = NUMBER_OF_INPUTS + 1;
+	public static final int ID_OUTPUT = NUMBER_OF_INPUTS_INCLUDING_BIAS_NODE;
 
 
 	public NeuralNetworkFactory() {
@@ -56,7 +56,7 @@ public class NeuralNetworkFactory {
 	}
 
 	private int idOfHiddenNode(final int nr) {
-		// Start numbering at 0
+		// Start numbering at 0, bias node + number of inputs + output node + nr
 		return NUMBER_OF_INPUTS + 2 + nr;
 	}
 

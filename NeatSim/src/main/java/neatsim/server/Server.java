@@ -1,5 +1,8 @@
 package neatsim.server;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+
 import neatsim.server.thrift.CFitnessEvaluatorService;
 
 import org.apache.thrift.server.TServer;
@@ -12,39 +15,49 @@ import org.apache.thrift.transport.TTransportException;
  * Class that implements a server that provides the Thrift
  * FitnessEvaluatorService using the Thrift binary protocol. After creation, the
  * server needs to be started.
- * 
+ *
  * The Thrift server is currently started on a fixed port (7913), and will fail
  * if this port is not available.
- * 
+ *
  * @author Jonathan Merlevede
  */
 public class Server {
+	private final int port;
+
 	/**
 	 * Creates a new instance of this class and starts it.
-	 * 
+	 *
 	 * @param args Arguments. These are ignored.
+	 * @throws IOException
+	 * @throws FileNotFoundException
 	 */
-	public static void main(String[] args) {
-		Server server = new Server();
+	public static void main(final String[] args) throws FileNotFoundException, IOException {
+		final Server server = new Server(7913);
 		server.start();
 	}
-	
+
+	public Server(final int port) {
+		this.port = port;
+	}
+
 	/**
 	 * Starts the server. This blocks the calling thread.
-	 * 
+	 *
 	 * Returns only if an exception occurs.
+	 * @throws IOException
+	 * @throws FileNotFoundException
 	 */
-	public void start() {
+	public void start() throws FileNotFoundException, IOException {
 		try {
 //			TNonblockingServerTransport serverTransport
 //				= new TNonblockingServerSocket(7911);
 			// Reserve a socket for Thrift communication
-			TServerTransport serverTransport = new TServerSocket(7913);
+			final TServerTransport serverTransport = new TServerSocket(port);
 			// Create a new fitness evaluator.
 			// This evaluator provides an implementation of the Thrift service.
-			CFitnessEvaluatorService.Iface impl = new FitnessEvaluator();
+			final CFitnessEvaluatorService.Iface impl = new FitnessEvaluator();
 			// Attach the fitness evaluator to a Thrift processor
-			CFitnessEvaluatorService.Processor<CFitnessEvaluatorService.Iface>
+			final CFitnessEvaluatorService.Processor<CFitnessEvaluatorService.Iface>
 				processor = new CFitnessEvaluatorService.Processor<CFitnessEvaluatorService.Iface>(impl);
 			// We now have to attach the processor to a Thrift server.
 			/*
@@ -55,8 +68,8 @@ public class Server {
 			 * performance. We gain performance when using a multithreaded Thrift
 			 * server, as we know that we have only a single client.
 			 */
-			TServer.Args args = new TSimpleServer.Args(serverTransport);
-			TServer server = new TSimpleServer(args.processor(processor));
+			final TServer.Args args = new TSimpleServer.Args(serverTransport);
+			final TServer server = new TSimpleServer(args.processor(processor));
 			// Uncomment two of the following lines and comment the previous lines
 			// of code to switch to a high-perforamance, multi-threaded server
 			// implementation.
@@ -71,7 +84,7 @@ public class Server {
 			// Start the server.
 			// When using the TSimpleServer, this captures the running thread.
 			server.serve();
-		} catch (TTransportException e) {
+		} catch (final TTransportException e) {
 			e.printStackTrace();
 		}
 	}

@@ -101,7 +101,7 @@ namespace SharpNeat.Domains.BinarySixMultiplexer
                     // In tests squared error drove evolution significantly more efficiently in this domain than absolute error.
                     // Note. To base fitness on absolute error use: fitness += output;
                     fitness += 1.0-((1.0-output)*(1.0-output));
-                    if(output<0.5) {
+                    if(output < 0.5) {
                         success=false;
                     }
                 }
@@ -111,7 +111,7 @@ namespace SharpNeat.Domains.BinarySixMultiplexer
                     // In tests squared error drove evolution significantly more efficiently in this domain than absolute error.
                     // Note. To base fitness on absolute error use: fitness += 1.0-output;
                     fitness += 1.0-(output*output);
-                    if(output>=0.5) {
+                    if(output >= 0.5) {
                         success=false;
                     }
                 }

@@ -6,8 +6,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 
-import neatsim.core.Function;
-import neatsim.core.NeuralNetwork;
+import neatsim.core.Activationfunction;
+import neatsim.core.blackbox.neural.NeuralNetwork;
 import neatsim.util.NeuralNetworkReader;
 
 import org.junit.Test;
@@ -20,7 +20,7 @@ public class TestNeuralNetworkReader {
 	@Test
 	public void testSimpleNetwork() throws IOException {
 		final URL testNetwork = getClass().getResource("/simpleTestNetwork.xml");
-		final List<NeuralNetwork> networks = reader.readFile(testNetwork);
+		final List<NeuralNetwork> networks = reader.readFile(testNetwork).neuralNetworks;
 		assertEquals(1, networks.size());
 		assertSimpleNetwork(networks.get(0));
 	}
@@ -33,22 +33,23 @@ public class TestNeuralNetworkReader {
 		network.activate();
 		assertEquals(s(0.52701024249111594), network.getOutput(0), EPS);
 		// Input 2
-		network.reset();
+		network.resetAll();
+
 		network.setInput(1, 1);
 		network.activate();
 		assertEquals(s(0), network.getOutput(0), EPS);
 		// Input 3
-		network.reset();
+		network.resetAll();
 		network.setInput(2, 1);
 		network.activate();
 		assertEquals(s(-0.67608981306330662), network.getOutput(0), EPS);
 		// Input 4
-		network.reset();
+		network.resetAll();
 		network.setInput(3, 1);
 		network.activate();
 		assertEquals(s(-0.24665289383329442), network.getOutput(0), EPS);
 		// Input 5
-		network.reset();
+		network.resetAll();
 		network.setInput(4, 1);
 		network.activate();
 		assertEquals(s(0), network.getOutput(0), EPS);
@@ -57,7 +58,7 @@ public class TestNeuralNetworkReader {
 	@Test
 	public void testHardNetwork() throws IOException {
 		final URL testNetwork = getClass().getResource("/hardTestNetwork.xml");
-		final List<NeuralNetwork> networks = reader.readFile(testNetwork);
+		final List<NeuralNetwork> networks = reader.readFile(testNetwork).neuralNetworks;
 		assertEquals(1, networks.size());
 		assertHardNetwork(networks.get(0));
 	}
@@ -79,13 +80,13 @@ public class TestNeuralNetworkReader {
 	@Test
 	public void testMultipleNetworks() throws IOException {
 		final URL testNetwork = getClass().getResource("/multipleTestNetwork.xml");
-		final List<NeuralNetwork> networks = reader.readFile(testNetwork);
+		final List<NeuralNetwork> networks = reader.readFile(testNetwork).neuralNetworks;
 		assertEquals(2, networks.size());
 		assertSimpleNetwork(networks.get(0));
 		assertHardNetwork(networks.get(1));
 	}
 
 	private double s(final double input) {
-		return Function.STEEPENED_SIGMOID.calculate(input);//library.evaluate("SteepenedSigmoid", input);
+		return Activationfunction.STEEPENED_SIGMOID.calculate(input);//library.evaluate("SteepenedSigmoid", input);
 	}
 }

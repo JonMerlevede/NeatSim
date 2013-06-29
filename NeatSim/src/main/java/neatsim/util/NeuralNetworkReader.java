@@ -1,9 +1,12 @@
 package neatsim.util;
 
 import java.io.File;
+import java.io.FilenameFilter;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,7 +19,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
-import neatsim.core.NeuralNetwork;
+import neatsim.core.blackbox.neural.NeuralNetwork;
 import neatsim.server.thrift.CConnection;
 import neatsim.server.thrift.CFastCyclicNetwork;
 
@@ -31,23 +34,33 @@ import org.xml.sax.helpers.DefaultHandler;
  */
 public class NeuralNetworkReader {
 
+	public static class Result {
+		public final List<NeuralNetwork> neuralNetworks;
+		public final int birthGen;
+		public Result(final List<NeuralNetwork> neuralNetworks, final int birthGen) {
+			this.neuralNetworks = neuralNetworks;
+			this.birthGen = birthGen;
+		}
+	}
+
 	// Parameters
-	protected int numberOfTimestepsPerActivation;
+	final protected int numberOfTimestepsPerActivation;
 
 	// List of constructed networks
 	protected ArrayList<NeuralNetwork> neuralNetworks;
-	private final Map<Integer,String> functionIdToName;
+	private Map<Integer,String> functionIdToName;
+	private int birthGen=-1;
 	// 'Buffer' during construction of network
 	private int maxInputId;
 	private int maxOutputId;
-	private final SortedMap<Integer,Integer> nodeFunctions;
-	private final ArrayList<CConnection> connections;
+	private SortedMap<Integer,Integer> nodeFunctions;
+	private ArrayList<CConnection> connections;
 
 	public NeuralNetworkReader(final int numberOfTimestepsPerActivation) {
-		neuralNetworks = new ArrayList<>();
-		functionIdToName = new HashMap<>();
-		nodeFunctions = new TreeMap<>();
-		connections = new ArrayList<>();
+		//neuralNetworks = new ArrayList<>();
+		//functionIdToName = new HashMap<>();
+		//nodeFunctions = new TreeMap<>();
+		//connections = new ArrayList<>();
 		this.numberOfTimestepsPerActivation = numberOfTimestepsPerActivation;
 	}
 
@@ -55,12 +68,12 @@ public class NeuralNetworkReader {
 		return numberOfTimestepsPerActivation;
 	}
 
-	public void setNumberOfTimestepsPerActivation(final int numberOfTimestepsPerActivation) {
-		this.numberOfTimestepsPerActivation = numberOfTimestepsPerActivation;
-	}
+//	public void setNumberOfTimestepsPerActivation(final int numberOfTimestepsPerActivation) {
+//		this.numberOfTimestepsPerActivation = numberOfTimestepsPerActivation;
+//	}
 
 
-	private class XMLParser extends DefaultHandler {
+	private class NeatGenomeXMLParser extends DefaultHandler {
 		@Override
 		public void startElement(
 				final String uri,
@@ -74,7 +87,7 @@ public class NeuralNetworkReader {
 				break;
 			case ("NETWORK") :
 //				System.out.println("Opening <Network>");
-				openNetwork();
+				openNetwork(attr);
 				break;
 			case ("NODE") :
 //				System.out.println("Processing <Node>");
@@ -183,11 +196,13 @@ public class NeuralNetworkReader {
 		}
 	}
 
-	private void openNetwork() {
+	private void openNetwork(final Attributes attr) {
 		maxInputId = 0;
 		maxOutputId = 0;
 		nodeFunctions.clear();
 		connections.clear();
+
+		birthGen = Integer.parseInt(attr.getValue("birthGen"));
 	}
 
 	private void processActivationFunction(final Attributes attr) {
@@ -196,21 +211,42 @@ public class NeuralNetworkReader {
 				attr.getValue("name"));
 	}
 
-	public List<NeuralNetwork> readFile(final URL url) throws IOException {
-		return readFile(new File(url.getFile()));
-	}
-
-	public List<NeuralNetwork> readFile(final String path) throws IOException {
-		return readFile(new File(path));
-	}
-
-	public List<NeuralNetwork> readFile(final File file) throws IOException {
+	public List<NeuralNetwork> process(final InputStream genome) {
 		try {
 			final SAXParserFactory spf = SAXParserFactory.newInstance();
 			final SAXParser sp = spf.newSAXParser();
-			final DefaultHandler handler = new XMLParser();
-			sp.parse(file, handler);
+			final DefaultHandler handler = new NeatGenomeXMLParser();
+			sp.parse(genome, handler);
 			return neuralNetworks;
+		} catch (SAXException | ParserConfigurationException | IOException e) {
+			e.printStackTrace();
+			assert false;
+		}
+		return null;
+	}
+
+	public Result readFile(final URL url) throws IOException {
+		return readFile(new File(url.getFile()));
+	}
+
+	public Result readFile(final String path) throws IOException {
+		return readFile(new File(path));
+	}
+
+	public Result readFile(final File file) throws IOException {
+		try {
+			connections = new ArrayList<>();
+			functionIdToName = new HashMap<>();
+			maxInputId = -1;
+			maxOutputId = -1;
+			neuralNetworks = new ArrayList<>();
+			nodeFunctions = new TreeMap<>();
+
+			final SAXParserFactory spf = SAXParserFactory.newInstance();
+			final SAXParser sp = spf.newSAXParser();
+			final DefaultHandler handler = new NeatGenomeXMLParser();
+			sp.parse(file, handler);
+			return new Result(neuralNetworks, birthGen);
 		} catch (SAXException | ParserConfigurationException e) {
 			e.printStackTrace();
 			assert false;
@@ -218,4 +254,42 @@ public class NeuralNetworkReader {
 		return null;
 	}
 
+	public List<NeuralNetworkReader.Result> readDirectory(
+			final String path,
+			final String prefix,
+			final String suffix,
+			final boolean singletonGenome) throws IOException {
+		String dataDirectory = (new File(path)).getCanonicalPath();
+		// Read timesteps setting
+
+		if (!dataDirectory.endsWith(File.separator))
+			dataDirectory = dataDirectory + File.separator;
+
+		final File folder = new File(dataDirectory);
+		final FilenameFilter filenameFilter = new PrefixSuffixFilter(prefix, suffix);
+		final List<String> sgenomes = new ArrayList<String>();
+		for (final File file : folder.listFiles(filenameFilter))
+			sgenomes.add(dataDirectory + file.getName());
+		Collections.sort(sgenomes, NaturalOrderComparator.CASEINSENSITIVE_NUMERICAL_ORDER);
+		//# Convert the genome path names to ANNs
+		final List<Result> genomes = new ArrayList<Result>(sgenomes.size());
+		//final NeuralNetworkReader reader = new NeuralNetworkReader(numberOfSteps);
+		if (singletonGenome) {
+			for (final String sgenome : sgenomes) {
+				final Result t = readFile(sgenome);
+//				if (t.size() != 1) {
+//					throw new RuntimeException("File " + sgenome + " contains more than one genome.");
+//				}
+				genomes.add(t);
+			}
+		} else {
+			for (final String sgenome : sgenomes) {
+				final Result t = readFile(sgenome);
+				genomes.add(t);
+//				for (final BlackBox bb : t)
+//					genomes.add(bb);
+			}
+		}
+		return genomes;
+	}
 }

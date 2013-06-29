@@ -29,7 +29,8 @@
 </repositories>
   
   	<properties>
-		<jppf.version>3.2.2</jppf.version>
+  		<rinsim.version>2.2.0-SNAPSHOT</rinsim.version>
+		<jppf.version>3.3</jppf.version>
 		<!-- <swt.version>3.8</swt.version> -->
 		<!-- by default there are no arguments passed to tests -->
 		<test.arg></test.arg>
@@ -37,37 +38,43 @@
   
   
   <build>
-    <plugins>
-      <plugin>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <version>2.3.2</version>
-        <configuration>
-          <source>1.7</source>
-          <target>1.7</target>
-          <excludes>
-          	<!-- exclude the contents of folders named 'old' -->
-          	<exclude>**/old/*</exclude>
-          	<exclude>**/*/old/*</exclude>
-<!--           	<exclude>*/old/*</exclude> -->
-          </excludes>
-          <testExcludes>
-          	<exclude>**/old/*</exclude>
-          	<exclude>**/*/old/*</exclude>
-          </testExcludes>
-        </configuration>
-      </plugin>
-<!--      	<plugin>
-        <artifactId>maven-surefire-plugin</artifactId>
-        <version>2.13</version>
-        <configuration>
-          <excludes>
-            exclude the contents of folders named 'old'
-            <exclude>**/*/old/*</exclude>
-          	<exclude>**/*/old/*</exclude>
-          </excludes>
-        </configuration>
-      </plugin> -->
-    </plugins>
+  	<plugins>
+		<plugin>
+         <groupId>org.apache.maven.plugins</groupId>
+			<artifactId>maven-compiler-plugin</artifactId>
+			<version>2.3.2</version>
+			<configuration>
+				<source>1.7</source>
+				<target>1.7</target>
+				<excludes>
+<!-- 					exclude the contents of folders named 'old' -->
+					<exclude>**/old/*</exclude>
+					<exclude>**/*/old/*</exclude>
+				</excludes>
+				<testExcludes>
+					<exclude>**/old/*</exclude>
+					<exclude>**/*/old/*</exclude>
+				</testExcludes>
+			</configuration>
+		</plugin>
+		<plugin>
+			<artifactId>maven-assembly-plugin</artifactId>
+			<configuration>
+				<archive>
+					<manifest>
+						<mainClass>neatsim.server.Server</mainClass>
+					</manifest>
+				</archive>
+				<descriptorRefs>
+					<descriptorRef>jar-with-dependencies</descriptorRef>
+				</descriptorRefs>
+			</configuration>
+		</plugin>
+
+		<!-- <plugin> <artifactId>maven-surefire-plugin</artifactId> <version>2.13</version> 
+			<configuration> <excludes> exclude the contents of folders named 'old' <exclude>**/*/old/*</exclude> 
+			<exclude>**/*/old/*</exclude> </excludes> </configuration> </plugin> -->
+	</plugins>
 <!--     <resources> -->
 <!--     	<resource> -->
 <!--     		<directory>src/main/java/neatsim/old</directory> -->
@@ -112,12 +119,12 @@
 	<dependency>
     	<groupId>com.github.rinde</groupId>
     	<artifactId>rinsim-core</artifactId>
-    	<version>2.2.0-SNAPSHOT</version>
+    	<version>${rinsim.version}</version>
 	</dependency>
 	<dependency>
     	<groupId>com.github.rinde</groupId>
     	<artifactId>rinsim-problem</artifactId>
-    	<version>2.2.0-SNAPSHOT</version>
+    	<version>${rinsim.version}</version>
 	</dependency>
    <dependency>
 		<groupId>org.javatuples</groupId>

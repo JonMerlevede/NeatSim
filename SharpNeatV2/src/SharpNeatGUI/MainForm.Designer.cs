@@ -517,6 +517,7 @@
             this.label38.Size = new System.Drawing.Size(112, 16);
             this.label38.TabIndex = 21;
             this.label38.Text = "Current Search Mode";
+            this.label38.Click += new System.EventHandler(this.label38_Click);
             // 
             // txtSearchStatsMode
             // 
@@ -1246,6 +1247,7 @@
             this.lbxLog.Name = "lbxLog";
             this.lbxLog.Size = new System.Drawing.Size(524, 195);
             this.lbxLog.TabIndex = 0;
+            this.lbxLog.SelectedIndexChanged += new System.EventHandler(this.lbxLog_SelectedIndexChanged);
             // 
             // populationToolStripMenuItem
             // 
@@ -1263,6 +1265,7 @@
             this.Name = "MainForm";
             this.Text = "SharpNEAT";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
+            this.Load += new System.EventHandler(this.MainForm_Load);
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel1.PerformLayout();
             this.splitContainer1.Panel2.ResumeLayout(false);

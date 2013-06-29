@@ -34,21 +34,25 @@ public class CFitnessEvaluatorService {
 
   public interface Iface {
 
-    public CPopulationFitness calculateSimPopulationFitness(CPopulationInfo populationInfo) throws org.apache.thrift.TException;
-
     public CPopulationFitness calculateXorPopulationFitness(CPopulationInfo populationInfo) throws org.apache.thrift.TException;
 
     public CFitnessInfo calculateXorPhenotypeFitness(CFastCyclicNetwork ann) throws org.apache.thrift.TException;
+
+    public CPopulationFitness calculateSixMultiplexerPopulationFitness(CPopulationInfo populationInfo) throws org.apache.thrift.TException;
+
+    public CPopulationFitness calculateSimPopulationFitness(CPopulationInfo populationInfo) throws org.apache.thrift.TException;
 
   }
 
   public interface AsyncIface {
 
-    public void calculateSimPopulationFitness(CPopulationInfo populationInfo, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.calculateSimPopulationFitness_call> resultHandler) throws org.apache.thrift.TException;
-
     public void calculateXorPopulationFitness(CPopulationInfo populationInfo, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.calculateXorPopulationFitness_call> resultHandler) throws org.apache.thrift.TException;
 
     public void calculateXorPhenotypeFitness(CFastCyclicNetwork ann, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.calculateXorPhenotypeFitness_call> resultHandler) throws org.apache.thrift.TException;
+
+    public void calculateSixMultiplexerPopulationFitness(CPopulationInfo populationInfo, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.calculateSixMultiplexerPopulationFitness_call> resultHandler) throws org.apache.thrift.TException;
+
+    public void calculateSimPopulationFitness(CPopulationInfo populationInfo, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.calculateSimPopulationFitness_call> resultHandler) throws org.apache.thrift.TException;
 
   }
 
@@ -70,29 +74,6 @@ public class CFitnessEvaluatorService {
 
     public Client(org.apache.thrift.protocol.TProtocol iprot, org.apache.thrift.protocol.TProtocol oprot) {
       super(iprot, oprot);
-    }
-
-    public CPopulationFitness calculateSimPopulationFitness(CPopulationInfo populationInfo) throws org.apache.thrift.TException
-    {
-      send_calculateSimPopulationFitness(populationInfo);
-      return recv_calculateSimPopulationFitness();
-    }
-
-    public void send_calculateSimPopulationFitness(CPopulationInfo populationInfo) throws org.apache.thrift.TException
-    {
-      calculateSimPopulationFitness_args args = new calculateSimPopulationFitness_args();
-      args.setPopulationInfo(populationInfo);
-      sendBase("calculateSimPopulationFitness", args);
-    }
-
-    public CPopulationFitness recv_calculateSimPopulationFitness() throws org.apache.thrift.TException
-    {
-      calculateSimPopulationFitness_result result = new calculateSimPopulationFitness_result();
-      receiveBase(result, "calculateSimPopulationFitness");
-      if (result.isSetSuccess()) {
-        return result.success;
-      }
-      throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "calculateSimPopulationFitness failed: unknown result");
     }
 
     public CPopulationFitness calculateXorPopulationFitness(CPopulationInfo populationInfo) throws org.apache.thrift.TException
@@ -141,6 +122,52 @@ public class CFitnessEvaluatorService {
       throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "calculateXorPhenotypeFitness failed: unknown result");
     }
 
+    public CPopulationFitness calculateSixMultiplexerPopulationFitness(CPopulationInfo populationInfo) throws org.apache.thrift.TException
+    {
+      send_calculateSixMultiplexerPopulationFitness(populationInfo);
+      return recv_calculateSixMultiplexerPopulationFitness();
+    }
+
+    public void send_calculateSixMultiplexerPopulationFitness(CPopulationInfo populationInfo) throws org.apache.thrift.TException
+    {
+      calculateSixMultiplexerPopulationFitness_args args = new calculateSixMultiplexerPopulationFitness_args();
+      args.setPopulationInfo(populationInfo);
+      sendBase("calculateSixMultiplexerPopulationFitness", args);
+    }
+
+    public CPopulationFitness recv_calculateSixMultiplexerPopulationFitness() throws org.apache.thrift.TException
+    {
+      calculateSixMultiplexerPopulationFitness_result result = new calculateSixMultiplexerPopulationFitness_result();
+      receiveBase(result, "calculateSixMultiplexerPopulationFitness");
+      if (result.isSetSuccess()) {
+        return result.success;
+      }
+      throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "calculateSixMultiplexerPopulationFitness failed: unknown result");
+    }
+
+    public CPopulationFitness calculateSimPopulationFitness(CPopulationInfo populationInfo) throws org.apache.thrift.TException
+    {
+      send_calculateSimPopulationFitness(populationInfo);
+      return recv_calculateSimPopulationFitness();
+    }
+
+    public void send_calculateSimPopulationFitness(CPopulationInfo populationInfo) throws org.apache.thrift.TException
+    {
+      calculateSimPopulationFitness_args args = new calculateSimPopulationFitness_args();
+      args.setPopulationInfo(populationInfo);
+      sendBase("calculateSimPopulationFitness", args);
+    }
+
+    public CPopulationFitness recv_calculateSimPopulationFitness() throws org.apache.thrift.TException
+    {
+      calculateSimPopulationFitness_result result = new calculateSimPopulationFitness_result();
+      receiveBase(result, "calculateSimPopulationFitness");
+      if (result.isSetSuccess()) {
+        return result.success;
+      }
+      throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "calculateSimPopulationFitness failed: unknown result");
+    }
+
   }
   public static class AsyncClient extends org.apache.thrift.async.TAsyncClient implements AsyncIface {
     public static class Factory implements org.apache.thrift.async.TAsyncClientFactory<AsyncClient> {
@@ -157,38 +184,6 @@ public class CFitnessEvaluatorService {
 
     public AsyncClient(org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.async.TAsyncClientManager clientManager, org.apache.thrift.transport.TNonblockingTransport transport) {
       super(protocolFactory, clientManager, transport);
-    }
-
-    public void calculateSimPopulationFitness(CPopulationInfo populationInfo, org.apache.thrift.async.AsyncMethodCallback<calculateSimPopulationFitness_call> resultHandler) throws org.apache.thrift.TException {
-      checkReady();
-      calculateSimPopulationFitness_call method_call = new calculateSimPopulationFitness_call(populationInfo, resultHandler, this, ___protocolFactory, ___transport);
-      this.___currentMethod = method_call;
-      ___manager.call(method_call);
-    }
-
-    public static class calculateSimPopulationFitness_call extends org.apache.thrift.async.TAsyncMethodCall {
-      private CPopulationInfo populationInfo;
-      public calculateSimPopulationFitness_call(CPopulationInfo populationInfo, org.apache.thrift.async.AsyncMethodCallback<calculateSimPopulationFitness_call> resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
-        super(client, protocolFactory, transport, resultHandler, false);
-        this.populationInfo = populationInfo;
-      }
-
-      public void write_args(org.apache.thrift.protocol.TProtocol prot) throws org.apache.thrift.TException {
-        prot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("calculateSimPopulationFitness", org.apache.thrift.protocol.TMessageType.CALL, 0));
-        calculateSimPopulationFitness_args args = new calculateSimPopulationFitness_args();
-        args.setPopulationInfo(populationInfo);
-        args.write(prot);
-        prot.writeMessageEnd();
-      }
-
-      public CPopulationFitness getResult() throws org.apache.thrift.TException {
-        if (getState() != org.apache.thrift.async.TAsyncMethodCall.State.RESPONSE_READ) {
-          throw new IllegalStateException("Method call not finished!");
-        }
-        org.apache.thrift.transport.TMemoryInputTransport memoryTransport = new org.apache.thrift.transport.TMemoryInputTransport(getFrameBuffer().array());
-        org.apache.thrift.protocol.TProtocol prot = client.getProtocolFactory().getProtocol(memoryTransport);
-        return (new Client(prot)).recv_calculateSimPopulationFitness();
-      }
     }
 
     public void calculateXorPopulationFitness(CPopulationInfo populationInfo, org.apache.thrift.async.AsyncMethodCallback<calculateXorPopulationFitness_call> resultHandler) throws org.apache.thrift.TException {
@@ -255,6 +250,70 @@ public class CFitnessEvaluatorService {
       }
     }
 
+    public void calculateSixMultiplexerPopulationFitness(CPopulationInfo populationInfo, org.apache.thrift.async.AsyncMethodCallback<calculateSixMultiplexerPopulationFitness_call> resultHandler) throws org.apache.thrift.TException {
+      checkReady();
+      calculateSixMultiplexerPopulationFitness_call method_call = new calculateSixMultiplexerPopulationFitness_call(populationInfo, resultHandler, this, ___protocolFactory, ___transport);
+      this.___currentMethod = method_call;
+      ___manager.call(method_call);
+    }
+
+    public static class calculateSixMultiplexerPopulationFitness_call extends org.apache.thrift.async.TAsyncMethodCall {
+      private CPopulationInfo populationInfo;
+      public calculateSixMultiplexerPopulationFitness_call(CPopulationInfo populationInfo, org.apache.thrift.async.AsyncMethodCallback<calculateSixMultiplexerPopulationFitness_call> resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
+        super(client, protocolFactory, transport, resultHandler, false);
+        this.populationInfo = populationInfo;
+      }
+
+      public void write_args(org.apache.thrift.protocol.TProtocol prot) throws org.apache.thrift.TException {
+        prot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("calculateSixMultiplexerPopulationFitness", org.apache.thrift.protocol.TMessageType.CALL, 0));
+        calculateSixMultiplexerPopulationFitness_args args = new calculateSixMultiplexerPopulationFitness_args();
+        args.setPopulationInfo(populationInfo);
+        args.write(prot);
+        prot.writeMessageEnd();
+      }
+
+      public CPopulationFitness getResult() throws org.apache.thrift.TException {
+        if (getState() != org.apache.thrift.async.TAsyncMethodCall.State.RESPONSE_READ) {
+          throw new IllegalStateException("Method call not finished!");
+        }
+        org.apache.thrift.transport.TMemoryInputTransport memoryTransport = new org.apache.thrift.transport.TMemoryInputTransport(getFrameBuffer().array());
+        org.apache.thrift.protocol.TProtocol prot = client.getProtocolFactory().getProtocol(memoryTransport);
+        return (new Client(prot)).recv_calculateSixMultiplexerPopulationFitness();
+      }
+    }
+
+    public void calculateSimPopulationFitness(CPopulationInfo populationInfo, org.apache.thrift.async.AsyncMethodCallback<calculateSimPopulationFitness_call> resultHandler) throws org.apache.thrift.TException {
+      checkReady();
+      calculateSimPopulationFitness_call method_call = new calculateSimPopulationFitness_call(populationInfo, resultHandler, this, ___protocolFactory, ___transport);
+      this.___currentMethod = method_call;
+      ___manager.call(method_call);
+    }
+
+    public static class calculateSimPopulationFitness_call extends org.apache.thrift.async.TAsyncMethodCall {
+      private CPopulationInfo populationInfo;
+      public calculateSimPopulationFitness_call(CPopulationInfo populationInfo, org.apache.thrift.async.AsyncMethodCallback<calculateSimPopulationFitness_call> resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
+        super(client, protocolFactory, transport, resultHandler, false);
+        this.populationInfo = populationInfo;
+      }
+
+      public void write_args(org.apache.thrift.protocol.TProtocol prot) throws org.apache.thrift.TException {
+        prot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("calculateSimPopulationFitness", org.apache.thrift.protocol.TMessageType.CALL, 0));
+        calculateSimPopulationFitness_args args = new calculateSimPopulationFitness_args();
+        args.setPopulationInfo(populationInfo);
+        args.write(prot);
+        prot.writeMessageEnd();
+      }
+
+      public CPopulationFitness getResult() throws org.apache.thrift.TException {
+        if (getState() != org.apache.thrift.async.TAsyncMethodCall.State.RESPONSE_READ) {
+          throw new IllegalStateException("Method call not finished!");
+        }
+        org.apache.thrift.transport.TMemoryInputTransport memoryTransport = new org.apache.thrift.transport.TMemoryInputTransport(getFrameBuffer().array());
+        org.apache.thrift.protocol.TProtocol prot = client.getProtocolFactory().getProtocol(memoryTransport);
+        return (new Client(prot)).recv_calculateSimPopulationFitness();
+      }
+    }
+
   }
 
   public static class Processor<I extends Iface> extends org.apache.thrift.TBaseProcessor<I> implements org.apache.thrift.TProcessor {
@@ -268,30 +327,11 @@ public class CFitnessEvaluatorService {
     }
 
     private static <I extends Iface> Map<String,  org.apache.thrift.ProcessFunction<I, ? extends  org.apache.thrift.TBase>> getProcessMap(Map<String,  org.apache.thrift.ProcessFunction<I, ? extends  org.apache.thrift.TBase>> processMap) {
-      processMap.put("calculateSimPopulationFitness", new calculateSimPopulationFitness());
       processMap.put("calculateXorPopulationFitness", new calculateXorPopulationFitness());
       processMap.put("calculateXorPhenotypeFitness", new calculateXorPhenotypeFitness());
+      processMap.put("calculateSixMultiplexerPopulationFitness", new calculateSixMultiplexerPopulationFitness());
+      processMap.put("calculateSimPopulationFitness", new calculateSimPopulationFitness());
       return processMap;
-    }
-
-    public static class calculateSimPopulationFitness<I extends Iface> extends org.apache.thrift.ProcessFunction<I, calculateSimPopulationFitness_args> {
-      public calculateSimPopulationFitness() {
-        super("calculateSimPopulationFitness");
-      }
-
-      public calculateSimPopulationFitness_args getEmptyArgsInstance() {
-        return new calculateSimPopulationFitness_args();
-      }
-
-      protected boolean isOneway() {
-        return false;
-      }
-
-      public calculateSimPopulationFitness_result getResult(I iface, calculateSimPopulationFitness_args args) throws org.apache.thrift.TException {
-        calculateSimPopulationFitness_result result = new calculateSimPopulationFitness_result();
-        result.success = iface.calculateSimPopulationFitness(args.populationInfo);
-        return result;
-      }
     }
 
     public static class calculateXorPopulationFitness<I extends Iface> extends org.apache.thrift.ProcessFunction<I, calculateXorPopulationFitness_args> {
@@ -334,721 +374,43 @@ public class CFitnessEvaluatorService {
       }
     }
 
-  }
-
-  public static class calculateSimPopulationFitness_args implements org.apache.thrift.TBase<calculateSimPopulationFitness_args, calculateSimPopulationFitness_args._Fields>, java.io.Serializable, Cloneable   {
-    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("calculateSimPopulationFitness_args");
-
-    private static final org.apache.thrift.protocol.TField POPULATION_INFO_FIELD_DESC = new org.apache.thrift.protocol.TField("populationInfo", org.apache.thrift.protocol.TType.STRUCT, (short)1);
-
-    private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
-    static {
-      schemes.put(StandardScheme.class, new calculateSimPopulationFitness_argsStandardSchemeFactory());
-      schemes.put(TupleScheme.class, new calculateSimPopulationFitness_argsTupleSchemeFactory());
-    }
-
-    public CPopulationInfo populationInfo; // required
-
-    /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
-    public enum _Fields implements org.apache.thrift.TFieldIdEnum {
-      POPULATION_INFO((short)1, "populationInfo");
-
-      private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
-
-      static {
-        for (_Fields field : EnumSet.allOf(_Fields.class)) {
-          byName.put(field.getFieldName(), field);
-        }
+    public static class calculateSixMultiplexerPopulationFitness<I extends Iface> extends org.apache.thrift.ProcessFunction<I, calculateSixMultiplexerPopulationFitness_args> {
+      public calculateSixMultiplexerPopulationFitness() {
+        super("calculateSixMultiplexerPopulationFitness");
       }
 
-      /**
-       * Find the _Fields constant that matches fieldId, or null if its not found.
-       */
-      public static _Fields findByThriftId(int fieldId) {
-        switch(fieldId) {
-          case 1: // POPULATION_INFO
-            return POPULATION_INFO;
-          default:
-            return null;
-        }
+      public calculateSixMultiplexerPopulationFitness_args getEmptyArgsInstance() {
+        return new calculateSixMultiplexerPopulationFitness_args();
       }
 
-      /**
-       * Find the _Fields constant that matches fieldId, throwing an exception
-       * if it is not found.
-       */
-      public static _Fields findByThriftIdOrThrow(int fieldId) {
-        _Fields fields = findByThriftId(fieldId);
-        if (fields == null) throw new IllegalArgumentException("Field " + fieldId + " doesn't exist!");
-        return fields;
-      }
-
-      /**
-       * Find the _Fields constant that matches name, or null if its not found.
-       */
-      public static _Fields findByName(String name) {
-        return byName.get(name);
-      }
-
-      private final short _thriftId;
-      private final String _fieldName;
-
-      _Fields(short thriftId, String fieldName) {
-        _thriftId = thriftId;
-        _fieldName = fieldName;
-      }
-
-      public short getThriftFieldId() {
-        return _thriftId;
-      }
-
-      public String getFieldName() {
-        return _fieldName;
-      }
-    }
-
-    // isset id assignments
-    public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
-    static {
-      Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
-      tmpMap.put(_Fields.POPULATION_INFO, new org.apache.thrift.meta_data.FieldMetaData("populationInfo", org.apache.thrift.TFieldRequirementType.DEFAULT, 
-          new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, CPopulationInfo.class)));
-      metaDataMap = Collections.unmodifiableMap(tmpMap);
-      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(calculateSimPopulationFitness_args.class, metaDataMap);
-    }
-
-    public calculateSimPopulationFitness_args() {
-    }
-
-    public calculateSimPopulationFitness_args(
-      CPopulationInfo populationInfo)
-    {
-      this();
-      this.populationInfo = populationInfo;
-    }
-
-    /**
-     * Performs a deep copy on <i>other</i>.
-     */
-    public calculateSimPopulationFitness_args(calculateSimPopulationFitness_args other) {
-      if (other.isSetPopulationInfo()) {
-        this.populationInfo = new CPopulationInfo(other.populationInfo);
-      }
-    }
-
-    public calculateSimPopulationFitness_args deepCopy() {
-      return new calculateSimPopulationFitness_args(this);
-    }
-
-    @Override
-    public void clear() {
-      this.populationInfo = null;
-    }
-
-    public CPopulationInfo getPopulationInfo() {
-      return this.populationInfo;
-    }
-
-    public calculateSimPopulationFitness_args setPopulationInfo(CPopulationInfo populationInfo) {
-      this.populationInfo = populationInfo;
-      return this;
-    }
-
-    public void unsetPopulationInfo() {
-      this.populationInfo = null;
-    }
-
-    /** Returns true if field populationInfo is set (has been assigned a value) and false otherwise */
-    public boolean isSetPopulationInfo() {
-      return this.populationInfo != null;
-    }
-
-    public void setPopulationInfoIsSet(boolean value) {
-      if (!value) {
-        this.populationInfo = null;
-      }
-    }
-
-    public void setFieldValue(_Fields field, Object value) {
-      switch (field) {
-      case POPULATION_INFO:
-        if (value == null) {
-          unsetPopulationInfo();
-        } else {
-          setPopulationInfo((CPopulationInfo)value);
-        }
-        break;
-
-      }
-    }
-
-    public Object getFieldValue(_Fields field) {
-      switch (field) {
-      case POPULATION_INFO:
-        return getPopulationInfo();
-
-      }
-      throw new IllegalStateException();
-    }
-
-    /** Returns true if field corresponding to fieldID is set (has been assigned a value) and false otherwise */
-    public boolean isSet(_Fields field) {
-      if (field == null) {
-        throw new IllegalArgumentException();
-      }
-
-      switch (field) {
-      case POPULATION_INFO:
-        return isSetPopulationInfo();
-      }
-      throw new IllegalStateException();
-    }
-
-    @Override
-    public boolean equals(Object that) {
-      if (that == null)
+      protected boolean isOneway() {
         return false;
-      if (that instanceof calculateSimPopulationFitness_args)
-        return this.equals((calculateSimPopulationFitness_args)that);
-      return false;
+      }
+
+      public calculateSixMultiplexerPopulationFitness_result getResult(I iface, calculateSixMultiplexerPopulationFitness_args args) throws org.apache.thrift.TException {
+        calculateSixMultiplexerPopulationFitness_result result = new calculateSixMultiplexerPopulationFitness_result();
+        result.success = iface.calculateSixMultiplexerPopulationFitness(args.populationInfo);
+        return result;
+      }
     }
 
-    public boolean equals(calculateSimPopulationFitness_args that) {
-      if (that == null)
+    public static class calculateSimPopulationFitness<I extends Iface> extends org.apache.thrift.ProcessFunction<I, calculateSimPopulationFitness_args> {
+      public calculateSimPopulationFitness() {
+        super("calculateSimPopulationFitness");
+      }
+
+      public calculateSimPopulationFitness_args getEmptyArgsInstance() {
+        return new calculateSimPopulationFitness_args();
+      }
+
+      protected boolean isOneway() {
         return false;
-
-      boolean this_present_populationInfo = true && this.isSetPopulationInfo();
-      boolean that_present_populationInfo = true && that.isSetPopulationInfo();
-      if (this_present_populationInfo || that_present_populationInfo) {
-        if (!(this_present_populationInfo && that_present_populationInfo))
-          return false;
-        if (!this.populationInfo.equals(that.populationInfo))
-          return false;
       }
 
-      return true;
-    }
-
-    @Override
-    public int hashCode() {
-      return 0;
-    }
-
-    public int compareTo(calculateSimPopulationFitness_args other) {
-      if (!getClass().equals(other.getClass())) {
-        return getClass().getName().compareTo(other.getClass().getName());
-      }
-
-      int lastComparison = 0;
-      calculateSimPopulationFitness_args typedOther = (calculateSimPopulationFitness_args)other;
-
-      lastComparison = Boolean.valueOf(isSetPopulationInfo()).compareTo(typedOther.isSetPopulationInfo());
-      if (lastComparison != 0) {
-        return lastComparison;
-      }
-      if (isSetPopulationInfo()) {
-        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.populationInfo, typedOther.populationInfo);
-        if (lastComparison != 0) {
-          return lastComparison;
-        }
-      }
-      return 0;
-    }
-
-    public _Fields fieldForId(int fieldId) {
-      return _Fields.findByThriftId(fieldId);
-    }
-
-    public void read(org.apache.thrift.protocol.TProtocol iprot) throws org.apache.thrift.TException {
-      schemes.get(iprot.getScheme()).getScheme().read(iprot, this);
-    }
-
-    public void write(org.apache.thrift.protocol.TProtocol oprot) throws org.apache.thrift.TException {
-      schemes.get(oprot.getScheme()).getScheme().write(oprot, this);
-    }
-
-    @Override
-    public String toString() {
-      StringBuilder sb = new StringBuilder("calculateSimPopulationFitness_args(");
-      boolean first = true;
-
-      sb.append("populationInfo:");
-      if (this.populationInfo == null) {
-        sb.append("null");
-      } else {
-        sb.append(this.populationInfo);
-      }
-      first = false;
-      sb.append(")");
-      return sb.toString();
-    }
-
-    public void validate() throws org.apache.thrift.TException {
-      // check for required fields
-      // check for sub-struct validity
-      if (populationInfo != null) {
-        populationInfo.validate();
-      }
-    }
-
-    private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
-      try {
-        write(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(out)));
-      } catch (org.apache.thrift.TException te) {
-        throw new java.io.IOException(te);
-      }
-    }
-
-    private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
-      try {
-        read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
-      } catch (org.apache.thrift.TException te) {
-        throw new java.io.IOException(te);
-      }
-    }
-
-    private static class calculateSimPopulationFitness_argsStandardSchemeFactory implements SchemeFactory {
-      public calculateSimPopulationFitness_argsStandardScheme getScheme() {
-        return new calculateSimPopulationFitness_argsStandardScheme();
-      }
-    }
-
-    private static class calculateSimPopulationFitness_argsStandardScheme extends StandardScheme<calculateSimPopulationFitness_args> {
-
-      public void read(org.apache.thrift.protocol.TProtocol iprot, calculateSimPopulationFitness_args struct) throws org.apache.thrift.TException {
-        org.apache.thrift.protocol.TField schemeField;
-        iprot.readStructBegin();
-        while (true)
-        {
-          schemeField = iprot.readFieldBegin();
-          if (schemeField.type == org.apache.thrift.protocol.TType.STOP) { 
-            break;
-          }
-          switch (schemeField.id) {
-            case 1: // POPULATION_INFO
-              if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
-                struct.populationInfo = new CPopulationInfo();
-                struct.populationInfo.read(iprot);
-                struct.setPopulationInfoIsSet(true);
-              } else { 
-                org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
-              }
-              break;
-            default:
-              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
-          }
-          iprot.readFieldEnd();
-        }
-        iprot.readStructEnd();
-
-        // check for required fields of primitive type, which can't be checked in the validate method
-        struct.validate();
-      }
-
-      public void write(org.apache.thrift.protocol.TProtocol oprot, calculateSimPopulationFitness_args struct) throws org.apache.thrift.TException {
-        struct.validate();
-
-        oprot.writeStructBegin(STRUCT_DESC);
-        if (struct.populationInfo != null) {
-          oprot.writeFieldBegin(POPULATION_INFO_FIELD_DESC);
-          struct.populationInfo.write(oprot);
-          oprot.writeFieldEnd();
-        }
-        oprot.writeFieldStop();
-        oprot.writeStructEnd();
-      }
-
-    }
-
-    private static class calculateSimPopulationFitness_argsTupleSchemeFactory implements SchemeFactory {
-      public calculateSimPopulationFitness_argsTupleScheme getScheme() {
-        return new calculateSimPopulationFitness_argsTupleScheme();
-      }
-    }
-
-    private static class calculateSimPopulationFitness_argsTupleScheme extends TupleScheme<calculateSimPopulationFitness_args> {
-
-      @Override
-      public void write(org.apache.thrift.protocol.TProtocol prot, calculateSimPopulationFitness_args struct) throws org.apache.thrift.TException {
-        TTupleProtocol oprot = (TTupleProtocol) prot;
-        BitSet optionals = new BitSet();
-        if (struct.isSetPopulationInfo()) {
-          optionals.set(0);
-        }
-        oprot.writeBitSet(optionals, 1);
-        if (struct.isSetPopulationInfo()) {
-          struct.populationInfo.write(oprot);
-        }
-      }
-
-      @Override
-      public void read(org.apache.thrift.protocol.TProtocol prot, calculateSimPopulationFitness_args struct) throws org.apache.thrift.TException {
-        TTupleProtocol iprot = (TTupleProtocol) prot;
-        BitSet incoming = iprot.readBitSet(1);
-        if (incoming.get(0)) {
-          struct.populationInfo = new CPopulationInfo();
-          struct.populationInfo.read(iprot);
-          struct.setPopulationInfoIsSet(true);
-        }
-      }
-    }
-
-  }
-
-  public static class calculateSimPopulationFitness_result implements org.apache.thrift.TBase<calculateSimPopulationFitness_result, calculateSimPopulationFitness_result._Fields>, java.io.Serializable, Cloneable   {
-    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("calculateSimPopulationFitness_result");
-
-    private static final org.apache.thrift.protocol.TField SUCCESS_FIELD_DESC = new org.apache.thrift.protocol.TField("success", org.apache.thrift.protocol.TType.STRUCT, (short)0);
-
-    private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
-    static {
-      schemes.put(StandardScheme.class, new calculateSimPopulationFitness_resultStandardSchemeFactory());
-      schemes.put(TupleScheme.class, new calculateSimPopulationFitness_resultTupleSchemeFactory());
-    }
-
-    public CPopulationFitness success; // required
-
-    /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
-    public enum _Fields implements org.apache.thrift.TFieldIdEnum {
-      SUCCESS((short)0, "success");
-
-      private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
-
-      static {
-        for (_Fields field : EnumSet.allOf(_Fields.class)) {
-          byName.put(field.getFieldName(), field);
-        }
-      }
-
-      /**
-       * Find the _Fields constant that matches fieldId, or null if its not found.
-       */
-      public static _Fields findByThriftId(int fieldId) {
-        switch(fieldId) {
-          case 0: // SUCCESS
-            return SUCCESS;
-          default:
-            return null;
-        }
-      }
-
-      /**
-       * Find the _Fields constant that matches fieldId, throwing an exception
-       * if it is not found.
-       */
-      public static _Fields findByThriftIdOrThrow(int fieldId) {
-        _Fields fields = findByThriftId(fieldId);
-        if (fields == null) throw new IllegalArgumentException("Field " + fieldId + " doesn't exist!");
-        return fields;
-      }
-
-      /**
-       * Find the _Fields constant that matches name, or null if its not found.
-       */
-      public static _Fields findByName(String name) {
-        return byName.get(name);
-      }
-
-      private final short _thriftId;
-      private final String _fieldName;
-
-      _Fields(short thriftId, String fieldName) {
-        _thriftId = thriftId;
-        _fieldName = fieldName;
-      }
-
-      public short getThriftFieldId() {
-        return _thriftId;
-      }
-
-      public String getFieldName() {
-        return _fieldName;
-      }
-    }
-
-    // isset id assignments
-    public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
-    static {
-      Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
-      tmpMap.put(_Fields.SUCCESS, new org.apache.thrift.meta_data.FieldMetaData("success", org.apache.thrift.TFieldRequirementType.DEFAULT, 
-          new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, CPopulationFitness.class)));
-      metaDataMap = Collections.unmodifiableMap(tmpMap);
-      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(calculateSimPopulationFitness_result.class, metaDataMap);
-    }
-
-    public calculateSimPopulationFitness_result() {
-    }
-
-    public calculateSimPopulationFitness_result(
-      CPopulationFitness success)
-    {
-      this();
-      this.success = success;
-    }
-
-    /**
-     * Performs a deep copy on <i>other</i>.
-     */
-    public calculateSimPopulationFitness_result(calculateSimPopulationFitness_result other) {
-      if (other.isSetSuccess()) {
-        this.success = new CPopulationFitness(other.success);
-      }
-    }
-
-    public calculateSimPopulationFitness_result deepCopy() {
-      return new calculateSimPopulationFitness_result(this);
-    }
-
-    @Override
-    public void clear() {
-      this.success = null;
-    }
-
-    public CPopulationFitness getSuccess() {
-      return this.success;
-    }
-
-    public calculateSimPopulationFitness_result setSuccess(CPopulationFitness success) {
-      this.success = success;
-      return this;
-    }
-
-    public void unsetSuccess() {
-      this.success = null;
-    }
-
-    /** Returns true if field success is set (has been assigned a value) and false otherwise */
-    public boolean isSetSuccess() {
-      return this.success != null;
-    }
-
-    public void setSuccessIsSet(boolean value) {
-      if (!value) {
-        this.success = null;
-      }
-    }
-
-    public void setFieldValue(_Fields field, Object value) {
-      switch (field) {
-      case SUCCESS:
-        if (value == null) {
-          unsetSuccess();
-        } else {
-          setSuccess((CPopulationFitness)value);
-        }
-        break;
-
-      }
-    }
-
-    public Object getFieldValue(_Fields field) {
-      switch (field) {
-      case SUCCESS:
-        return getSuccess();
-
-      }
-      throw new IllegalStateException();
-    }
-
-    /** Returns true if field corresponding to fieldID is set (has been assigned a value) and false otherwise */
-    public boolean isSet(_Fields field) {
-      if (field == null) {
-        throw new IllegalArgumentException();
-      }
-
-      switch (field) {
-      case SUCCESS:
-        return isSetSuccess();
-      }
-      throw new IllegalStateException();
-    }
-
-    @Override
-    public boolean equals(Object that) {
-      if (that == null)
-        return false;
-      if (that instanceof calculateSimPopulationFitness_result)
-        return this.equals((calculateSimPopulationFitness_result)that);
-      return false;
-    }
-
-    public boolean equals(calculateSimPopulationFitness_result that) {
-      if (that == null)
-        return false;
-
-      boolean this_present_success = true && this.isSetSuccess();
-      boolean that_present_success = true && that.isSetSuccess();
-      if (this_present_success || that_present_success) {
-        if (!(this_present_success && that_present_success))
-          return false;
-        if (!this.success.equals(that.success))
-          return false;
-      }
-
-      return true;
-    }
-
-    @Override
-    public int hashCode() {
-      return 0;
-    }
-
-    public int compareTo(calculateSimPopulationFitness_result other) {
-      if (!getClass().equals(other.getClass())) {
-        return getClass().getName().compareTo(other.getClass().getName());
-      }
-
-      int lastComparison = 0;
-      calculateSimPopulationFitness_result typedOther = (calculateSimPopulationFitness_result)other;
-
-      lastComparison = Boolean.valueOf(isSetSuccess()).compareTo(typedOther.isSetSuccess());
-      if (lastComparison != 0) {
-        return lastComparison;
-      }
-      if (isSetSuccess()) {
-        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.success, typedOther.success);
-        if (lastComparison != 0) {
-          return lastComparison;
-        }
-      }
-      return 0;
-    }
-
-    public _Fields fieldForId(int fieldId) {
-      return _Fields.findByThriftId(fieldId);
-    }
-
-    public void read(org.apache.thrift.protocol.TProtocol iprot) throws org.apache.thrift.TException {
-      schemes.get(iprot.getScheme()).getScheme().read(iprot, this);
-    }
-
-    public void write(org.apache.thrift.protocol.TProtocol oprot) throws org.apache.thrift.TException {
-      schemes.get(oprot.getScheme()).getScheme().write(oprot, this);
-      }
-
-    @Override
-    public String toString() {
-      StringBuilder sb = new StringBuilder("calculateSimPopulationFitness_result(");
-      boolean first = true;
-
-      sb.append("success:");
-      if (this.success == null) {
-        sb.append("null");
-      } else {
-        sb.append(this.success);
-      }
-      first = false;
-      sb.append(")");
-      return sb.toString();
-    }
-
-    public void validate() throws org.apache.thrift.TException {
-      // check for required fields
-      // check for sub-struct validity
-      if (success != null) {
-        success.validate();
-      }
-    }
-
-    private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
-      try {
-        write(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(out)));
-      } catch (org.apache.thrift.TException te) {
-        throw new java.io.IOException(te);
-      }
-    }
-
-    private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
-      try {
-        read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
-      } catch (org.apache.thrift.TException te) {
-        throw new java.io.IOException(te);
-      }
-    }
-
-    private static class calculateSimPopulationFitness_resultStandardSchemeFactory implements SchemeFactory {
-      public calculateSimPopulationFitness_resultStandardScheme getScheme() {
-        return new calculateSimPopulationFitness_resultStandardScheme();
-      }
-    }
-
-    private static class calculateSimPopulationFitness_resultStandardScheme extends StandardScheme<calculateSimPopulationFitness_result> {
-
-      public void read(org.apache.thrift.protocol.TProtocol iprot, calculateSimPopulationFitness_result struct) throws org.apache.thrift.TException {
-        org.apache.thrift.protocol.TField schemeField;
-        iprot.readStructBegin();
-        while (true)
-        {
-          schemeField = iprot.readFieldBegin();
-          if (schemeField.type == org.apache.thrift.protocol.TType.STOP) { 
-            break;
-          }
-          switch (schemeField.id) {
-            case 0: // SUCCESS
-              if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
-                struct.success = new CPopulationFitness();
-                struct.success.read(iprot);
-                struct.setSuccessIsSet(true);
-              } else { 
-                org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
-              }
-              break;
-            default:
-              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
-          }
-          iprot.readFieldEnd();
-        }
-        iprot.readStructEnd();
-
-        // check for required fields of primitive type, which can't be checked in the validate method
-        struct.validate();
-      }
-
-      public void write(org.apache.thrift.protocol.TProtocol oprot, calculateSimPopulationFitness_result struct) throws org.apache.thrift.TException {
-        struct.validate();
-
-        oprot.writeStructBegin(STRUCT_DESC);
-        if (struct.success != null) {
-          oprot.writeFieldBegin(SUCCESS_FIELD_DESC);
-          struct.success.write(oprot);
-          oprot.writeFieldEnd();
-        }
-        oprot.writeFieldStop();
-        oprot.writeStructEnd();
-      }
-
-    }
-
-    private static class calculateSimPopulationFitness_resultTupleSchemeFactory implements SchemeFactory {
-      public calculateSimPopulationFitness_resultTupleScheme getScheme() {
-        return new calculateSimPopulationFitness_resultTupleScheme();
-      }
-    }
-
-    private static class calculateSimPopulationFitness_resultTupleScheme extends TupleScheme<calculateSimPopulationFitness_result> {
-
-      @Override
-      public void write(org.apache.thrift.protocol.TProtocol prot, calculateSimPopulationFitness_result struct) throws org.apache.thrift.TException {
-        TTupleProtocol oprot = (TTupleProtocol) prot;
-        BitSet optionals = new BitSet();
-        if (struct.isSetSuccess()) {
-          optionals.set(0);
-        }
-        oprot.writeBitSet(optionals, 1);
-        if (struct.isSetSuccess()) {
-          struct.success.write(oprot);
-        }
-      }
-
-      @Override
-      public void read(org.apache.thrift.protocol.TProtocol prot, calculateSimPopulationFitness_result struct) throws org.apache.thrift.TException {
-        TTupleProtocol iprot = (TTupleProtocol) prot;
-        BitSet incoming = iprot.readBitSet(1);
-        if (incoming.get(0)) {
-          struct.success = new CPopulationFitness();
-          struct.success.read(iprot);
-          struct.setSuccessIsSet(true);
-        }
+      public calculateSimPopulationFitness_result getResult(I iface, calculateSimPopulationFitness_args args) throws org.apache.thrift.TException {
+        calculateSimPopulationFitness_result result = new calculateSimPopulationFitness_result();
+        result.success = iface.calculateSimPopulationFitness(args.populationInfo);
+        return result;
       }
     }
 
@@ -2482,6 +1844,1442 @@ public class CFitnessEvaluatorService {
         BitSet incoming = iprot.readBitSet(1);
         if (incoming.get(0)) {
           struct.success = new CFitnessInfo();
+          struct.success.read(iprot);
+          struct.setSuccessIsSet(true);
+        }
+      }
+    }
+
+  }
+
+  public static class calculateSixMultiplexerPopulationFitness_args implements org.apache.thrift.TBase<calculateSixMultiplexerPopulationFitness_args, calculateSixMultiplexerPopulationFitness_args._Fields>, java.io.Serializable, Cloneable   {
+    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("calculateSixMultiplexerPopulationFitness_args");
+
+    private static final org.apache.thrift.protocol.TField POPULATION_INFO_FIELD_DESC = new org.apache.thrift.protocol.TField("populationInfo", org.apache.thrift.protocol.TType.STRUCT, (short)1);
+
+    private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
+    static {
+      schemes.put(StandardScheme.class, new calculateSixMultiplexerPopulationFitness_argsStandardSchemeFactory());
+      schemes.put(TupleScheme.class, new calculateSixMultiplexerPopulationFitness_argsTupleSchemeFactory());
+    }
+
+    public CPopulationInfo populationInfo; // required
+
+    /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
+    public enum _Fields implements org.apache.thrift.TFieldIdEnum {
+      POPULATION_INFO((short)1, "populationInfo");
+
+      private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
+
+      static {
+        for (_Fields field : EnumSet.allOf(_Fields.class)) {
+          byName.put(field.getFieldName(), field);
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, or null if its not found.
+       */
+      public static _Fields findByThriftId(int fieldId) {
+        switch(fieldId) {
+          case 1: // POPULATION_INFO
+            return POPULATION_INFO;
+          default:
+            return null;
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, throwing an exception
+       * if it is not found.
+       */
+      public static _Fields findByThriftIdOrThrow(int fieldId) {
+        _Fields fields = findByThriftId(fieldId);
+        if (fields == null) throw new IllegalArgumentException("Field " + fieldId + " doesn't exist!");
+        return fields;
+      }
+
+      /**
+       * Find the _Fields constant that matches name, or null if its not found.
+       */
+      public static _Fields findByName(String name) {
+        return byName.get(name);
+      }
+
+      private final short _thriftId;
+      private final String _fieldName;
+
+      _Fields(short thriftId, String fieldName) {
+        _thriftId = thriftId;
+        _fieldName = fieldName;
+      }
+
+      public short getThriftFieldId() {
+        return _thriftId;
+      }
+
+      public String getFieldName() {
+        return _fieldName;
+      }
+    }
+
+    // isset id assignments
+    public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
+    static {
+      Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
+      tmpMap.put(_Fields.POPULATION_INFO, new org.apache.thrift.meta_data.FieldMetaData("populationInfo", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, CPopulationInfo.class)));
+      metaDataMap = Collections.unmodifiableMap(tmpMap);
+      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(calculateSixMultiplexerPopulationFitness_args.class, metaDataMap);
+    }
+
+    public calculateSixMultiplexerPopulationFitness_args() {
+    }
+
+    public calculateSixMultiplexerPopulationFitness_args(
+      CPopulationInfo populationInfo)
+    {
+      this();
+      this.populationInfo = populationInfo;
+    }
+
+    /**
+     * Performs a deep copy on <i>other</i>.
+     */
+    public calculateSixMultiplexerPopulationFitness_args(calculateSixMultiplexerPopulationFitness_args other) {
+      if (other.isSetPopulationInfo()) {
+        this.populationInfo = new CPopulationInfo(other.populationInfo);
+      }
+    }
+
+    public calculateSixMultiplexerPopulationFitness_args deepCopy() {
+      return new calculateSixMultiplexerPopulationFitness_args(this);
+    }
+
+    @Override
+    public void clear() {
+      this.populationInfo = null;
+    }
+
+    public CPopulationInfo getPopulationInfo() {
+      return this.populationInfo;
+    }
+
+    public calculateSixMultiplexerPopulationFitness_args setPopulationInfo(CPopulationInfo populationInfo) {
+      this.populationInfo = populationInfo;
+      return this;
+    }
+
+    public void unsetPopulationInfo() {
+      this.populationInfo = null;
+    }
+
+    /** Returns true if field populationInfo is set (has been assigned a value) and false otherwise */
+    public boolean isSetPopulationInfo() {
+      return this.populationInfo != null;
+    }
+
+    public void setPopulationInfoIsSet(boolean value) {
+      if (!value) {
+        this.populationInfo = null;
+      }
+    }
+
+    public void setFieldValue(_Fields field, Object value) {
+      switch (field) {
+      case POPULATION_INFO:
+        if (value == null) {
+          unsetPopulationInfo();
+        } else {
+          setPopulationInfo((CPopulationInfo)value);
+        }
+        break;
+
+      }
+    }
+
+    public Object getFieldValue(_Fields field) {
+      switch (field) {
+      case POPULATION_INFO:
+        return getPopulationInfo();
+
+      }
+      throw new IllegalStateException();
+    }
+
+    /** Returns true if field corresponding to fieldID is set (has been assigned a value) and false otherwise */
+    public boolean isSet(_Fields field) {
+      if (field == null) {
+        throw new IllegalArgumentException();
+      }
+
+      switch (field) {
+      case POPULATION_INFO:
+        return isSetPopulationInfo();
+      }
+      throw new IllegalStateException();
+    }
+
+    @Override
+    public boolean equals(Object that) {
+      if (that == null)
+        return false;
+      if (that instanceof calculateSixMultiplexerPopulationFitness_args)
+        return this.equals((calculateSixMultiplexerPopulationFitness_args)that);
+      return false;
+    }
+
+    public boolean equals(calculateSixMultiplexerPopulationFitness_args that) {
+      if (that == null)
+        return false;
+
+      boolean this_present_populationInfo = true && this.isSetPopulationInfo();
+      boolean that_present_populationInfo = true && that.isSetPopulationInfo();
+      if (this_present_populationInfo || that_present_populationInfo) {
+        if (!(this_present_populationInfo && that_present_populationInfo))
+          return false;
+        if (!this.populationInfo.equals(that.populationInfo))
+          return false;
+      }
+
+      return true;
+    }
+
+    @Override
+    public int hashCode() {
+      return 0;
+    }
+
+    public int compareTo(calculateSixMultiplexerPopulationFitness_args other) {
+      if (!getClass().equals(other.getClass())) {
+        return getClass().getName().compareTo(other.getClass().getName());
+      }
+
+      int lastComparison = 0;
+      calculateSixMultiplexerPopulationFitness_args typedOther = (calculateSixMultiplexerPopulationFitness_args)other;
+
+      lastComparison = Boolean.valueOf(isSetPopulationInfo()).compareTo(typedOther.isSetPopulationInfo());
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+      if (isSetPopulationInfo()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.populationInfo, typedOther.populationInfo);
+        if (lastComparison != 0) {
+          return lastComparison;
+        }
+      }
+      return 0;
+    }
+
+    public _Fields fieldForId(int fieldId) {
+      return _Fields.findByThriftId(fieldId);
+    }
+
+    public void read(org.apache.thrift.protocol.TProtocol iprot) throws org.apache.thrift.TException {
+      schemes.get(iprot.getScheme()).getScheme().read(iprot, this);
+    }
+
+    public void write(org.apache.thrift.protocol.TProtocol oprot) throws org.apache.thrift.TException {
+      schemes.get(oprot.getScheme()).getScheme().write(oprot, this);
+    }
+
+    @Override
+    public String toString() {
+      StringBuilder sb = new StringBuilder("calculateSixMultiplexerPopulationFitness_args(");
+      boolean first = true;
+
+      sb.append("populationInfo:");
+      if (this.populationInfo == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.populationInfo);
+      }
+      first = false;
+      sb.append(")");
+      return sb.toString();
+    }
+
+    public void validate() throws org.apache.thrift.TException {
+      // check for required fields
+      // check for sub-struct validity
+      if (populationInfo != null) {
+        populationInfo.validate();
+      }
+    }
+
+    private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
+      try {
+        write(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(out)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+    private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
+      try {
+        read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+    private static class calculateSixMultiplexerPopulationFitness_argsStandardSchemeFactory implements SchemeFactory {
+      public calculateSixMultiplexerPopulationFitness_argsStandardScheme getScheme() {
+        return new calculateSixMultiplexerPopulationFitness_argsStandardScheme();
+      }
+    }
+
+    private static class calculateSixMultiplexerPopulationFitness_argsStandardScheme extends StandardScheme<calculateSixMultiplexerPopulationFitness_args> {
+
+      public void read(org.apache.thrift.protocol.TProtocol iprot, calculateSixMultiplexerPopulationFitness_args struct) throws org.apache.thrift.TException {
+        org.apache.thrift.protocol.TField schemeField;
+        iprot.readStructBegin();
+        while (true)
+        {
+          schemeField = iprot.readFieldBegin();
+          if (schemeField.type == org.apache.thrift.protocol.TType.STOP) { 
+            break;
+          }
+          switch (schemeField.id) {
+            case 1: // POPULATION_INFO
+              if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
+                struct.populationInfo = new CPopulationInfo();
+                struct.populationInfo.read(iprot);
+                struct.setPopulationInfoIsSet(true);
+              } else { 
+                org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+              }
+              break;
+            default:
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+          }
+          iprot.readFieldEnd();
+        }
+        iprot.readStructEnd();
+
+        // check for required fields of primitive type, which can't be checked in the validate method
+        struct.validate();
+      }
+
+      public void write(org.apache.thrift.protocol.TProtocol oprot, calculateSixMultiplexerPopulationFitness_args struct) throws org.apache.thrift.TException {
+        struct.validate();
+
+        oprot.writeStructBegin(STRUCT_DESC);
+        if (struct.populationInfo != null) {
+          oprot.writeFieldBegin(POPULATION_INFO_FIELD_DESC);
+          struct.populationInfo.write(oprot);
+          oprot.writeFieldEnd();
+        }
+        oprot.writeFieldStop();
+        oprot.writeStructEnd();
+      }
+
+    }
+
+    private static class calculateSixMultiplexerPopulationFitness_argsTupleSchemeFactory implements SchemeFactory {
+      public calculateSixMultiplexerPopulationFitness_argsTupleScheme getScheme() {
+        return new calculateSixMultiplexerPopulationFitness_argsTupleScheme();
+      }
+    }
+
+    private static class calculateSixMultiplexerPopulationFitness_argsTupleScheme extends TupleScheme<calculateSixMultiplexerPopulationFitness_args> {
+
+      @Override
+      public void write(org.apache.thrift.protocol.TProtocol prot, calculateSixMultiplexerPopulationFitness_args struct) throws org.apache.thrift.TException {
+        TTupleProtocol oprot = (TTupleProtocol) prot;
+        BitSet optionals = new BitSet();
+        if (struct.isSetPopulationInfo()) {
+          optionals.set(0);
+        }
+        oprot.writeBitSet(optionals, 1);
+        if (struct.isSetPopulationInfo()) {
+          struct.populationInfo.write(oprot);
+        }
+      }
+
+      @Override
+      public void read(org.apache.thrift.protocol.TProtocol prot, calculateSixMultiplexerPopulationFitness_args struct) throws org.apache.thrift.TException {
+        TTupleProtocol iprot = (TTupleProtocol) prot;
+        BitSet incoming = iprot.readBitSet(1);
+        if (incoming.get(0)) {
+          struct.populationInfo = new CPopulationInfo();
+          struct.populationInfo.read(iprot);
+          struct.setPopulationInfoIsSet(true);
+        }
+      }
+    }
+
+  }
+
+  public static class calculateSixMultiplexerPopulationFitness_result implements org.apache.thrift.TBase<calculateSixMultiplexerPopulationFitness_result, calculateSixMultiplexerPopulationFitness_result._Fields>, java.io.Serializable, Cloneable   {
+    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("calculateSixMultiplexerPopulationFitness_result");
+
+    private static final org.apache.thrift.protocol.TField SUCCESS_FIELD_DESC = new org.apache.thrift.protocol.TField("success", org.apache.thrift.protocol.TType.STRUCT, (short)0);
+
+    private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
+    static {
+      schemes.put(StandardScheme.class, new calculateSixMultiplexerPopulationFitness_resultStandardSchemeFactory());
+      schemes.put(TupleScheme.class, new calculateSixMultiplexerPopulationFitness_resultTupleSchemeFactory());
+    }
+
+    public CPopulationFitness success; // required
+
+    /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
+    public enum _Fields implements org.apache.thrift.TFieldIdEnum {
+      SUCCESS((short)0, "success");
+
+      private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
+
+      static {
+        for (_Fields field : EnumSet.allOf(_Fields.class)) {
+          byName.put(field.getFieldName(), field);
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, or null if its not found.
+       */
+      public static _Fields findByThriftId(int fieldId) {
+        switch(fieldId) {
+          case 0: // SUCCESS
+            return SUCCESS;
+          default:
+            return null;
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, throwing an exception
+       * if it is not found.
+       */
+      public static _Fields findByThriftIdOrThrow(int fieldId) {
+        _Fields fields = findByThriftId(fieldId);
+        if (fields == null) throw new IllegalArgumentException("Field " + fieldId + " doesn't exist!");
+        return fields;
+      }
+
+      /**
+       * Find the _Fields constant that matches name, or null if its not found.
+       */
+      public static _Fields findByName(String name) {
+        return byName.get(name);
+      }
+
+      private final short _thriftId;
+      private final String _fieldName;
+
+      _Fields(short thriftId, String fieldName) {
+        _thriftId = thriftId;
+        _fieldName = fieldName;
+      }
+
+      public short getThriftFieldId() {
+        return _thriftId;
+      }
+
+      public String getFieldName() {
+        return _fieldName;
+      }
+    }
+
+    // isset id assignments
+    public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
+    static {
+      Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
+      tmpMap.put(_Fields.SUCCESS, new org.apache.thrift.meta_data.FieldMetaData("success", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, CPopulationFitness.class)));
+      metaDataMap = Collections.unmodifiableMap(tmpMap);
+      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(calculateSixMultiplexerPopulationFitness_result.class, metaDataMap);
+    }
+
+    public calculateSixMultiplexerPopulationFitness_result() {
+    }
+
+    public calculateSixMultiplexerPopulationFitness_result(
+      CPopulationFitness success)
+    {
+      this();
+      this.success = success;
+    }
+
+    /**
+     * Performs a deep copy on <i>other</i>.
+     */
+    public calculateSixMultiplexerPopulationFitness_result(calculateSixMultiplexerPopulationFitness_result other) {
+      if (other.isSetSuccess()) {
+        this.success = new CPopulationFitness(other.success);
+      }
+    }
+
+    public calculateSixMultiplexerPopulationFitness_result deepCopy() {
+      return new calculateSixMultiplexerPopulationFitness_result(this);
+    }
+
+    @Override
+    public void clear() {
+      this.success = null;
+    }
+
+    public CPopulationFitness getSuccess() {
+      return this.success;
+    }
+
+    public calculateSixMultiplexerPopulationFitness_result setSuccess(CPopulationFitness success) {
+      this.success = success;
+      return this;
+    }
+
+    public void unsetSuccess() {
+      this.success = null;
+    }
+
+    /** Returns true if field success is set (has been assigned a value) and false otherwise */
+    public boolean isSetSuccess() {
+      return this.success != null;
+    }
+
+    public void setSuccessIsSet(boolean value) {
+      if (!value) {
+        this.success = null;
+      }
+    }
+
+    public void setFieldValue(_Fields field, Object value) {
+      switch (field) {
+      case SUCCESS:
+        if (value == null) {
+          unsetSuccess();
+        } else {
+          setSuccess((CPopulationFitness)value);
+        }
+        break;
+
+      }
+    }
+
+    public Object getFieldValue(_Fields field) {
+      switch (field) {
+      case SUCCESS:
+        return getSuccess();
+
+      }
+      throw new IllegalStateException();
+    }
+
+    /** Returns true if field corresponding to fieldID is set (has been assigned a value) and false otherwise */
+    public boolean isSet(_Fields field) {
+      if (field == null) {
+        throw new IllegalArgumentException();
+      }
+
+      switch (field) {
+      case SUCCESS:
+        return isSetSuccess();
+      }
+      throw new IllegalStateException();
+    }
+
+    @Override
+    public boolean equals(Object that) {
+      if (that == null)
+        return false;
+      if (that instanceof calculateSixMultiplexerPopulationFitness_result)
+        return this.equals((calculateSixMultiplexerPopulationFitness_result)that);
+      return false;
+    }
+
+    public boolean equals(calculateSixMultiplexerPopulationFitness_result that) {
+      if (that == null)
+        return false;
+
+      boolean this_present_success = true && this.isSetSuccess();
+      boolean that_present_success = true && that.isSetSuccess();
+      if (this_present_success || that_present_success) {
+        if (!(this_present_success && that_present_success))
+          return false;
+        if (!this.success.equals(that.success))
+          return false;
+      }
+
+      return true;
+    }
+
+    @Override
+    public int hashCode() {
+      return 0;
+    }
+
+    public int compareTo(calculateSixMultiplexerPopulationFitness_result other) {
+      if (!getClass().equals(other.getClass())) {
+        return getClass().getName().compareTo(other.getClass().getName());
+      }
+
+      int lastComparison = 0;
+      calculateSixMultiplexerPopulationFitness_result typedOther = (calculateSixMultiplexerPopulationFitness_result)other;
+
+      lastComparison = Boolean.valueOf(isSetSuccess()).compareTo(typedOther.isSetSuccess());
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+      if (isSetSuccess()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.success, typedOther.success);
+        if (lastComparison != 0) {
+          return lastComparison;
+        }
+      }
+      return 0;
+    }
+
+    public _Fields fieldForId(int fieldId) {
+      return _Fields.findByThriftId(fieldId);
+    }
+
+    public void read(org.apache.thrift.protocol.TProtocol iprot) throws org.apache.thrift.TException {
+      schemes.get(iprot.getScheme()).getScheme().read(iprot, this);
+    }
+
+    public void write(org.apache.thrift.protocol.TProtocol oprot) throws org.apache.thrift.TException {
+      schemes.get(oprot.getScheme()).getScheme().write(oprot, this);
+      }
+
+    @Override
+    public String toString() {
+      StringBuilder sb = new StringBuilder("calculateSixMultiplexerPopulationFitness_result(");
+      boolean first = true;
+
+      sb.append("success:");
+      if (this.success == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.success);
+      }
+      first = false;
+      sb.append(")");
+      return sb.toString();
+    }
+
+    public void validate() throws org.apache.thrift.TException {
+      // check for required fields
+      // check for sub-struct validity
+      if (success != null) {
+        success.validate();
+      }
+    }
+
+    private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
+      try {
+        write(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(out)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+    private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
+      try {
+        read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+    private static class calculateSixMultiplexerPopulationFitness_resultStandardSchemeFactory implements SchemeFactory {
+      public calculateSixMultiplexerPopulationFitness_resultStandardScheme getScheme() {
+        return new calculateSixMultiplexerPopulationFitness_resultStandardScheme();
+      }
+    }
+
+    private static class calculateSixMultiplexerPopulationFitness_resultStandardScheme extends StandardScheme<calculateSixMultiplexerPopulationFitness_result> {
+
+      public void read(org.apache.thrift.protocol.TProtocol iprot, calculateSixMultiplexerPopulationFitness_result struct) throws org.apache.thrift.TException {
+        org.apache.thrift.protocol.TField schemeField;
+        iprot.readStructBegin();
+        while (true)
+        {
+          schemeField = iprot.readFieldBegin();
+          if (schemeField.type == org.apache.thrift.protocol.TType.STOP) { 
+            break;
+          }
+          switch (schemeField.id) {
+            case 0: // SUCCESS
+              if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
+                struct.success = new CPopulationFitness();
+                struct.success.read(iprot);
+                struct.setSuccessIsSet(true);
+              } else { 
+                org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+              }
+              break;
+            default:
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+          }
+          iprot.readFieldEnd();
+        }
+        iprot.readStructEnd();
+
+        // check for required fields of primitive type, which can't be checked in the validate method
+        struct.validate();
+      }
+
+      public void write(org.apache.thrift.protocol.TProtocol oprot, calculateSixMultiplexerPopulationFitness_result struct) throws org.apache.thrift.TException {
+        struct.validate();
+
+        oprot.writeStructBegin(STRUCT_DESC);
+        if (struct.success != null) {
+          oprot.writeFieldBegin(SUCCESS_FIELD_DESC);
+          struct.success.write(oprot);
+          oprot.writeFieldEnd();
+        }
+        oprot.writeFieldStop();
+        oprot.writeStructEnd();
+      }
+
+    }
+
+    private static class calculateSixMultiplexerPopulationFitness_resultTupleSchemeFactory implements SchemeFactory {
+      public calculateSixMultiplexerPopulationFitness_resultTupleScheme getScheme() {
+        return new calculateSixMultiplexerPopulationFitness_resultTupleScheme();
+      }
+    }
+
+    private static class calculateSixMultiplexerPopulationFitness_resultTupleScheme extends TupleScheme<calculateSixMultiplexerPopulationFitness_result> {
+
+      @Override
+      public void write(org.apache.thrift.protocol.TProtocol prot, calculateSixMultiplexerPopulationFitness_result struct) throws org.apache.thrift.TException {
+        TTupleProtocol oprot = (TTupleProtocol) prot;
+        BitSet optionals = new BitSet();
+        if (struct.isSetSuccess()) {
+          optionals.set(0);
+        }
+        oprot.writeBitSet(optionals, 1);
+        if (struct.isSetSuccess()) {
+          struct.success.write(oprot);
+        }
+      }
+
+      @Override
+      public void read(org.apache.thrift.protocol.TProtocol prot, calculateSixMultiplexerPopulationFitness_result struct) throws org.apache.thrift.TException {
+        TTupleProtocol iprot = (TTupleProtocol) prot;
+        BitSet incoming = iprot.readBitSet(1);
+        if (incoming.get(0)) {
+          struct.success = new CPopulationFitness();
+          struct.success.read(iprot);
+          struct.setSuccessIsSet(true);
+        }
+      }
+    }
+
+  }
+
+  public static class calculateSimPopulationFitness_args implements org.apache.thrift.TBase<calculateSimPopulationFitness_args, calculateSimPopulationFitness_args._Fields>, java.io.Serializable, Cloneable   {
+    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("calculateSimPopulationFitness_args");
+
+    private static final org.apache.thrift.protocol.TField POPULATION_INFO_FIELD_DESC = new org.apache.thrift.protocol.TField("populationInfo", org.apache.thrift.protocol.TType.STRUCT, (short)1);
+
+    private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
+    static {
+      schemes.put(StandardScheme.class, new calculateSimPopulationFitness_argsStandardSchemeFactory());
+      schemes.put(TupleScheme.class, new calculateSimPopulationFitness_argsTupleSchemeFactory());
+    }
+
+    public CPopulationInfo populationInfo; // required
+
+    /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
+    public enum _Fields implements org.apache.thrift.TFieldIdEnum {
+      POPULATION_INFO((short)1, "populationInfo");
+
+      private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
+
+      static {
+        for (_Fields field : EnumSet.allOf(_Fields.class)) {
+          byName.put(field.getFieldName(), field);
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, or null if its not found.
+       */
+      public static _Fields findByThriftId(int fieldId) {
+        switch(fieldId) {
+          case 1: // POPULATION_INFO
+            return POPULATION_INFO;
+          default:
+            return null;
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, throwing an exception
+       * if it is not found.
+       */
+      public static _Fields findByThriftIdOrThrow(int fieldId) {
+        _Fields fields = findByThriftId(fieldId);
+        if (fields == null) throw new IllegalArgumentException("Field " + fieldId + " doesn't exist!");
+        return fields;
+      }
+
+      /**
+       * Find the _Fields constant that matches name, or null if its not found.
+       */
+      public static _Fields findByName(String name) {
+        return byName.get(name);
+      }
+
+      private final short _thriftId;
+      private final String _fieldName;
+
+      _Fields(short thriftId, String fieldName) {
+        _thriftId = thriftId;
+        _fieldName = fieldName;
+      }
+
+      public short getThriftFieldId() {
+        return _thriftId;
+      }
+
+      public String getFieldName() {
+        return _fieldName;
+      }
+    }
+
+    // isset id assignments
+    public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
+    static {
+      Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
+      tmpMap.put(_Fields.POPULATION_INFO, new org.apache.thrift.meta_data.FieldMetaData("populationInfo", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, CPopulationInfo.class)));
+      metaDataMap = Collections.unmodifiableMap(tmpMap);
+      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(calculateSimPopulationFitness_args.class, metaDataMap);
+    }
+
+    public calculateSimPopulationFitness_args() {
+    }
+
+    public calculateSimPopulationFitness_args(
+      CPopulationInfo populationInfo)
+    {
+      this();
+      this.populationInfo = populationInfo;
+    }
+
+    /**
+     * Performs a deep copy on <i>other</i>.
+     */
+    public calculateSimPopulationFitness_args(calculateSimPopulationFitness_args other) {
+      if (other.isSetPopulationInfo()) {
+        this.populationInfo = new CPopulationInfo(other.populationInfo);
+      }
+    }
+
+    public calculateSimPopulationFitness_args deepCopy() {
+      return new calculateSimPopulationFitness_args(this);
+    }
+
+    @Override
+    public void clear() {
+      this.populationInfo = null;
+    }
+
+    public CPopulationInfo getPopulationInfo() {
+      return this.populationInfo;
+    }
+
+    public calculateSimPopulationFitness_args setPopulationInfo(CPopulationInfo populationInfo) {
+      this.populationInfo = populationInfo;
+      return this;
+    }
+
+    public void unsetPopulationInfo() {
+      this.populationInfo = null;
+    }
+
+    /** Returns true if field populationInfo is set (has been assigned a value) and false otherwise */
+    public boolean isSetPopulationInfo() {
+      return this.populationInfo != null;
+    }
+
+    public void setPopulationInfoIsSet(boolean value) {
+      if (!value) {
+        this.populationInfo = null;
+      }
+    }
+
+    public void setFieldValue(_Fields field, Object value) {
+      switch (field) {
+      case POPULATION_INFO:
+        if (value == null) {
+          unsetPopulationInfo();
+        } else {
+          setPopulationInfo((CPopulationInfo)value);
+        }
+        break;
+
+      }
+    }
+
+    public Object getFieldValue(_Fields field) {
+      switch (field) {
+      case POPULATION_INFO:
+        return getPopulationInfo();
+
+      }
+      throw new IllegalStateException();
+    }
+
+    /** Returns true if field corresponding to fieldID is set (has been assigned a value) and false otherwise */
+    public boolean isSet(_Fields field) {
+      if (field == null) {
+        throw new IllegalArgumentException();
+      }
+
+      switch (field) {
+      case POPULATION_INFO:
+        return isSetPopulationInfo();
+      }
+      throw new IllegalStateException();
+    }
+
+    @Override
+    public boolean equals(Object that) {
+      if (that == null)
+        return false;
+      if (that instanceof calculateSimPopulationFitness_args)
+        return this.equals((calculateSimPopulationFitness_args)that);
+      return false;
+    }
+
+    public boolean equals(calculateSimPopulationFitness_args that) {
+      if (that == null)
+        return false;
+
+      boolean this_present_populationInfo = true && this.isSetPopulationInfo();
+      boolean that_present_populationInfo = true && that.isSetPopulationInfo();
+      if (this_present_populationInfo || that_present_populationInfo) {
+        if (!(this_present_populationInfo && that_present_populationInfo))
+          return false;
+        if (!this.populationInfo.equals(that.populationInfo))
+          return false;
+      }
+
+      return true;
+    }
+
+    @Override
+    public int hashCode() {
+      return 0;
+    }
+
+    public int compareTo(calculateSimPopulationFitness_args other) {
+      if (!getClass().equals(other.getClass())) {
+        return getClass().getName().compareTo(other.getClass().getName());
+      }
+
+      int lastComparison = 0;
+      calculateSimPopulationFitness_args typedOther = (calculateSimPopulationFitness_args)other;
+
+      lastComparison = Boolean.valueOf(isSetPopulationInfo()).compareTo(typedOther.isSetPopulationInfo());
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+      if (isSetPopulationInfo()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.populationInfo, typedOther.populationInfo);
+        if (lastComparison != 0) {
+          return lastComparison;
+        }
+      }
+      return 0;
+    }
+
+    public _Fields fieldForId(int fieldId) {
+      return _Fields.findByThriftId(fieldId);
+    }
+
+    public void read(org.apache.thrift.protocol.TProtocol iprot) throws org.apache.thrift.TException {
+      schemes.get(iprot.getScheme()).getScheme().read(iprot, this);
+    }
+
+    public void write(org.apache.thrift.protocol.TProtocol oprot) throws org.apache.thrift.TException {
+      schemes.get(oprot.getScheme()).getScheme().write(oprot, this);
+    }
+
+    @Override
+    public String toString() {
+      StringBuilder sb = new StringBuilder("calculateSimPopulationFitness_args(");
+      boolean first = true;
+
+      sb.append("populationInfo:");
+      if (this.populationInfo == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.populationInfo);
+      }
+      first = false;
+      sb.append(")");
+      return sb.toString();
+    }
+
+    public void validate() throws org.apache.thrift.TException {
+      // check for required fields
+      // check for sub-struct validity
+      if (populationInfo != null) {
+        populationInfo.validate();
+      }
+    }
+
+    private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
+      try {
+        write(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(out)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+    private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
+      try {
+        read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+    private static class calculateSimPopulationFitness_argsStandardSchemeFactory implements SchemeFactory {
+      public calculateSimPopulationFitness_argsStandardScheme getScheme() {
+        return new calculateSimPopulationFitness_argsStandardScheme();
+      }
+    }
+
+    private static class calculateSimPopulationFitness_argsStandardScheme extends StandardScheme<calculateSimPopulationFitness_args> {
+
+      public void read(org.apache.thrift.protocol.TProtocol iprot, calculateSimPopulationFitness_args struct) throws org.apache.thrift.TException {
+        org.apache.thrift.protocol.TField schemeField;
+        iprot.readStructBegin();
+        while (true)
+        {
+          schemeField = iprot.readFieldBegin();
+          if (schemeField.type == org.apache.thrift.protocol.TType.STOP) { 
+            break;
+          }
+          switch (schemeField.id) {
+            case 1: // POPULATION_INFO
+              if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
+                struct.populationInfo = new CPopulationInfo();
+                struct.populationInfo.read(iprot);
+                struct.setPopulationInfoIsSet(true);
+              } else { 
+                org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+              }
+              break;
+            default:
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+          }
+          iprot.readFieldEnd();
+        }
+        iprot.readStructEnd();
+
+        // check for required fields of primitive type, which can't be checked in the validate method
+        struct.validate();
+      }
+
+      public void write(org.apache.thrift.protocol.TProtocol oprot, calculateSimPopulationFitness_args struct) throws org.apache.thrift.TException {
+        struct.validate();
+
+        oprot.writeStructBegin(STRUCT_DESC);
+        if (struct.populationInfo != null) {
+          oprot.writeFieldBegin(POPULATION_INFO_FIELD_DESC);
+          struct.populationInfo.write(oprot);
+          oprot.writeFieldEnd();
+        }
+        oprot.writeFieldStop();
+        oprot.writeStructEnd();
+      }
+
+    }
+
+    private static class calculateSimPopulationFitness_argsTupleSchemeFactory implements SchemeFactory {
+      public calculateSimPopulationFitness_argsTupleScheme getScheme() {
+        return new calculateSimPopulationFitness_argsTupleScheme();
+      }
+    }
+
+    private static class calculateSimPopulationFitness_argsTupleScheme extends TupleScheme<calculateSimPopulationFitness_args> {
+
+      @Override
+      public void write(org.apache.thrift.protocol.TProtocol prot, calculateSimPopulationFitness_args struct) throws org.apache.thrift.TException {
+        TTupleProtocol oprot = (TTupleProtocol) prot;
+        BitSet optionals = new BitSet();
+        if (struct.isSetPopulationInfo()) {
+          optionals.set(0);
+        }
+        oprot.writeBitSet(optionals, 1);
+        if (struct.isSetPopulationInfo()) {
+          struct.populationInfo.write(oprot);
+        }
+      }
+
+      @Override
+      public void read(org.apache.thrift.protocol.TProtocol prot, calculateSimPopulationFitness_args struct) throws org.apache.thrift.TException {
+        TTupleProtocol iprot = (TTupleProtocol) prot;
+        BitSet incoming = iprot.readBitSet(1);
+        if (incoming.get(0)) {
+          struct.populationInfo = new CPopulationInfo();
+          struct.populationInfo.read(iprot);
+          struct.setPopulationInfoIsSet(true);
+        }
+      }
+    }
+
+  }
+
+  public static class calculateSimPopulationFitness_result implements org.apache.thrift.TBase<calculateSimPopulationFitness_result, calculateSimPopulationFitness_result._Fields>, java.io.Serializable, Cloneable   {
+    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("calculateSimPopulationFitness_result");
+
+    private static final org.apache.thrift.protocol.TField SUCCESS_FIELD_DESC = new org.apache.thrift.protocol.TField("success", org.apache.thrift.protocol.TType.STRUCT, (short)0);
+
+    private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
+    static {
+      schemes.put(StandardScheme.class, new calculateSimPopulationFitness_resultStandardSchemeFactory());
+      schemes.put(TupleScheme.class, new calculateSimPopulationFitness_resultTupleSchemeFactory());
+    }
+
+    public CPopulationFitness success; // required
+
+    /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
+    public enum _Fields implements org.apache.thrift.TFieldIdEnum {
+      SUCCESS((short)0, "success");
+
+      private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
+
+      static {
+        for (_Fields field : EnumSet.allOf(_Fields.class)) {
+          byName.put(field.getFieldName(), field);
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, or null if its not found.
+       */
+      public static _Fields findByThriftId(int fieldId) {
+        switch(fieldId) {
+          case 0: // SUCCESS
+            return SUCCESS;
+          default:
+            return null;
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, throwing an exception
+       * if it is not found.
+       */
+      public static _Fields findByThriftIdOrThrow(int fieldId) {
+        _Fields fields = findByThriftId(fieldId);
+        if (fields == null) throw new IllegalArgumentException("Field " + fieldId + " doesn't exist!");
+        return fields;
+      }
+
+      /**
+       * Find the _Fields constant that matches name, or null if its not found.
+       */
+      public static _Fields findByName(String name) {
+        return byName.get(name);
+      }
+
+      private final short _thriftId;
+      private final String _fieldName;
+
+      _Fields(short thriftId, String fieldName) {
+        _thriftId = thriftId;
+        _fieldName = fieldName;
+      }
+
+      public short getThriftFieldId() {
+        return _thriftId;
+      }
+
+      public String getFieldName() {
+        return _fieldName;
+      }
+    }
+
+    // isset id assignments
+    public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
+    static {
+      Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
+      tmpMap.put(_Fields.SUCCESS, new org.apache.thrift.meta_data.FieldMetaData("success", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, CPopulationFitness.class)));
+      metaDataMap = Collections.unmodifiableMap(tmpMap);
+      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(calculateSimPopulationFitness_result.class, metaDataMap);
+    }
+
+    public calculateSimPopulationFitness_result() {
+    }
+
+    public calculateSimPopulationFitness_result(
+      CPopulationFitness success)
+    {
+      this();
+      this.success = success;
+    }
+
+    /**
+     * Performs a deep copy on <i>other</i>.
+     */
+    public calculateSimPopulationFitness_result(calculateSimPopulationFitness_result other) {
+      if (other.isSetSuccess()) {
+        this.success = new CPopulationFitness(other.success);
+      }
+    }
+
+    public calculateSimPopulationFitness_result deepCopy() {
+      return new calculateSimPopulationFitness_result(this);
+    }
+
+    @Override
+    public void clear() {
+      this.success = null;
+    }
+
+    public CPopulationFitness getSuccess() {
+      return this.success;
+    }
+
+    public calculateSimPopulationFitness_result setSuccess(CPopulationFitness success) {
+      this.success = success;
+      return this;
+    }
+
+    public void unsetSuccess() {
+      this.success = null;
+    }
+
+    /** Returns true if field success is set (has been assigned a value) and false otherwise */
+    public boolean isSetSuccess() {
+      return this.success != null;
+    }
+
+    public void setSuccessIsSet(boolean value) {
+      if (!value) {
+        this.success = null;
+      }
+    }
+
+    public void setFieldValue(_Fields field, Object value) {
+      switch (field) {
+      case SUCCESS:
+        if (value == null) {
+          unsetSuccess();
+        } else {
+          setSuccess((CPopulationFitness)value);
+        }
+        break;
+
+      }
+    }
+
+    public Object getFieldValue(_Fields field) {
+      switch (field) {
+      case SUCCESS:
+        return getSuccess();
+
+      }
+      throw new IllegalStateException();
+    }
+
+    /** Returns true if field corresponding to fieldID is set (has been assigned a value) and false otherwise */
+    public boolean isSet(_Fields field) {
+      if (field == null) {
+        throw new IllegalArgumentException();
+      }
+
+      switch (field) {
+      case SUCCESS:
+        return isSetSuccess();
+      }
+      throw new IllegalStateException();
+    }
+
+    @Override
+    public boolean equals(Object that) {
+      if (that == null)
+        return false;
+      if (that instanceof calculateSimPopulationFitness_result)
+        return this.equals((calculateSimPopulationFitness_result)that);
+      return false;
+    }
+
+    public boolean equals(calculateSimPopulationFitness_result that) {
+      if (that == null)
+        return false;
+
+      boolean this_present_success = true && this.isSetSuccess();
+      boolean that_present_success = true && that.isSetSuccess();
+      if (this_present_success || that_present_success) {
+        if (!(this_present_success && that_present_success))
+          return false;
+        if (!this.success.equals(that.success))
+          return false;
+      }
+
+      return true;
+    }
+
+    @Override
+    public int hashCode() {
+      return 0;
+    }
+
+    public int compareTo(calculateSimPopulationFitness_result other) {
+      if (!getClass().equals(other.getClass())) {
+        return getClass().getName().compareTo(other.getClass().getName());
+      }
+
+      int lastComparison = 0;
+      calculateSimPopulationFitness_result typedOther = (calculateSimPopulationFitness_result)other;
+
+      lastComparison = Boolean.valueOf(isSetSuccess()).compareTo(typedOther.isSetSuccess());
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+      if (isSetSuccess()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.success, typedOther.success);
+        if (lastComparison != 0) {
+          return lastComparison;
+        }
+      }
+      return 0;
+    }
+
+    public _Fields fieldForId(int fieldId) {
+      return _Fields.findByThriftId(fieldId);
+    }
+
+    public void read(org.apache.thrift.protocol.TProtocol iprot) throws org.apache.thrift.TException {
+      schemes.get(iprot.getScheme()).getScheme().read(iprot, this);
+    }
+
+    public void write(org.apache.thrift.protocol.TProtocol oprot) throws org.apache.thrift.TException {
+      schemes.get(oprot.getScheme()).getScheme().write(oprot, this);
+      }
+
+    @Override
+    public String toString() {
+      StringBuilder sb = new StringBuilder("calculateSimPopulationFitness_result(");
+      boolean first = true;
+
+      sb.append("success:");
+      if (this.success == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.success);
+      }
+      first = false;
+      sb.append(")");
+      return sb.toString();
+    }
+
+    public void validate() throws org.apache.thrift.TException {
+      // check for required fields
+      // check for sub-struct validity
+      if (success != null) {
+        success.validate();
+      }
+    }
+
+    private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
+      try {
+        write(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(out)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+    private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
+      try {
+        read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+    private static class calculateSimPopulationFitness_resultStandardSchemeFactory implements SchemeFactory {
+      public calculateSimPopulationFitness_resultStandardScheme getScheme() {
+        return new calculateSimPopulationFitness_resultStandardScheme();
+      }
+    }
+
+    private static class calculateSimPopulationFitness_resultStandardScheme extends StandardScheme<calculateSimPopulationFitness_result> {
+
+      public void read(org.apache.thrift.protocol.TProtocol iprot, calculateSimPopulationFitness_result struct) throws org.apache.thrift.TException {
+        org.apache.thrift.protocol.TField schemeField;
+        iprot.readStructBegin();
+        while (true)
+        {
+          schemeField = iprot.readFieldBegin();
+          if (schemeField.type == org.apache.thrift.protocol.TType.STOP) { 
+            break;
+          }
+          switch (schemeField.id) {
+            case 0: // SUCCESS
+              if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
+                struct.success = new CPopulationFitness();
+                struct.success.read(iprot);
+                struct.setSuccessIsSet(true);
+              } else { 
+                org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+              }
+              break;
+            default:
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+          }
+          iprot.readFieldEnd();
+        }
+        iprot.readStructEnd();
+
+        // check for required fields of primitive type, which can't be checked in the validate method
+        struct.validate();
+      }
+
+      public void write(org.apache.thrift.protocol.TProtocol oprot, calculateSimPopulationFitness_result struct) throws org.apache.thrift.TException {
+        struct.validate();
+
+        oprot.writeStructBegin(STRUCT_DESC);
+        if (struct.success != null) {
+          oprot.writeFieldBegin(SUCCESS_FIELD_DESC);
+          struct.success.write(oprot);
+          oprot.writeFieldEnd();
+        }
+        oprot.writeFieldStop();
+        oprot.writeStructEnd();
+      }
+
+    }
+
+    private static class calculateSimPopulationFitness_resultTupleSchemeFactory implements SchemeFactory {
+      public calculateSimPopulationFitness_resultTupleScheme getScheme() {
+        return new calculateSimPopulationFitness_resultTupleScheme();
+      }
+    }
+
+    private static class calculateSimPopulationFitness_resultTupleScheme extends TupleScheme<calculateSimPopulationFitness_result> {
+
+      @Override
+      public void write(org.apache.thrift.protocol.TProtocol prot, calculateSimPopulationFitness_result struct) throws org.apache.thrift.TException {
+        TTupleProtocol oprot = (TTupleProtocol) prot;
+        BitSet optionals = new BitSet();
+        if (struct.isSetSuccess()) {
+          optionals.set(0);
+        }
+        oprot.writeBitSet(optionals, 1);
+        if (struct.isSetSuccess()) {
+          struct.success.write(oprot);
+        }
+      }
+
+      @Override
+      public void read(org.apache.thrift.protocol.TProtocol prot, calculateSimPopulationFitness_result struct) throws org.apache.thrift.TException {
+        TTupleProtocol iprot = (TTupleProtocol) prot;
+        BitSet incoming = iprot.readBitSet(1);
+        if (incoming.get(0)) {
+          struct.success = new CPopulationFitness();
           struct.success.read(iprot);
           struct.setSuccessIsSet(true);
         }

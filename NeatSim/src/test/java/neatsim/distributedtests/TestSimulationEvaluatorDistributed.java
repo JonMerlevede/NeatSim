@@ -1,7 +1,7 @@
 package neatsim.distributedtests;
 import java.io.IOException;
 
-import neatsim.core.evaluators.GendreauEvaluator;
+import neatsim.core.evaluators.gendreau.GendreauEvaluator;
 import neatsim.localtests.TestSimulationEvaluatorHelper;
 
 import org.junit.Test;
@@ -17,7 +17,7 @@ public class TestSimulationEvaluatorDistributed {
 	@Test
 	public void testSingleDistributedEvaluator() throws IOException {
 		helper.testEvaluator(
-				GendreauEvaluator.ComputationStrategy.DISTRIBUTED,
+				GendreauEvaluator.InternalEvaluator.DISTRIBUTED,
 				SolutionType.MYOPIC,
 				false, // multiple individuals in population
 				false); // identical individuals in population
@@ -26,7 +26,7 @@ public class TestSimulationEvaluatorDistributed {
 	@Test
 	public void testMultipleDifferentDistributedEvaluator() throws IOException {
 		helper.testEvaluator(
-				GendreauEvaluator.ComputationStrategy.DISTRIBUTED,
+				GendreauEvaluator.InternalEvaluator.DISTRIBUTED,
 				SolutionType.MYOPIC,
 				true, // multiple individuals in population
 				false); // identical individuals in population
@@ -35,7 +35,7 @@ public class TestSimulationEvaluatorDistributed {
 	@Test
 	public void testMultipleIdenticalDistributedEvaluator() throws IOException {
 		helper.testEvaluator(
-				GendreauEvaluator.ComputationStrategy.DISTRIBUTED,
+				GendreauEvaluator.InternalEvaluator.DISTRIBUTED,
 				SolutionType.MYOPIC,
 				true, // multiple individuals in population
 				true); // identical individuals in population

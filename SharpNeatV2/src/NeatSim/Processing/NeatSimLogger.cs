@@ -11,7 +11,8 @@ namespace NeatSim.Processing
 {
     public class NeatSimLogger
     {
-        private readonly StreamWriter _streamWriter;
+        private readonly StreamWriter _neatsim_logger;
+        private readonly StreamWriter _fitness_logger;
         // Necessary for calculating evaluations per second
         private ulong _oldTotalEvaluationCount;
         private DateTime _oldCurrentTime;
@@ -23,8 +24,8 @@ namespace NeatSim.Processing
         public NeatSimLogger(String path)
         {
             const bool append = true;
-            _streamWriter = new StreamWriter(path, append, Encoding.ASCII);
-            _streamWriter.WriteLine(
+            _neatsim_logger = new StreamWriter(path + "NeatSim.csv", append, Encoding.ASCII);
+            _neatsim_logger.WriteLine(
                 "ClockTime," + //1
                 "Gen," + //2
                 "LowestCost," + //3
@@ -36,10 +37,12 @@ namespace NeatSim.Processing
                 "MaxComplexity," + //9
                 "TotalEvaluationCount," + //10
                 "EvaluationsPerSec," + //11
-                "SearchMode" // 12
+                "SearchMode," + // 12
+                "SpecieSizes" // 13
                 );
             _oldTotalEvaluationCount = 0;
             _oldCurrentTime = DateTime.Now;
+            _fitness_logger = new StreamWriter(path + "FitnessValues.csv", append, Encoding.ASCII);
         }
 
 
@@ -94,9 +97,13 @@ namespace NeatSim.Processing
                 _oldEvaluationCountPerSecond = evaluationsPerSecond;
             //}
 
-            _streamWriter.WriteLine(
-                //string.Format(
-                    "{0:yyyy-MM-dd HH:mm:ss.fff},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11}",
+            IEnumerable<int> specieSizes = ea.SpecieList.Select(specie => specie.GenomeList.Count).ToList();
+            String specieSizeString = String.Join(";", specieSizes);
+            //ea.SpecieList.Aggregate("",(accumulatedString,specie) => specie.)
+
+            _neatsim_logger.WriteLine(
+                string.Format(
+                    "{0:yyyy-MM-dd HH:mm:ss.fff},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12}",
                     currentTime, //1
                     currentGeneration, //2
                     minimumCost, //3
@@ -108,15 +115,22 @@ namespace NeatSim.Processing
                     maxComplexity, //9
                     totalEvaluationCount, //10
                     _oldEvaluationCountPerSecond, //11
-                    ea.ComplexityRegulationMode //12
-                //)
+                    ea.ComplexityRegulationMode, //12
+                    specieSizeString //13
+                )
                 );
-            _streamWriter.Flush();
+            _neatsim_logger.Flush();
+
+            var fitnessValues = ea.GenomeList.Select(individual => individual.EvaluationInfo.AuxFitnessArr[0]._value);
+            String fitnessValueString = String.Join(";", fitnessValues);
+            _fitness_logger.WriteLine(fitnessValueString);
+            _fitness_logger.Flush();
         }
 
         public void Close()
         {
-            _streamWriter.Close();
+            _neatsim_logger.Close();
+            _fitness_logger.Close();
         }
     }
 }

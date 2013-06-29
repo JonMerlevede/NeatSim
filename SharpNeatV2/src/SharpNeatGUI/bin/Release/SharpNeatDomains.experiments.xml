@@ -1,18 +1,126 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Experiments>
 
-<Experiment name="NeatSim!!">
+	<Experiment name="NeatSim - Simulation">
     <AssemblyPath>NeatSim.dll</AssemblyPath>
-    <ClassName>NeatSim.NeatSimExperiment</ClassName>
+    <ClassName>NeatSim.Experiments.Sim.RemoteBatchSimExperiment</ClassName>
+    <Config>
+      <PopulationSize>200</PopulationSize>
+      <SpecieCount>10</SpecieCount>
+      <Activation>
+        <Scheme>CyclicFixedIters</Scheme>
+        <Iters>3</Iters>
+      </Activation>
+      <ComplexityRegulationStrategy>Relative</ComplexityRegulationStrategy>
+      <ComplexityThreshold>10</ComplexityThreshold>
+	  <InputCount>14</InputCount>
+      <Description>Simulation to run remotely in Java.</Description>
+    </Config>
+  </Experiment>
+  
+  	<Experiment name="NeatSim - Simulation - Simplify">
+    <AssemblyPath>NeatSim.dll</AssemblyPath>
+    <ClassName>NeatSim.Experiments.Sim.RemoteBatchSimExperiment</ClassName>
     <Config>
       <PopulationSize>150</PopulationSize>
       <SpecieCount>10</SpecieCount>
       <Activation>
-        <Scheme>Acyclic</Scheme>
+        <Scheme>CyclicFixedIters</Scheme>
+        <Iters>3</Iters>
       </Activation>
       <ComplexityRegulationStrategy>Absolute</ComplexityRegulationStrategy>
       <ComplexityThreshold>10</ComplexityThreshold>
-      <Description>Meh</Description>
+		<InputCount>14</InputCount>
+      <Description>Simulation to run remotely in Java.</Description>
+    </Config>
+  </Experiment>
+
+	<Experiment name="NeatSim - XOR Batch Remote">
+    <AssemblyPath>NeatSim.dll</AssemblyPath>
+    <ClassName>NeatSim.Experiments.Xor.RemoteBatchXorExperiment</ClassName>
+    <Config>
+      <PopulationSize>150</PopulationSize>
+      <SpecieCount>10</SpecieCount>
+      <Activation>
+        <Scheme>CyclicFixedIters</Scheme>
+        <Iters>3</Iters>
+      </Activation>
+      <ComplexityRegulationStrategy>Absolute</ComplexityRegulationStrategy>
+      <ComplexityThreshold>10</ComplexityThreshold>
+      <Description>XOR to run remotely in Java.</Description>
+    </Config>
+  </Experiment>
+	
+	<Experiment name="NeatSim - XOR Remote">
+    <AssemblyPath>NeatSim.dll</AssemblyPath>
+    <ClassName>NeatSim.Experiments.Xor.RemoteXorExperiment</ClassName>
+    <Config>
+      <PopulationSize>150</PopulationSize>
+      <SpecieCount>10</SpecieCount>
+      <Activation>
+        <Scheme>CyclicFixedIters</Scheme>
+        <Iters>3</Iters>
+      </Activation>
+      <ComplexityRegulationStrategy>Absolute</ComplexityRegulationStrategy>
+      <ComplexityThreshold>10</ComplexityThreshold>
+      <Description>XOR to run remotely in Java.</Description>
+    </Config>
+  </Experiment>
+  
+  <Experiment name="NeatSim - XOR Local">
+    <AssemblyPath>NeatSim.dll</AssemblyPath>
+    <ClassName>NeatSim.Experiments.Xor.LocalXorExperiment</ClassName>
+    <Config>
+      <PopulationSize>150</PopulationSize>
+      <SpecieCount>10</SpecieCount>
+      <Activation>
+        <Scheme>CyclicFixedIters</Scheme>
+        <Iters>3</Iters>
+      </Activation>
+      <ComplexityRegulationStrategy>Absolute</ComplexityRegulationStrategy>
+      <ComplexityThreshold>10</ComplexityThreshold>
+      <Description>XOR that runts locally using the same settings to compare with.</Description>
+
+    </Config>
+  </Experiment>
+  
+  <Experiment name="NeatSim - XOR Local (theirs)">
+    <AssemblyPath>SharpNeatDomains.dll</AssemblyPath>
+    <ClassName>SharpNeat.Domains.Xor.XorExperiment</ClassName>
+	<Config>
+      <PopulationSize>150</PopulationSize>
+      <SpecieCount>10</SpecieCount>
+      <Activation>
+        <Scheme>CyclicFixedIters</Scheme>
+        <Iters>3</Iters>
+      </Activation>
+      <ComplexityRegulationStrategy>Absolute</ComplexityRegulationStrategy>
+      <ComplexityThreshold>10</ComplexityThreshold>
+      <Description>XOR that runts locally using the same settings to compare with.</Description>
+
+    </Config>
+  </Experiment>
+  
+    <Experiment name="Adriaans Sin(x))">
+    <AssemblyPath>SharpNeatDomains.dll</AssemblyPath>
+    <ClassName>SharpNeat.Domains.FunctionRegression.FunctionRegressionExperiment</ClassName>
+    <Config>
+      <PopulationSize>150</PopulationSize>
+      <SpecieCount>10</SpecieCount>
+      <Activation>
+        <Scheme>CyclicFixedIters</Scheme>
+		  <Iters>3</Iters>
+      </Activation>
+      <ComplexityRegulationStrategy>Absolute</ComplexityRegulationStrategy>
+      <ComplexityThreshold>2000</ComplexityThreshold>
+      <Function>Sine</Function>      
+      <SampleResolution>21</SampleResolution>
+      <SampleMin>-3,14159</SampleMin>
+      <SampleMax>3,14159</SampleMax>
+      <Description>
+        Function Regression - Sin(x)
+Sin(x) evaluated over [-PI,+PI]     
+      </Description>
     </Config>
   </Experiment>
 
@@ -44,6 +152,46 @@ To distinguish between correct low scorers and incorrect low scorers an addition
       <Activation>
         <Scheme>Acyclic</Scheme>
       </Activation>
+      <ComplexityRegulationStrategy>Absolute</ComplexityRegulationStrategy>
+      <ComplexityThreshold>50</ComplexityThreshold>
+      <Description>Binary 6-Multiplexer task with binary inputs/outputs.
+Evaluation consists of testing a network against each of the 64 (=2^6) possible input combinations. An output less than 0.5 is considered a binary 0 answer, and >=0.5 a binary 1. However, fitness is scored based on how close a given network's response is to each correct answer, therefore the maximum fitness is 64 if exact answers are given, and the minimum possible fitness while still being correct overall is approx 32.
+
+To distinguish between correct low scorers and incorrect low scorers an additional value of 1000 is added to the score of networks that give a correct response to each of the 64 test cases. Max fitness is therefore 1064.
+      </Description>
+    </Config>
+  </Experiment>
+  
+  <Experiment name="Binary 6-Multiplexer (NEAT-Cyclic-adapted)">
+    <AssemblyPath>SharpNeatDomains.dll</AssemblyPath>
+    <ClassName>SharpNeat.Domains.BinarySixMultiplexer.BinarySixMultiplexerExperiment</ClassName>
+    <Config>
+      <PopulationSize>500</PopulationSize>
+      <SpecieCount>20</SpecieCount>
+      <Activation>
+        <Scheme>CyclicFixedIters</Scheme>
+        <Iters>3</Iters>
+	  </Activation>
+      <ComplexityRegulationStrategy>Absolute</ComplexityRegulationStrategy>
+      <ComplexityThreshold>50</ComplexityThreshold>
+      <Description>Binary 6-Multiplexer task with binary inputs/outputs.
+Evaluation consists of testing a network against each of the 64 (=2^6) possible input combinations. An output less than 0.5 is considered a binary 0 answer, and >=0.5 a binary 1. However, fitness is scored based on how close a given network's response is to each correct answer, therefore the maximum fitness is 64 if exact answers are given, and the minimum possible fitness while still being correct overall is approx 32.
+
+To distinguish between correct low scorers and incorrect low scorers an additional value of 1000 is added to the score of networks that give a correct response to each of the 64 test cases. Max fitness is therefore 1064.
+      </Description>
+    </Config>
+  </Experiment>
+  
+  <Experiment name="Binary 6-Multiplexer (NeatSim)">
+    <AssemblyPath>NeatSim.dll</AssemblyPath>
+    <ClassName>NeatSim.Experiments.SixMultiplexer.RemoteBatchSixMultiplexerExperiment</ClassName>
+    <Config>
+      <PopulationSize>500</PopulationSize>
+      <SpecieCount>20</SpecieCount>
+      <Activation>
+        <Scheme>CyclicFixedIters</Scheme>
+        <Iters>3</Iters>
+	  </Activation>
       <ComplexityRegulationStrategy>Absolute</ComplexityRegulationStrategy>
       <ComplexityThreshold>50</ComplexityThreshold>
       <Description>Binary 6-Multiplexer task with binary inputs/outputs.
@@ -134,8 +282,8 @@ To distinguish between correct low scorers and incorrect low scorers an addition
       <ComplexityThreshold>20</ComplexityThreshold>
       <Function>Abs</Function>
       <SampleResolution>11</SampleResolution>
-      <SampleMin>-1.0</SampleMin>
-      <SampleMax>1.0</SampleMax>
+      <SampleMin>-1,0</SampleMin>
+      <SampleMax>1,0</SampleMax>
       <Description>
         Function Regression - Abs(x)
       </Description>
@@ -199,8 +347,8 @@ Sample resolution is 11, thus the sample values are 0.0, 0.1, 0.2, 0.3, 0.4, 0.5
       <ComplexityThreshold>20</ComplexityThreshold>
       <Function>Sine</Function>      
       <SampleResolution>21</SampleResolution>
-      <SampleMin>-3.14159</SampleMin>
-      <SampleMax>3.14159</SampleMax>
+      <SampleMin>-3,14159</SampleMin>
+      <SampleMax>3,14159</SampleMax>
       <Description>
         Function Regression - Sin(x)
 Sin(x) evaluated over [-PI,+PI]     

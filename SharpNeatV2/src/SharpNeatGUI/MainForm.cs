@@ -277,7 +277,7 @@ namespace SharpNeatGUI
                 _logFileWriter = new StreamWriter(filename, true);
                 _logFileWriter.WriteLine("ClockTime,Gen,BestFitness,MeanFitness,MeanSpecieChampFitness,ChampComplexity,MeanComplexity,MaxComplexity,TotalEvaluationCount,EvaluationsPerSec,SearchMode");
                 // BEGIN JONATHAN MERLEVEDE ADDED THIS
-                _neatSimLogger = new NeatSimLogger(txtFileLogBaseName.Text + '_' + DateTime.Now.ToString("yyyyMMdd") + "NeatSim.csv");
+                _neatSimLogger = new NeatSimLogger(txtFileLogBaseName.Text + '_' + DateTime.Now.ToString("yyyyMMdd"));
                 // END JONATHAN MERLEVEDE ADDED THIS
             }
 
@@ -305,7 +305,7 @@ namespace SharpNeatGUI
             _genomeList = null;
             // TODO: Proper cleanup of EA - e.g. main worker thread termination.
             _ea = null;
-            _champGenomeFitness = 0.0;
+            _champGenomeFitness = double.MaxValue;
             Logger.Clear();
             UpdateGuiState_ResetStats();
             UpdateGuiState();
@@ -1466,17 +1466,18 @@ namespace SharpNeatGUI
 
                     // Check if we should save the champ genome to a file.
                     NeatGenome champGenome = _ea.CurrentChampGenome;
-                    // BEGIN JONATHAN CHANGE
-                    // if(chkFileSaveGenomeOnImprovement.Checked && champGenome.EvaluationInfo.Fitness > _champGenomeFitness) 
-                    // {
-                    //    _champGenomeFitness = champGenome.EvaluationInfo.Fitness;
-                    if(chkFileSaveGenomeOnImprovement.Checked && champGenome.EvaluationInfo.AuxFitnessArr[0]._value > _champGenomeFitness) 
+                    // BEGIN JONATHAN CHANGE                    
+                    //if (chkFileSaveGenomeOnImprovement.Checked && champGenome.EvaluationInfo.Fitness > _champGenomeFitness) 
+                    if (chkFileSaveGenomeOnImprovement.Checked)
                     {
-                        _champGenomeFitness = champGenome.EvaluationInfo.AuxFitnessArr[0]._value;
+                    //    _champGenomeFitness = champGenome.EvaluationInfo.Fitness;
+                    //if(chkFileSaveGenomeOnImprovement.Checked && champGenome.EvaluationInfo.AuxFitnessArr[0]._value < _champGenomeFitness) 
+                    //{
+                    //    _champGenomeFitness = champGenome.EvaluationInfo.AuxFitnessArr[0]._value;
                     // END JONATHAN CHANGE
                         
-                        string filename = string.Format(_filenameNumberFormatter, "{0}_{1:0.00}_{2:yyyyMMdd_HHmmss}.gnm.xml",
-                                                        txtFileBaseName.Text, _champGenomeFitness, DateTime.Now);
+                        string filename = string.Format(_filenameNumberFormatter, "{0}_{1:d}_{2:yyyyMMdd_HHmmss}.gnm.xml",
+                                                        txtFileBaseName.Text, _ea.CurrentGeneration, DateTime.Now);
 
                         // Get the currently selected experiment.
                         INeatExperiment experiment = GetSelectedExperiment();
@@ -1486,7 +1487,9 @@ namespace SharpNeatGUI
                         {
                             experiment.SavePopulation(xw, new NeatGenome[] {champGenome});
                         }
+                    // BEGIN JONATHAN CHANGE
                     }
+                    // END JONATHAN CHANGE
                 }));
             }
 
@@ -1787,6 +1790,21 @@ namespace SharpNeatGUI
         }
 
         private void label17_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void MainForm_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label38_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void lbxLog_SelectedIndexChanged(object sender, EventArgs e)
         {
 
         }

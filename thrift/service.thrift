@@ -1,5 +1,5 @@
 namespace csharp NeatSim.Thrift
-namespace java neatsim.thrift
+namespace java neatsim.server.thrift
 
 struct CConnection {
 	10: required i32 fromNeuronId
@@ -39,13 +39,16 @@ struct CPopulationFitness {
 }
 
 service CFitnessEvaluatorService {
-	CPopulationFitness calculateSimPopulationFitness (
-		1:CPopulationInfo populationInfo
-	)
 	CPopulationFitness calculateXorPopulationFitness (
 		1:CPopulationInfo populationInfo
 	)
 	CFitnessInfo calculateXorPhenotypeFitness (
 		1:CFastCyclicNetwork	ann
+	)
+	CPopulationFitness calculateSixMultiplexerPopulationFitness (
+		1:CPopulationInfo populationInfo
+	)
+	CPopulationFitness calculateSimPopulationFitness (
+		1:CPopulationInfo populationInfo
 	)
 }

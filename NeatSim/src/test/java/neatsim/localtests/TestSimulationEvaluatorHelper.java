@@ -2,9 +2,9 @@ package neatsim.localtests;
 import java.util.ArrayList;
 import java.util.List;
 
-import neatsim.core.NeuralNetwork;
-import neatsim.core.evaluators.GendreauEvaluator;
-import neatsim.core.evaluators.GendreauScenario;
+import neatsim.core.blackbox.neural.NeuralNetwork;
+import neatsim.core.evaluators.gendreau.GendreauEvaluator;
+import neatsim.core.evaluators.gendreau.GendreauScenario;
 import neatsim.util.NeuralNetworkFactory;
 import rinde.evo4mas.gendreau06.GSimulationTask.SolutionType;
 
@@ -17,7 +17,7 @@ public class TestSimulationEvaluatorHelper {
 	}
 
 	public void testEvaluator(
-			final GendreauEvaluator.ComputationStrategy strategy,
+			final GendreauEvaluator.InternalEvaluator strategy,
 			final SolutionType solutionType,
 			final boolean multiple,
 			final boolean identical) {
@@ -53,6 +53,6 @@ public class TestSimulationEvaluatorHelper {
 			}
 		}
 
-		se.evaluatePopulation(fcnns, 1);
+		se.evaluatePopulation(fcnns, 1, 1);
 	}
 }
