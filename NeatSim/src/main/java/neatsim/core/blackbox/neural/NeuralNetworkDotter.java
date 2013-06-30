@@ -2,6 +2,7 @@ package neatsim.core.blackbox.neural;
 
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
 
 import neatsim.server.thrift.CConnection;
 
@@ -23,9 +24,37 @@ public class NeuralNetworkDotter {
 
 	public NeuralNetworkDotter() {};
 
+	public boolean isIn(final List<CConnection> cs, final int number) {
+		for (final CConnection c : cs) {
+			if (c.fromNeuronId == number)
+				return true;
+			if (c.toNeuronId == number)
+				return true;
+		}
+		return false;
+	}
+
 	public String toDot(final NeuralNetwork ann) {
 		final StringBuilder builder = new StringBuilder();
 		builder.append("digraph G {\n");
+
+		final List<CConnection> cs = ann.connectionArray;
+
+		if (isIn(cs,0)) {
+			builder.append("0 [fontcolor=red,color=red]\n");
+		}
+
+		final int numberOfInputNodes = ann.getNumberOfInputs();
+		for (int i=1; i <= numberOfInputNodes; i++) {
+			if (isIn(cs,i))
+				builder.append(i + "[color=lightblue, style=filled]\n");
+		}
+		final int numberOfOutputNodes = ann.getNumberOfOutputs();
+		for (int i=numberOfInputNodes +1; i<= numberOfInputNodes+numberOfOutputNodes; i++) {
+			if (isIn(cs,i))
+				builder.append(i+" [fontcolor=white,color=black,style=filled]\n");
+		}
+
 		for (final CConnection connection : ann.connectionArray) {
 			builder.append("\t");
 			builder.append(connection.fromNeuronId);
@@ -36,7 +65,7 @@ public class NeuralNetworkDotter {
 
 			double maxval=0;
 			if (varywidth) {
-				for (final CConnection c : ann.connectionArray) {
+				for (final CConnection c : cs) {
 					final double abs = Math.abs(c.weight);
 					if (abs > maxval)
 						maxval = abs;
