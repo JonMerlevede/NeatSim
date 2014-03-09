@@ -11,8 +11,8 @@ This code was written in the context of this paper and was never really meant to
 ## Overview
 Our software consists of two parts.
 
-* The first part is the C# part, based on [SharpNeatV2], which implements the [NEAT] algorithm.
-* The second part is written in Java and is called upon by NEAT to determine the fitness of individuals during evolution. Determining fitness involves carrying out a simulation in [RinSim].
+* The first part is the C# part, based on [SharpNeatV2](http://sourceforge.net/projects/sharpneat/files/sharpneat2/), which implements the [NEAT](http://www.cs.ucf.edu/~kstanley/neat.html) algorithm.
+* The second part is written in Java and is called upon by NEAT to determine the fitness of individuals during evolution. Determining fitness involves carrying out a simulation in [RinSim](https://github.com/rinde/RinSim)).
 
 ## Quickstart
 Anyone who runs a 64-bit Windows system should be able to evaluate or evolve their own heuristic as follows. On other systems, it might be necessary to recompile parts of the application.
@@ -29,7 +29,7 @@ In order to do any serious evolution, you will probably want to use distributed 
 Existing genomes (as stored in XML files by SharpNEAT) can be read and evaluated by the NeatSim code. For an example of reading an XML file, take a look at the test class `TestNeuralNetworkReader`. For an example of how to start a simulation, take a look at the test class  `TestDeterminism`.
 
 # Code
-The code is organized in three folders: NeatSim, SharpNeatV2 and thrift.
+The code is organized in three folders: NeatSim, SharpNeatV2 and Thrift.
 
 ## NeatSim
 This folder contains the Java portion of the code.
@@ -40,13 +40,12 @@ This folder contains the modified version of [SharpNEAT v2] that I used for evol
 
 To any researcher who considers building on my work, I would advise to start with a fresh pull of SharpNEAT and maybe look at the code here for reference. Everyone who simply wants to run my application should be able to do so. The hostname and the port of the Java Thrift 'evaluation server' are currently hardcoded to `localhost` and `7913` in the `ProtocolManager`.
 
-## thrift
-This folder contains the [Thrift] service file that I used to generate the Java and C# interface and code for interprocess communication. It also includes the generated code and the (Windows) binary Thrift file that I used for generation. Using a newer version of Thrift or Thrift for Mac from the Thrift website should not be a problem.
+## Thrift
+This folder contains the [Thrift](http://thrift.apache.org/) service file that I used to generate the Java and C# interface and code for interprocess communication. It also includes the generated code and the (Windows) binary Thrift file that I used for generation. Using a newer version of Thrift or Thrift for Mac from the Thrift website should not be a problem.
 
 
 -- Jonathan Merlevede
 
-[Thrift](http://thrift.apache.org/)
-[RinSim](https://github.com/rinde/RinSim))
-[NEAT](http://www.cs.ucf.edu/~kstanley/neat.html)
-[SharpNeatv2](http://sourceforge.net/projects/sharpneat/files/sharpneat2/)
+
+
+
