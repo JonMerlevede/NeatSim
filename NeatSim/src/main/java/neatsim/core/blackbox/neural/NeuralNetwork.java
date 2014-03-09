@@ -313,9 +313,9 @@ public class NeuralNetwork implements BlackBox, Serializable {
 	 */
 	@Override
 	public void reset() {
-		// Reset the value of all nodes except from the bias node
+		// Reset the value of all nodes except from the bias node & input nodes
 		for (int i = getInputAndBiasNeuronCount(); i < preActivation.size(); i++) {
-			// TODO I do not see why this is necessary. Try removing.
+			// TODO I do not see why cleaning both is necessary. Try removing.
 			preActivation.set(i, 0.0);
 			postActivation.set(i, 0.0);
 		}

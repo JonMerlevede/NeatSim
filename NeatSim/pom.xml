@@ -29,8 +29,8 @@
 </repositories>
   
   	<properties>
-  		<rinsim.version>2.2.0-SNAPSHOT</rinsim.version>
-		<jppf.version>3.3</jppf.version>
+  		<rinsim.version>2.2.0</rinsim.version>
+		<jppf.version>3.3.1</jppf.version>
 		<!-- <swt.version>3.8</swt.version> -->
 		<!-- by default there are no arguments passed to tests -->
 		<test.arg></test.arg>

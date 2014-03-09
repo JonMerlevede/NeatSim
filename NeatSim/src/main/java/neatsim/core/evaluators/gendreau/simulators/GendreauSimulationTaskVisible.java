@@ -18,6 +18,7 @@ public class GendreauSimulationTaskVisible extends GendreauSimulationTask {
 
 	@Override
 	protected void preSimulate(final DynamicPDPTWProblem problem) {
+		super.preSimulate(problem);
 		problem.enableUI();
 	}
 
