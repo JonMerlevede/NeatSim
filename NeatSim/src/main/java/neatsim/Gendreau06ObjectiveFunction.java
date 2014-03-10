@@ -19,5 +19,4 @@ public class Gendreau06ObjectiveFunction extends rinde.sim.problem.gendreau06.Ge
 		return super.overTime(stats);
 	}
 
-
 }

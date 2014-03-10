@@ -13,6 +13,14 @@ import rinde.sim.core.TimeLapse;
 import rinde.sim.problem.common.DynamicPDPTWProblem;
 import rinde.sim.problem.common.StatsTracker.StatisticsDTO;
 
+/**
+ * Like a {@link GendreauSimulationTask}, but outputs the total simulation time,
+ * travel time, overtime and tardiness to the system output at each simulation
+ * time tick.
+ *
+ * @author Jonathan Merlevede
+ *
+ */
 public class LoggingGendreauSimulationTask extends GSimulationTask {
 	private static final long serialVersionUID = -3859296545351835293L;
 
@@ -20,6 +28,8 @@ public class LoggingGendreauSimulationTask extends GSimulationTask {
 	public final List<Double> overtime = new ArrayList<>();
 	public final List<Double> tardiness = new ArrayList<>();
 	public final List<Long> times = new ArrayList<>();
+
+	private DynamicPDPTWProblem problem;
 
 	public LoggingGendreauSimulationTask(
 			final String scenarioName,
@@ -33,6 +43,12 @@ public class LoggingGendreauSimulationTask extends GSimulationTask {
 
 	@Override
 	protected void preSimulate(final DynamicPDPTWProblem problem) {
+		this.problem = problem;
+		this.times.clear();
+		this.traveltime.clear();
+		this.overtime.clear();
+		this.tardiness.clear();
+
 		final Gendreau06ObjectiveFunction f = new Gendreau06ObjectiveFunction();
 		problem.getSimulator().addTickListener(new TickListener() {
 			private final int maxi=10;

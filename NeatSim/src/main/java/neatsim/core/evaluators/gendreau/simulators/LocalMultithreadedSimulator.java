@@ -15,6 +15,15 @@ import org.jppf.task.storage.DataProvider;
 
 import rinde.evo4mas.common.ResultDTO;
 
+/**
+ * {@see Simulator} that executes simulation tasks locally in parallel using a
+ * number of threads equal to the number of available cores on the local machine.
+ *
+ * TODO Is not currently deterministic - fix.
+ *
+ * @author Jonathan Merlevede
+ *
+ */
 public class LocalMultithreadedSimulator implements Simulator {
 	protected DataProvider dataProvider;
 
@@ -33,6 +42,7 @@ public class LocalMultithreadedSimulator implements Simulator {
 			final Callable<ResultDTO> callable = new Callable<ResultDTO>() {
 				@Override
 				public ResultDTO call() throws Exception {
+
 					task.setDataProvider(dataProvider);
 					task.run();
 					return task.getComputationResult();

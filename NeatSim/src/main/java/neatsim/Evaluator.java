@@ -13,6 +13,7 @@ import neatsim.core.stopconditions.SimpleStopcondition;
 import rinde.evo4mas.common.ResultDTO;
 import rinde.evo4mas.gendreau06.GSimulationTask.SolutionType;
 import rinde.sim.problem.common.StatsTracker.StatisticsDTO;
+//import rinde.evo4mas.gendreau06.GSimulationTask.SolutionType;
 
 public class Evaluator {
 	public enum Type { GENDREAU }
@@ -92,8 +93,9 @@ public class Evaluator {
 
 	private final Gendreau06ObjectiveFunction obj = new Gendreau06ObjectiveFunction();
 
-	private String resultDTOToString(final ResultDTO result) {
-		final StatisticsDTO stats = result.stats;
+	private String resultDTOToString(final ResultDTO results) {
+		//final StatisticsDTO stats = results.s;
+		final StatisticsDTO stats = results.stats;
 		return obj.travelTime(stats) + ";"
 				+ obj.tardiness(stats) + ";"
 				+ obj.overTime(stats) + ";"

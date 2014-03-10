@@ -38,8 +38,8 @@ public class TestShortScenario {
 //		final List<String> scenarioNames = tp.getValue0();
 //		final List<String> scenarioContents = tp.getValue1();
 
-		//final List<GendreauScenario> s = GendreauScenario.load("data/", "1_240_24");
-		final List<GendreauScenario> s = GendreauScenario.load("mydata/", "test_req_rapide_001_240_24");
+		final List<GendreauScenario> s = GendreauScenario.load("data/", "240_24");
+		//final List<GendreauScenario> s = GendreauScenario.load("data/", ".xml");
 //		s.addAll(GendreauScenario.load("mydata/", "test_req_rapide_002_450_24"));
 //		s.addAll(GendreauScenario.load("mydata/", "test_req_rapide_003_450_24"));
 //		s.addAll(GendreauScenario.load("mydata/", "test_req_rapide_004_450_24"));
@@ -131,9 +131,9 @@ public class TestShortScenario {
 		fcnns.add(closest);
 		final CPopulationFitness popfit = se.evaluatePopulation(fcnns, 1, s.size());
 		System.out.println("Number of scenarios: " + s.size());
-		System.out.println("Distance: " + popfit.fitnessInfos.get(0).getAuxFitness().get(0).value);
-		System.out.println("Closest: " + popfit.fitnessInfos.get(1).getAuxFitness().get(0).value);
-		System.out.println("Closest from file: " + popfit.fitnessInfos.get(2).getAuxFitness().get(0).value);
+		System.out.println("Cost by 'distance' ANN: " + popfit.fitnessInfos.get(0).getAuxFitness().get(0).value);
+		System.out.println("Cost by 'closest' ANN: " + popfit.fitnessInfos.get(1).getAuxFitness().get(0).value);
+		System.out.println("Cost by 'closest' ANN as read from file (faulty): " + popfit.fitnessInfos.get(2).getAuxFitness().get(0).value);
 
 		Assert.assertEquals(false, popfit.fitnessInfos.get(0).getAuxFitness().get(0).value == Float.MAX_VALUE);
 		Assert.assertEquals(false, popfit.fitnessInfos.get(1).getAuxFitness().get(0).value == Float.MAX_VALUE);

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata modelVersion="1.1.0">
+  <groupId>com.github.rinde</groupId>
+  <artifactId>rinsim-main</artifactId>
+  <version>2.2.0-SNAPSHOT</version>
+  <versioning>
+    <snapshot>
+      <timestamp>20130624.101301</timestamp>
+      <buildNumber>25</buildNumber>
+    </snapshot>
+    <lastUpdated>20130624101301</lastUpdated>
+    <snapshotVersions>
+      <snapshotVersion>
+        <extension>pom</extension>
+        <value>2.2.0-20130624.101301-25</value>
+        <updated>20130624101301</updated>
+      </snapshotVersion>
+      <snapshotVersion>
+        <classifier>tests</classifier>
+        <extension>jar</extension>
+        <value>2.2.0-20130624.101301-25</value>
+        <updated>20130624101301</updated>
+      </snapshotVersion>
+      <snapshotVersion>
+        <classifier>javadoc</classifier>
+        <extension>jar</extension>
+        <value>2.2.0-20130624.101301-25</value>
+        <updated>20130624101301</updated>
+      </snapshotVersion>
+    </snapshotVersions>
+  </versioning>
+</metadata>
