@@ -1,4 +1,6 @@
-﻿#Thrift specific
+﻿scenarios.zip
+
+#Thrift specific
 thrift/gen*
 
 #NeatSim specific
