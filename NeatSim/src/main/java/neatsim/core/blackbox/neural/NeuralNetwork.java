@@ -115,6 +115,11 @@ public class NeuralNetwork implements BlackBox, Serializable {
 	}
 
 	/**
+	 * Used ONLY for cloning.
+	 */
+	private final CFastCyclicNetwork cfcn;
+
+	/**
 	 * Creates a new FCNN (fast cyclic neural network) with the properties and
 	 * functionality specified by the given fast cyclic neural network in Thrift
 	 * format.
@@ -126,6 +131,10 @@ public class NeuralNetwork implements BlackBox, Serializable {
 	 * specified by the given FCNN.
 	 */
 	public NeuralNetwork(final CFastCyclicNetwork cfcn) {
+		this(cfcn,null);
+	}
+
+	private NeuralNetwork(final CFastCyclicNetwork cfcn, final String id) {
 		// The given Thrift FCNN is effective.
 		assert cfcn != null;
 		// In the given FCNN, the number of neurons in the network is at least one (there must always be a bias node).
@@ -139,6 +148,8 @@ public class NeuralNetwork implements BlackBox, Serializable {
 		assert validConnections(cfcn.getNeuronCount(), cfcn.getConnections());
 
 		// Note: the bias node is already present in the given CFCN network.
+
+		this.cfcn = cfcn;
 
 		// Deep cloning of the given connection array
 		//connectionArray = cfcn.getConnections();
@@ -175,23 +186,27 @@ public class NeuralNetwork implements BlackBox, Serializable {
 		timestepsPerActivation = cfcn.getTimestepsPerActivation();
 		postActivation.set(0, 1.0);
 
-		final StringBuilder sb = new StringBuilder();
-		sb.append(this.hashCode()+"");
-		sb.append(Integer.toString(inputNeuronCount));
-		sb.append(Integer.toString(outputNeuronCount));
-		for (final Activationfunction activationFc : activationFunctions) {
-			sb.append(activationFc);
+		if(id == null || id.equals("")) {
+			final StringBuilder sb = new StringBuilder();
+			sb.append(this.hashCode()+"");
+			sb.append(Integer.toString(inputNeuronCount));
+			sb.append(Integer.toString(outputNeuronCount));
+			for (final Activationfunction activationFc : activationFunctions) {
+				sb.append(activationFc);
+			}
+			for (final List<Double> auxArgs : auxArgsMatrix) {
+				for (final Double auxArg : auxArgs)
+					sb.append(auxArg.toString());
+			}
+			for (final CConnection connection : connectionArray) {
+				sb.append(Integer.toString(connection.getFromNeuronId()));
+				sb.append(Integer.toString(connection.getToNeuronId()));
+				sb.append(Double.toString(connection.getWeight()));
+			}
+			this.id = sb.toString();
+		} else {
+			this.id = id;
 		}
-		for (final List<Double> auxArgs : auxArgsMatrix) {
-			for (final Double auxArg : auxArgs)
-				sb.append(auxArg.toString());
-		}
-		for (final CConnection connection : connectionArray) {
-			sb.append(Integer.toString(connection.getFromNeuronId()));
-			sb.append(Integer.toString(connection.getToNeuronId()));
-			sb.append(Double.toString(connection.getWeight()));
-		}
-		id = sb.toString();
 	}
 
 	/**
@@ -348,6 +363,16 @@ public class NeuralNetwork implements BlackBox, Serializable {
 	@Override
 	public int getNumberOfInputs() {
 		return inputNeuronCount;
+	}
+
+	/**
+	 * Returns a clone of this neural network.
+	 *  * Does not clone internal state.
+	 *  * Has the same id as this neural network.
+	 */
+	@Override
+	public NeuralNetwork clone() {
+		return new NeuralNetwork(this.cfcn, this.id);
 	}
 
 	/**

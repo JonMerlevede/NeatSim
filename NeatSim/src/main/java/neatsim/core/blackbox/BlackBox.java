@@ -65,5 +65,7 @@ public interface BlackBox {
 	 */
 	boolean isValid();
 
+	BlackBox clone();
+
 	String getId();
 }

@@ -34,15 +34,22 @@ public class LocalMultithreadedSimulator implements Simulator {
 		assert dataProvider != null; // users need to call setDataProvider first
 
 		final int threads = Runtime.getRuntime().availableProcessors();
+		//final int threads = 1;
 		final ExecutorService service = Executors.newFixedThreadPool(threads);
 		final List<Callable<ResultDTO>> callables = new ArrayList<>(
 				tasks.size());
 
+		int tasknumber = 0;
+		System.out.println(tasks.size());
 		for (final GendreauSimulationTask task : tasks) {
+			tasknumber = tasknumber + 1;
+			final int t = tasknumber;
 			final Callable<ResultDTO> callable = new Callable<ResultDTO>() {
 				@Override
 				public ResultDTO call() throws Exception {
+					if (t == 1) {
 
+					}
 					task.setDataProvider(dataProvider);
 					task.run();
 					return task.getComputationResult();

@@ -72,6 +72,11 @@ public class ViewGenome {
 			public void activate() {
 				val = newval;
 			}
+
+			@Override
+			public BlackBox clone() {
+				throw new UnsupportedOperationException();
+			}
 		};
 
 		final BlackBoxGendreauHeuristic nnh = new BlackBoxGendreauHeuristic(nn);

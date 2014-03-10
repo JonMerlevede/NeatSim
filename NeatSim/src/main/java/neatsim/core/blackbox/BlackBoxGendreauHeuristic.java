@@ -118,7 +118,7 @@ public class BlackBoxGendreauHeuristic implements Heuristic<GendreauContext>, Se
 		// Set the input list to an unmodifiable view of the shallow copy
 		this.inputList = Collections.unmodifiableList(tmpList);
 		// Set the black box enclosed by this black box heuristic to the given black box
-		this.box = box;
+		this.box = box.clone();
 	}
 
 	/**

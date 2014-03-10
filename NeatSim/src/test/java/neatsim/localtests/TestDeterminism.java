@@ -92,19 +92,28 @@ public class TestDeterminism {
 
 	private void testEvaluators(final int nScenarios, final GendreauEvaluator se1, final GendreauEvaluator se2) {
 		final List<NeuralNetwork> fcnns1 = new ArrayList<NeuralNetwork>();
+		//fcnns1.add(nnf.createClosest());
 		fcnns1.add(nnf.createDist());
+//		fcnns1.add(nnf.createDist());
 		fcnns1.add(nnf.createClosest());
+		//fcnns1.add(nnf.createClosest());
+		//fcnns1.add(nnf.createDist());
 		final List<NeuralNetwork> fcnns2 = new ArrayList<NeuralNetwork>();
+		//fcnns2.add(nnf.createClosest());
 		fcnns2.add(nnf.createDist());
+//		fcnns2.add(nnf.createDist());
 		fcnns2.add(nnf.createClosest());
+//		fcnns2.add(nnf.createClosest());
+//		fcnns2.add(nnf.createDist());
 		final CPopulationFitness popfit1 = se1.evaluatePopulation(fcnns1, 1, nScenarios);
 		final CPopulationFitness popfit2 = se2.evaluatePopulation(fcnns2, 1, nScenarios);
 
 		System.out.println("Number of scenarios: " + nScenarios);
 		System.out.println("Dist: " + popfit1.fitnessInfos.get(0).getAuxFitness().get(0).value);
-		System.out.println("Closest: " + popfit1.fitnessInfos.get(1).getAuxFitness().get(0).value);
-		Assert.assertEquals(popfit1.fitnessInfos.get(0).fitness, popfit2.fitnessInfos.get(0).fitness, 0);
+		//System.out.println("Closest: " + popfit1.fitnessInfos.get(1).getAuxFitness().get(0).value);
 		Assert.assertEquals(popfit1.fitnessInfos.get(0).getAuxFitness().get(0).value, popfit2.fitnessInfos.get(0).getAuxFitness().get(0).value, 0);
+		Assert.assertEquals(popfit1.fitnessInfos.get(0).fitness, popfit2.fitnessInfos.get(0).fitness, 0);
+
 		Assert.assertEquals(popfit1.fitnessInfos.get(1).fitness, popfit2.fitnessInfos.get(1).fitness, 0);
 		Assert.assertEquals(popfit1.fitnessInfos.get(1).getAuxFitness().get(0).value, popfit2.fitnessInfos.get(1).getAuxFitness().get(0).value, 0);
 		System.out.println(Float.MAX_VALUE);
