@@ -9,6 +9,7 @@ Neatsim/doc
 
 #SharpNeat specific
 SharpNeatV2/bin/*
+NeatSim/mydata/*
 
 SharpNeatV2/src/Box2dTestHarness/bin/*
 SharpNeatV2/src/NeatSim/bin/*
