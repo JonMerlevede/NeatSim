@@ -1,5 +1,4 @@
-﻿scenarios.zip
-evolutionary_runs.zip
+﻿*.zip
 
 #Thrift specific
 thrift/gen*
