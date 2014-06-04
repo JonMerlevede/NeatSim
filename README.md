@@ -1,12 +1,9 @@
 # NeatSim
-
 This is the README file accompanying the code and data used in the following paper, which I'll assume you have read.
 
->	Neuroevolution of a multi-agent system for the dynamic pickup and delivery problem
->	by Jonathan Merlevede, Rinde R.S. van Lon, and Tom Holvoet
->	from iMinds-Distrinet, KU Leuven, 3001 Leuven, Belgium
+> Jonathan Merlevede, Rinde van Lon and Tom Holvoet, “Neuroevolution of a Multi-Agent System for the Dynamic Pickup and Delivery Problem”. In: International Joint Workshop on Optimisation in Multi-Agent Systems and Distributed Constraint Reasoning (co-located with AAMAS), Paris, France – May 2014.
 
-Before reading on, you should know that this code was written in the context of this paper. It was never really meant to be used by anyone but the authors while coding: documentation is scarce, the code not always elegant. Nevertheless, I would often have preferred having ugly source code over having none, so here it is.
+Before reading on, you should know that this code was written in the context of this paper. It was never really meant to be used by anyone but the authors while coding: documentation is scarce, the code not always elegant. Nevertheless, I would often have preferred having ugly source code over having none, so here it is (and then there is also reproducibility...).
 
 To any researcher who considers building on my work, I would advise to start with a fresh pull of SharpNEAT and maybe look at the code here for reference. To a large extent this also applies to my other code. The Java part currently uses an outdated version of RinSim; newer versions of RinSim are not perfectly backwards compatible with this version.
 
@@ -20,13 +17,10 @@ The Java program can also be used for evaluating and visualising heuristics that
 
 Concretely, this archive consists of the following elements.
 
-* scenarios.zip: the training and test scenarios used in the paper
-* evolutionary_runs.zip: the fitness data and information on evolutionary runs that is reported on in the paper (undocumented)
 * Generator: the scenario generator
 * NeatSim: the Java part of the application
 * SharpNeatV2: the C# part of the application
 * thrift: the thrift service file
-
 
 ## Quickstart
 It is advised to run the SharpNeat part of the application on Windows, but it should also be possible to run SharpNeat using Mono.
@@ -56,7 +50,7 @@ The code is organized in three folders: NeatSim, SharpNeatV2 and Thrift.
 * Most of other files are either junk, helper files or were created for verifying that the generator and existing files by Gendreau are similar (they mostly draw plots).
 
 ## NeatSim
-This folder contains the Java portion of the code, which can perform simulations to assign fitness values to heuristics (individuals). Most settings can be found in `neatsim.properties`, which is fairly well documented. The following points are probably the most important to know.
+This folder contains the Java portion of the code, which can perform simulations to assign fitness values to heuristics (individuals). Most settings can be found in `neatsim.properties`, which is fairly well documented. The following points are probably the most important to know. Dependencies are managed by Apache Maven. Because some of the software parts that we used were not part of a (stable) Maven release, the project directory includes a Maven project repository.
 
 * NeatSim can run in two modes: evaluation mode and server mode. In evaluation mode, NeatSim reads genomes in the form of XML files from a location on the disk specifqied by a directory, prefix and suffix in the config file and evaluates them. In server mode, NeatSim listens for incoming evaluation requests on a socket using Thrift.
 * NeatSim supports three evaluation modes. It can evaluate genomes locally in a single thread, locally in multiple threads or it can distribute simulation tasks over a grid using the [JPPF](http://www.jppf.org/) grid computing framework. This requires a working JPPF network and correct settings in both `neatsim.properties` and the JPPF configuration file in `config/jppf.properties`. Using grid computing is often necessary, because simulations take approximately one second and evolution generally requires a large number (in the order of a million) number of fitness evaluations.
@@ -64,8 +58,6 @@ This folder contains the Java portion of the code, which can perform simulations
 When trying to understand the code, the `GendreauEvaluator` is probably a good class to start in. It can also be useful to look at the translation of the configuration file into code.
 
 Note: One important thing to note when using JPPF is that the server and the client (NeatSim) have to use the same version. To see or change which version NeatSim uses, look in the `pom.xml` file.
-
-Note: For some reason using local, multithreaded simulation is not deterministic (in other words, it is currently not correctly implemented). I know this is a problem; the local multithreaded implementation currently fails determinism tests. Local multithreaded simulation should not be used for research purposes before addressing this issue (probably in `LocalMultithreadesSimulator`).
 
 ## SharpNeatV2
 This folder contains the modified version of [SharpNEAT v2] that I used for evolving the vehicle heuristics. I  really only added code for an evaluator that sends the genomes of an entire generation to Java for evaluation (using Thrift), but had to change some parts of SharpNeat that might make it hard to easily upgrade to newer versions of SharpNEAT (e.g. the possibility to evaluate an entire generation instead of just a single genome, but also changing the visibility of some properties of the neural networks in order to read them into the Thrift data transfer objects). I also added my experiment to the SharpNEATV2 configuration file `SharpNeatDomains.experiments.xml`. Most of my code is in the SharpNeat\NeatSim application.
