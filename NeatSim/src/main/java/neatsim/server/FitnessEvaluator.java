@@ -100,6 +100,10 @@ public class FitnessEvaluator implements CFitnessEvaluatorService.Iface {
 		return populationFitness;
 	}
 
+	/**
+	 * 	- numberOfScenariosPerGeneration should remain fixed over generations
+	 * 	- start evaluation with generation 0
+	 */
 	@Override
 	public CPopulationFitness calculateSimPopulationFitness(
 			final CPopulationInfo populationInfo) throws TException {
@@ -107,7 +111,7 @@ public class FitnessEvaluator implements CFitnessEvaluatorService.Iface {
 			populationInfo.getPhenomes().size() + " individuals).");
 //		final List<CFitnessInfo> fitnessInfos = simEvaluator
 //				.evaluatePopulation(populationInfo);
-		return gendreauEvaluator.evaluatePopulation(populationInfo, numberOfScenariosPerGeneration);
 		// return simEvaluator.parallelEvaluatePopulation(populationInfo);
+		return gendreauEvaluator.evaluatePopulation(populationInfo, numberOfScenariosPerGeneration);
 	}
 }
