@@ -69,13 +69,15 @@ namespace SharpNeat.Utility
     public class FastRandom
     {
         #region Static Fields
+
         /// <summary>
         /// A static RNG that is used to generate seed values when constructing new instances of FastRandom.
         /// This overcomes the problem whereby multiple FastRandom instances are instantiated within the same
         /// tick count and thus obtain the same seed, that approach can result in extreme biases occuring 
         /// in some cases depending on how the RNG is used.
         /// </summary>
-        static readonly FastRandom __seedRng = new FastRandom((int)Environment.TickCount);
+        // JONATHAN AANPASSING - dit was readonly!!!
+        public static FastRandom __seedRng = null;//new FastRandom((int)Environment.TickCount);
         #endregion
 
         #region Instance Fields

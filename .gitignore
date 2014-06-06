@@ -16,6 +16,8 @@ SharpNeatV2/src/NeatSim/bin/*
 SharpNeatV2/src/SharpNeatConsole/bin/*
 SharpNeatV2/src/SharpNeatDomains/bin/*
 SharpNeatV2/src/SharpNeatDomainsExtra/bin/*
+SharpNeatV2/src/NeatSimConsole/bin/Debug/*
+SharpNeatV2/src/NeatSimConsole/bin/Release/*
 SharpNeatV2/src/SharpNeatGUI/bin/Debug/*
 SharpNeatV2/src/SharpNeatGUI/bin/Release/*
 !SharpNeatV2/src/SharpNeatGUI/bin/Debug/SharpNeatDomains.experiments.xml

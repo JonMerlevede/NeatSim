@@ -22,9 +22,13 @@ namespace NeatSim.Core
         private static TProtocol Protocol { get { return PProtocol; } }
         public static CFitnessEvaluatorService.Client Client { get { return PClient; } }
 
+        //private const String Host = "localhost";
+        private const String Host = "feynman.cs.kuleuven.be";
+
         static ProtocolManager()
         {
-            PSocket = new TSocket("localhost", 7913);
+            // PSocket = new TSocket("localhost", 7913);
+            PSocket = new TSocket(Host, 7913);
             //_transport = new TFramedTransport(PSocket);
             PTransport = new TBufferedTransport(PSocket);
             //PTransport = new SafeTransport(PSocket);
@@ -48,7 +52,7 @@ namespace NeatSim.Core
             {
                 if (!Transport.IsOpen)
                 {
-                    Console.WriteLine("Opening socket to localhost:7913");
+                    Console.WriteLine("Opening socket to "+ Host + ":7913");
                     Transport.Open();
                     Console.WriteLine("Socket opened.");
                 }

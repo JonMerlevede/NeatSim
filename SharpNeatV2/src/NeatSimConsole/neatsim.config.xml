@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Config>
+      <PopulationSize>200</PopulationSize>
+      <SpecieCount>10</SpecieCount>
+      <Activation>
+        <Scheme>CyclicFixedIters</Scheme>
+        <Iters>3</Iters>
+      </Activation>
+      <ComplexityRegulationStrategy>Relative</ComplexityRegulationStrategy>
+      <ComplexityThreshold>10</ComplexityThreshold>
+	  <InputCount>14</InputCount>
+      <Description>Simulation to run remotely in Java.</Description>
+</Config>

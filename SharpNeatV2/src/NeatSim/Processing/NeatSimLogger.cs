@@ -1,4 +1,5 @@
-﻿using SharpNeat.Core;
+﻿using System.Globalization;
+using SharpNeat.Core;
 using SharpNeat.EvolutionAlgorithms;
 using SharpNeat.Genomes.Neat;
 using System;
@@ -103,6 +104,7 @@ namespace NeatSim.Processing
 
             _neatsim_logger.WriteLine(
                 string.Format(
+                    CultureInfo.InvariantCulture,
                     "{0:yyyy-MM-dd HH:mm:ss.fff},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12}",
                     currentTime, //1
                     currentGeneration, //2

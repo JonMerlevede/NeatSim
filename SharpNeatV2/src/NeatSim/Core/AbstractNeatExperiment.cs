@@ -17,7 +17,7 @@ using SharpNeat.SpeciationStrategies;
 
 namespace NeatSim.Core
 {
-    abstract class AbstractNeatExperiment : IGuiNeatExperiment
+    public abstract class AbstractNeatExperiment : IGuiNeatExperiment
     {
         // These still need to be implemented by the user
         #region Abstract

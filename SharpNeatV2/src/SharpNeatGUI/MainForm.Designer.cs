@@ -545,6 +545,7 @@
             this.label20.Size = new System.Drawing.Size(104, 16);
             this.label20.TabIndex = 19;
             this.label20.Text = "Evaluations / Sec";
+            this.label20.Click += new System.EventHandler(this.label20_Click);
             // 
             // label19
             // 
@@ -983,6 +984,7 @@
             this.menuStrip1.Size = new System.Drawing.Size(524, 24);
             this.menuStrip1.TabIndex = 1;
             this.menuStrip1.Text = "menuStrip1";
+            this.menuStrip1.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.menuStrip1_ItemClicked);
             // 
             // fileToolStripMenuItem
             // 

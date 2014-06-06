@@ -14,7 +14,7 @@ using Thrift.Transport;
 
 namespace NeatSim.Experiments.Sim
 {
-    class RemoteBatchSimEvaluator : IBatchPhenomeEvaluator<FastCyclicNetwork>
+    public class RemoteBatchSimEvaluator : IBatchPhenomeEvaluator<FastCyclicNetwork>
     {
         private NeatEvolutionAlgorithm<NeatGenome> _ea;
         public RemoteBatchSimEvaluator(NeatEvolutionAlgorithm<NeatGenome> ea)

@@ -13,6 +13,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharpNeatViewLib", "SharpNe
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharpNeatConsole", "SharpNeatConsole\SharpNeatConsole.csproj", "{57314EFA-48AB-4C81-B509-F36EA1000088}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NeatSimConsole", "NeatSimConsole\NeatSimConsole.csproj", "{F588864D-35D7-47DA-9D6D-5C7374A80FE0}"
+	ProjectSection(ProjectDependencies) = postProject
+		{23E833F1-DEB3-4A39-A729-2C35685CA4FC} = {23E833F1-DEB3-4A39-A729-2C35685CA4FC}
+	EndProjectSection
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Box2dTestHarness", "Box2dTestHarness\Box2dTestHarness.csproj", "{0E2AEE8E-8B7C-4257-ABB8-356B4885745E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharpNeatDomainsExtra", "SharpNeatDomainsExtra\SharpNeatDomainsExtra.csproj", "{3A1B9DEC-AECE-42F3-BAD9-9172482C43AB}"
@@ -79,6 +84,16 @@ Global
 		{57314EFA-48AB-4C81-B509-F36EA1000088}.Release|Mixed Platforms.Build.0 = Release|x86
 		{57314EFA-48AB-4C81-B509-F36EA1000088}.Release|x86.ActiveCfg = Release|x86
 		{57314EFA-48AB-4C81-B509-F36EA1000088}.Release|x86.Build.0 = Release|x86
+		{F588864D-35D7-47DA-9D6D-5C7374A80FE0}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{F588864D-35D7-47DA-9D6D-5C7374A80FE0}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{F588864D-35D7-47DA-9D6D-5C7374A80FE0}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{F588864D-35D7-47DA-9D6D-5C7374A80FE0}.Debug|x86.ActiveCfg = Debug|x86
+		{F588864D-35D7-47DA-9D6D-5C7374A80FE0}.Debug|x86.Build.0 = Debug|x86
+		{F588864D-35D7-47DA-9D6D-5C7374A80FE0}.Release|Any CPU.ActiveCfg = Release|x86
+		{F588864D-35D7-47DA-9D6D-5C7374A80FE0}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{F588864D-35D7-47DA-9D6D-5C7374A80FE0}.Release|Mixed Platforms.Build.0 = Release|x86
+		{F588864D-35D7-47DA-9D6D-5C7374A80FE0}.Release|x86.ActiveCfg = Release|x86
+		{F588864D-35D7-47DA-9D6D-5C7374A80FE0}.Release|x86.Build.0 = Release|x86
 		{0E2AEE8E-8B7C-4257-ABB8-356B4885745E}.Debug|Any CPU.ActiveCfg = Debug|x86
 		{0E2AEE8E-8B7C-4257-ABB8-356B4885745E}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
 		{0E2AEE8E-8B7C-4257-ABB8-356B4885745E}.Debug|Mixed Platforms.Build.0 = Debug|x86

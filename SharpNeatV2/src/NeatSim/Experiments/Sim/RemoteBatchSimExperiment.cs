@@ -11,7 +11,7 @@ using SharpNeat.Phenomes.NeuralNets;
 
 namespace NeatSim.Experiments.Sim
 {
-    class RemoteBatchSimExperiment : AbstractNeatExperiment
+    public class RemoteBatchSimExperiment : AbstractNeatExperiment
     {
         //public override int InputCount
         //{
