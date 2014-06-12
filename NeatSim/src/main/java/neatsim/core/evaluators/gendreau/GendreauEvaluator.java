@@ -102,7 +102,7 @@ public class GendreauEvaluator implements PopulationEvaluator {
 	private final List<GendreauScenario> gendreauScenarios;
 	private final Simulator evaluator;
 	private final int numberOfScenariosPerGeneration;
-	//private final int lowestFreshScenarioNumber = 0;
+	private int lowestFreshScenarioNumber = 0;
 
 	public GendreauEvaluator(
 			final List<GendreauScenario> gendreauScenarios,
@@ -328,7 +328,6 @@ public class GendreauEvaluator implements PopulationEvaluator {
 			final int numberOfScenariosPerGeneration) {
 		assert AssertionHelper.isEffectiveCollection(anns);
 		assert generation >= 0;
-		assert numberOfScenariosPerGeneration >= 1;
 
 		final ArrayList<GendreauSimulationTask> tasks = new ArrayList<>();
 		final DataProvider dataProvider = new MemoryMapDataProvider();
@@ -349,9 +348,10 @@ public class GendreauEvaluator implements PopulationEvaluator {
 
 	private int[] getCurrentScenarioNumbers(final int generation, final int numberOfScenariosPerGeneration) {
 		final int[] result = new int[numberOfScenariosPerGeneration];
-		final int base = (generation % getNumberOfScenarios())* numberOfScenariosPerGeneration % getNumberOfScenarios();
+		//final int base = generation*numberOfScenariosPerGeneration;
 		for (int i=0; i < numberOfScenariosPerGeneration; i++)
-			result[i] = (base + i) % getNumberOfScenarios();
+			result[i] = (lowestFreshScenarioNumber + i) % getNumberOfScenarios();
+		lowestFreshScenarioNumber += numberOfScenariosPerGeneration;
 		return result;
 	}
 
@@ -515,4 +515,15 @@ public class GendreauEvaluator implements PopulationEvaluator {
 		return fitnessInfos;
 	}
 
+//	public void setNumberOfScenariosPerGeneration(final int numberOfScenariosPerGeneration) {
+//		assert numberOfScenariosPerGeneration > 0;
+//		this.numberOfScenariosPerGeneration = numberOfScenariosPerGeneration;
+//	}
+//
+//
+//	// This could be made public (I think)
+//	private void setSolutionType(final SolutionType solutionType) {
+//		assert solutionType != null;
+//		this.solutionType = solutionType;
+//	}
 }

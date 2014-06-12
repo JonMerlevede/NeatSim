@@ -95,6 +95,8 @@ public class LoggingGendreauSimulationTask extends GSimulationTask {
 			System.out.println(printCsv(traveltime));
 			System.out.println(printCsv(overtime));
 			System.out.println(printCsv(tardiness));
+			// Problem is not serializable !
+			problem = null;
 		} catch (final Exception e) {
 			setException(e);
 			System.out.println("Exception occured :(");

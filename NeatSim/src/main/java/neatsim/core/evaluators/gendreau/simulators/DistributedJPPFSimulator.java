@@ -69,6 +69,7 @@ public class DistributedJPPFSimulator implements Simulator {
 			final List<ResultDTO> resultDTOs = new ArrayList<>();
 			for (final JPPFTask t : jppfOutput) {
 				if (t.getException() != null) {
+					System.out.println("Exception occured :(");
 					throw t.getException();
 				}
 				assert t instanceof GendreauSimulationTask;

@@ -25,11 +25,13 @@ public class GendreauSimulationTask extends GSimulationTask {
 	public void run() {
 		try {
 			super.run();
+			problem = null;
 		} catch (final Exception e) {
 			setException(e);
 			System.out.println("Exception occured :(");
 			System.out.println(getException());
 			getException().getCause().printStackTrace();
+			// Problem is not serializable !
 		}
 	}
 }
