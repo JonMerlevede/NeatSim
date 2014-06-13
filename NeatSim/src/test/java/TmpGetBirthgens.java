@@ -4,6 +4,7 @@ import java.util.List;
 
 import neatsim.util.NeuralNetworkReader;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 
@@ -15,7 +16,7 @@ public class TmpGetBirthgens {
 	 * Quick and dirty: get birthgens for in thesis...
 	 * @throws IOException
 	 */
-	@Test
+	@Test @Ignore
 	public void moo() throws IOException {
 		final NeuralNetworkReader r = new NeuralNetworkReader(3);
 		final List<NeuralNetworkReader.Result> results = r.readDirectory(dir, "overfitting", ".xml", true);

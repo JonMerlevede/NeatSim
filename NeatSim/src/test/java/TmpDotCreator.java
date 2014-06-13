@@ -10,6 +10,7 @@ import java.util.List;
 import neatsim.core.blackbox.neural.NeuralNetworkDotter;
 import neatsim.util.NeuralNetworkReader;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -20,7 +21,7 @@ import org.junit.Test;
 public class TmpDotCreator {
 	// Change this - this only makes sense on my pc :)
 
-
+@Ignore
 	@Test
 	public void moo() throws IOException {
 		final String inputdir = "C:\\Users\\Jonathan\\Dropbox\\univ\\ma2\\thesis\\own\\Data processing\\short_600-40_absolute4000_3";
