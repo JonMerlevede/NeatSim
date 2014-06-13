@@ -11,11 +11,13 @@ import neatsim.util.NeuralNetworkReader;
 
 import org.jppf.task.storage.DataProvider;
 import org.jppf.task.storage.MemoryMapDataProvider;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import rinde.evo4mas.gendreau06.GSimulationTask.SolutionType;
 
 public class ViewGenome {
+	@Ignore
 	@Test
 	public void viewGenome() throws Exception {
 		final NeuralNetworkReader reader = new NeuralNetworkReader(3);

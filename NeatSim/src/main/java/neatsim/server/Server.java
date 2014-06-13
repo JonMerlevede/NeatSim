@@ -5,11 +5,14 @@ import java.io.IOException;
 
 import neatsim.server.thrift.CFitnessEvaluatorService;
 
-import org.apache.thrift.server.TServer;
-import org.apache.thrift.server.TSimpleServer;
+import org.apache.thrift.TProcessor;
+import org.apache.thrift.TProcessorFactory;
+import org.apache.thrift.server.TThreadPoolServer;
 import org.apache.thrift.transport.TServerSocket;
 import org.apache.thrift.transport.TServerTransport;
+import org.apache.thrift.transport.TTransport;
 import org.apache.thrift.transport.TTransportException;
+
 
 /**
  * Class that implements a server that provides the Thrift
@@ -54,11 +57,11 @@ public class Server {
 			// Reserve a socket for Thrift communication
 			final TServerTransport serverTransport = new TServerSocket(port);
 			// Create a new fitness evaluator.
-			// This evaluator provides an implementation of the Thrift service.
-			final CFitnessEvaluatorService.Iface impl = new FitnessEvaluator();
-			// Attach the fitness evaluator to a Thrift processor
-			final CFitnessEvaluatorService.Processor<CFitnessEvaluatorService.Iface>
-				processor = new CFitnessEvaluatorService.Processor<CFitnessEvaluatorService.Iface>(impl);
+//			// This evaluator provides an implementation of the Thrift service.
+//			final CFitnessEvaluatorService.Iface impl = new FitnessEvaluator();
+//			// Attach the fitness evaluator to a Thrift processor
+//			final CFitnessEvaluatorService.Processor<CFitnessEvaluatorService.Iface>
+//				processor = new CFitnessEvaluatorService.Processor<CFitnessEvaluatorService.Iface>(impl);
 			// We now have to attach the processor to a Thrift server.
 			/*
 			 * There are multiple Thrift servers available. We use the
@@ -68,8 +71,8 @@ public class Server {
 			 * performance. We gain performance when using a multithreaded Thrift
 			 * server, as we know that we have only a single client.
 			 */
-			final TServer.Args args = new TSimpleServer.Args(serverTransport);
-			final TServer server = new TSimpleServer(args.processor(processor));
+//			final TServer.Args args = new TSimpleServer.Args(serverTransport);
+			//final TServer server = new TSimpleServer(args.processor(processor));
 			// Uncomment two of the following lines and comment the previous lines
 			// of code to switch to a high-perforamance, multi-threaded server
 			// implementation.
@@ -78,8 +81,8 @@ public class Server {
 			// for a comparison of the performance of the different Thrift servers.
 //			TNonblockingServer.Args args = new TNonblockingServer.Args(serverTransport);
 //			TServer server = new TNonblockingServer(args.processor(processor));
-//			TThreadPoolServer.Args args= new TThreadPoolServer.Args(serverTransport);
-//			TThreadPoolServer server = new TThreadPoolServer(args.processor(processor));
+			final TThreadPoolServer.Args args= new TThreadPoolServer.Args(serverTransport);
+			final TThreadPoolServer server = new TThreadPoolServer(args.processorFactory(new ProcessorFactory()));
 			System.out.println("Starting server on port 7913...");
 			// Start the server.
 			// When using the TSimpleServer, this captures the running thread.
@@ -87,5 +90,27 @@ public class Server {
 		} catch (final TTransportException e) {
 			e.printStackTrace();
 		}
+	}
+
+	static class ProcessorFactory extends TProcessorFactory {
+
+		public ProcessorFactory() {
+			super(null);
+		}
+
+		@Override
+		public TProcessor getProcessor(final TTransport trans) {
+			CFitnessEvaluatorService.Iface impl;
+			try {
+				impl = new FitnessEvaluator();
+			} catch (final IOException e) {
+				throw new IllegalStateException(e);
+			}
+			// Attach the fitness evaluator to a Thrift processor
+			final CFitnessEvaluatorService.Processor<CFitnessEvaluatorService.Iface>
+				processor = new CFitnessEvaluatorService.Processor<CFitnessEvaluatorService.Iface>(impl);
+			return processor;
+		  }
+
 	}
 }

@@ -5,6 +5,7 @@ thrift/gen*
 
 #NeatSim specific
 Neatsim/target
+NeatSim/target
 Neatsim/doc
 
 #SharpNeat specific
