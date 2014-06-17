@@ -102,7 +102,7 @@ public class GendreauEvaluator implements PopulationEvaluator {
 	private final List<GendreauScenario> gendreauScenarios;
 	private final Simulator evaluator;
 	private final int numberOfScenariosPerGeneration;
-	private int lowestFreshScenarioNumber = 0;
+	//private int lowestFreshScenarioNumber = 0;
 
 	public GendreauEvaluator(
 			final List<GendreauScenario> gendreauScenarios,
@@ -348,10 +348,10 @@ public class GendreauEvaluator implements PopulationEvaluator {
 
 	private int[] getCurrentScenarioNumbers(final int generation, final int numberOfScenariosPerGeneration) {
 		final int[] result = new int[numberOfScenariosPerGeneration];
-		//final int base = generation*numberOfScenariosPerGeneration;
+		final int base = generation*numberOfScenariosPerGeneration;
 		for (int i=0; i < numberOfScenariosPerGeneration; i++)
-			result[i] = (lowestFreshScenarioNumber + i) % getNumberOfScenarios();
-		lowestFreshScenarioNumber += numberOfScenariosPerGeneration;
+			result[i] = (base + i) % getNumberOfScenarios();
+		//lowestFreshScenarioNumber += numberOfScenariosPerGeneration;
 		return result;
 	}
 
