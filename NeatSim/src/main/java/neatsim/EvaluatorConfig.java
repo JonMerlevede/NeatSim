@@ -14,9 +14,13 @@ import neatsim.util.NaturalOrderComparator;
 import neatsim.util.NeuralNetworkReader;
 import neatsim.util.PrefixSuffixFilter;
 
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
+
 public class EvaluatorConfig extends Config {
 	private final Evaluator.Type type;
-	private final List<BlackBox> genomes;
+	private final ImmutableList<BlackBox> genomes;
+	private final ImmutableMap<BlackBox,String> genomeMap;
 	private final File outputPath;
 	private final boolean dry;
 
@@ -34,8 +38,15 @@ public class EvaluatorConfig extends Config {
 		return type;
 	}
 
-	public List<BlackBox> getGenomes() {
+	public ImmutableList<BlackBox> getGenomes() {
 		return genomes;
+	}
+
+	/**
+	 * @return A map of filename to {@link BlackBox}.
+	 */
+	public ImmutableMap<BlackBox,String> getGenomeMap(){
+		return genomeMap;
 	}
 
 	public File getOutputFile() {
@@ -51,7 +62,8 @@ public class EvaluatorConfig extends Config {
 		super();
 		logger.debug("Creating EvaluatorConfig");
 		type = enumToProperty(Evaluator.Type.class, TYPE);
-		genomes = propToBlackboxes();
+		genomeMap = propToBlackboxes();
+		genomes = ImmutableList.copyOf( genomeMap.keySet());
 		final String t1 = getProperty(OUTPUTPATH,"output.csv");
 		final File t2 = (new File(t1)).getCanonicalFile();
 		if (t2.isDirectory())
@@ -72,8 +84,10 @@ public class EvaluatorConfig extends Config {
 		//throw new InvalidConfigurationException(EVALUTATIONSTEPS);
 	}
 
+
+
 	// TODO change this so that this uses NeuralNetworkReader.readDirectory
-	public List<BlackBox> propToBlackboxes() throws IOException {
+	private ImmutableMap<BlackBox,String> propToBlackboxes() throws IOException {
 	// Read data directory setting
 			String dataDirectory = (new File(getProperty(DATADIR, ""))).getCanonicalPath();
 			// Read prefix setting
@@ -95,7 +109,9 @@ public class EvaluatorConfig extends Config {
 			Collections.sort(sgenomes, NaturalOrderComparator.CASEINSENSITIVE_NUMERICAL_ORDER);
 			printEvaluationOrder(sgenomes);
 			//# Convert the genome path names to ANNs
-			final List<BlackBox> genomes = new ArrayList<BlackBox>(sgenomes.size());
+
+			final ImmutableMap.Builder<BlackBox,String> mapBuilder = ImmutableMap.builder();
+
 			final NeuralNetworkReader reader = new NeuralNetworkReader(timesteps);
 			if (singletonGenome) {
 				for (final String sgenome : sgenomes) {
@@ -104,22 +120,25 @@ public class EvaluatorConfig extends Config {
 						logger.warn("File {} contains more than one genome.",sgenome);
 						throw new RuntimeException("File " + sgenome + " contains more than one genome.");
 					}
-					genomes.add(t.get(0));
+					mapBuilder.put(t.get(0),sgenome);
 				}
 			} else {
-				for (final String sgenome : sgenomes) {
-					final List<NeuralNetwork> t = reader.readFile(sgenome).neuralNetworks;
-					for (final BlackBox bb : t)
-						genomes.add(bb);
-				}
+				throw new UnsupportedOperationException("This is not implemented yet, it should use a multimap instead of a map.");
+//				for (final String sgenome : sgenomes) {
+//					final List<NeuralNetwork> t = reader.readFile(sgenome).neuralNetworks;
+//					for (final BlackBox bb : t)
+//						genomes.add(bb);
+//				}
 			}
 			logger.info("Genomes were read from file correctly");
-			return genomes;
+			return mapBuilder.build();
 	}
 
 	private void printEvaluationOrder(final List<String> sgenomes) {
 		logger.info("Evaluating genomes in the following order: ");
+		//System.out.println("Evaluating genomes in the following order: ");
 		for(final String genome : sgenomes) {
+			//System.out.println(genome);
 			logger.info("\t{}",genome);
 		}
 	}
